@@ -45,4 +45,3 @@
  6. [Replacing a Bastion Host with Amazon EC2 Systems Manager](https://aws.amazon.com/blogs/mt/replacing-a-bastion-host-with-amazon-ec2-systems-manager/)
  7. [AWS Federated Authentication with Active Directory Federation Services (AD FS)](https://aws.amazon.com/blogs/security/aws-federated-authentication-with-active-directory-federation-services-ad-fs/)
  8. [Building a Cloud-Specific Incident Response Plan](https://aws.amazon.com/blogs/publicsector/building-a-cloud-specific-incident-response-plan/)
- 9. []()
