@@ -60,6 +60,7 @@
 21. [How to Encrypt and Decrypt Your Data with the AWS Encryption CLI](https://aws.amazon.com/blogs/security/how-to-encrypt-and-decrypt-your-data-with-the-aws-encryption-cli/)
 22. [Review and Respond to an AWS Abuse Report](https://aws.amazon.com/premiumsupport/knowledge-center/aws-abuse-report/)
 23. [My AWS account might be compromised](https://aws.amazon.com/premiumsupport/knowledge-center/potential-account-compromise/)
+24. [What S3 bucket policy should I use to comply with the AWS Config rule s3-bucket-ssl-requests-only?](https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-policy-for-config-rule/)
 # AWS Documentation
 ### AWS Config
 * [AWS Config Custom Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules.html)
@@ -115,8 +116,10 @@
 * [SSL Negotiation Configurations for Classic Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-ssl-security-policy.html)
 ### Amazon S3/Glacier
 * [Protecting Data Using Encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingEncryption.html)
+* [Replication](https://docs.aws.amazon.com/AmazonS3/latest/dev/replication.html)
 * [How Do I Add a Replication Rule to an S3 Bucket?](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-replication.html)
 * [https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-troubleshoot.html](https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-troubleshoot.htm)
+* [Bucket Policy Examples](https://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html)
 * [Locking a Vault by Using the Amazon S3 Glacier API](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock-how-to-api.html)
 * [Amazon S3 Glacier Vault Lock](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock.html)
 ### Amazon Cognito
@@ -135,5 +138,8 @@
 * [Logging Amazon Kinesis Data Streams API Calls with AWS CloudTrail](https://docs.aws.amazon.com/streams/latest/dev/logging-using-cloudtrail.html)
 ### Amazon SQS
 * [Custom Amazon SQS Access Policy Language Examples](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-creating-custom-policies-access-policy-examples.html)
-
-
+### Amazon Inspector
+* [Amazon Inspector Rules Packages and Rules](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_rule-packages.html)
+* [Security Best Practices for Amazon Inspector](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_security-best-practices.html)
+### AWS Organizations
+* [Example Service Control Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html
