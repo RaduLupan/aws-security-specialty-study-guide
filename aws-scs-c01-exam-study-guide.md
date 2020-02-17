@@ -58,11 +58,14 @@
 19. [New! Set permission guardrails confidently by using IAM access advisor to analyze service-last-accessed information for accounts in your AWS organization](https://aws.amazon.com/blogs/security/set-permission-guardrails-using-iam-access-advisor-analyze-service-last-accessed-information-aws-organization/)
 20. [How to Create an AWS IAM Policy to Grant AWS Lambda Access to an Amazon DynamoDB Table](https://aws.amazon.com/blogs/security/how-to-create-an-aws-iam-policy-to-grant-aws-lambda-access-to-an-amazon-dynamodb-table/)
 21. [How to Encrypt and Decrypt Your Data with the AWS Encryption CLI](https://aws.amazon.com/blogs/security/how-to-encrypt-and-decrypt-your-data-with-the-aws-encryption-cli/)
+22. [Review and Respond to an AWS Abuse Report](https://aws.amazon.com/premiumsupport/knowledge-center/aws-abuse-report/)
+23. [My AWS account might be compromised](https://aws.amazon.com/premiumsupport/knowledge-center/potential-account-compromise/)
 # AWS Documentation
 ### AWS Config
 * [AWS Config Custom Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules.html)
 * [Specifying Triggers for AWS Config Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config-rules.html)
 * [AWS Config Now Supports Multi-Account, Multi-Region Aggregation of Resource Configuration Data](https://aws.amazon.com/about-aws/whats-new/2018/11/aws-config-now-supports-multi-account-multi-region-aggregation-of-resource-configuration-data/)
+* [Monitoring AWS Config with Amazon CloudWatch Events](https://docs.aws.amazon.com/config/latest/developerguide/monitor-config-with-cloudwatchevents.html)
 * [How to Use AWS Config to Monitor for and Respond to Amazon S3 Buckets Allowing Public Access](https://aws.amazon.com/blogs/security/how-to-use-aws-config-to-monitor-for-and-respond-to-amazon-s3-buckets-allowing-public-access/)
 ### AWS CloudTrail
 * [Receiving CloudTrail Log Files from Multiple Accounts](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-receive-logs-from-multiple-accounts.html)
@@ -72,6 +75,7 @@
 * [Rotating Customer Master Keys](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html#rotate-keys-console)
 * [Data Key Caching](https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/data-key-caching.html)
 * [Determining Past Usage of a Customer Master Key ](https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys-determining-usage.html)
+* [kms:GrantIsForAWSResource](https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html#conditions-kms-grant-is-for-aws-resource)
 ### AWS WAF
 * [AWS WAF Tutorials](https://aws.amazon.com/waf/preconfiguredrules/)
 * [Logging Web ACL Traffic Information](https://docs.aws.amazon.com/waf/latest/developerguide/logging.html)
@@ -80,14 +84,17 @@
 * [AWS Solutions - Global Transit Network](https://aws.amazon.com/solutions/aws-global-transit-network/)
 * [Security Best Practices for Your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
 * [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html)
+* [Publishing Flow Logs to CloudWatch Logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html)
 ### AWS CloudHSM
 * [What Is AWS CloudHSM?](https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html)
 ### Amazon GuardDuty
 * [What Is Amazon GuardDuty?](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)
 * [Subscribing to GuardDuty Announcements SNS Topic](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_sns.html)
+* [Remediating a Compromised EC2 Instance](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_remediate.html#compromised-ec2)
 ### Amazon Athena
 * [What is Amazon Athena?](https://docs.aws.amazon.com/athena/latest/ug/what-is.html)
 * [Querying AWS CloudTrail Logs](https://docs.aws.amazon.com/athena/latest/ug/cloudtrail-logs.html)
+* [Using AWS Glue to Connect to Data Sources in Amazon S3](https://docs.aws.amazon.com/athena/latest/ug/data-sources-glue.html)
 ### AWS Secrets Manager
 * [What Is AWS Secrets Manager?](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
 * [Enabling Rotation for an Amazon RDS Database Secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/enable-rotation-rds.html)
@@ -103,10 +110,12 @@
 * [Deactivating MFA Devices](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_disable.html)
 * [Amazon DynamoDB: Allows Access to a Specific Table](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_dynamodb_specific-table.html)
 * [Overview of the Role to Allow SAML-Federated Access to Your AWS Resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html#CreatingSAML-configuring-role)
+* [Available Keys for AWS Web Identity Federation](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_iam-condition-keys.html#condition-keys-wif)
 ### AWS ELB
 * [SSL Negotiation Configurations for Classic Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-ssl-security-policy.html)
 ### Amazon S3/Glacier
 * [Protecting Data Using Encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingEncryption.html)
+* [How Do I Add a Replication Rule to an S3 Bucket?](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-replication.html)
 * [https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-troubleshoot.html](https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-troubleshoot.htm)
 * [Locking a Vault by Using the Amazon S3 Glacier API](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock-how-to-api.html)
 * [Amazon S3 Glacier Vault Lock](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock.html)
