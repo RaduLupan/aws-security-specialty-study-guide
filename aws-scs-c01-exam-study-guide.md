@@ -45,3 +45,22 @@
  6. [Replacing a Bastion Host with Amazon EC2 Systems Manager](https://aws.amazon.com/blogs/mt/replacing-a-bastion-host-with-amazon-ec2-systems-manager/)
  7. [AWS Federated Authentication with Active Directory Federation Services (AD FS)](https://aws.amazon.com/blogs/security/aws-federated-authentication-with-active-directory-federation-services-ad-fs/)
  8. [Building a Cloud-Specific Incident Response Plan](https://aws.amazon.com/blogs/publicsector/building-a-cloud-specific-incident-response-plan/)
+
+# AWS Documentation
+### AWS Config
+* [AWS Config Custom Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules.html)
+* [Specifying Triggers for AWS Config Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config-rules.html)
+* [AWS Config Now Supports Multi-Account, Multi-Region Aggregation of Resource Configuration Data](https://aws.amazon.com/about-aws/whats-new/2018/11/aws-config-now-supports-multi-account-multi-region-aggregation-of-resource-configuration-data/)
+* [How to Use AWS Config to Monitor for and Respond to Amazon S3 Buckets Allowing Public Access](https://aws.amazon.com/blogs/security/how-to-use-aws-config-to-monitor-for-and-respond-to-amazon-s3-buckets-allowing-public-access/)
+### AWS CloudTrail
+* [Receiving CloudTrail Log Files from Multiple Accounts](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-receive-logs-from-multiple-accounts.html)
+* [How do I automatically create tables in Amazon Athena to search through AWS CloudTrail logs?](https://aws.amazon.com/premiumsupport/knowledge-center/athena-tables-search-cloudtrail-logs/)
+### AWS KMS
+* [Using Grants](https://docs.aws.amazon.com/kms/latest/developerguide/grants.html)
+* [Rotating Customer Master Keys](https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html#rotate-keys-console)
+* [Data Key Caching](https://docs.aws.amazon.com/encryption-sdk/latest/developer-guide/data-key-caching.html)
+* [Determining Past Usage of a Customer Master Key ](https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys-determining-usage.html)
+### AWS WAF
+* [AWS WAF Tutorials](https://aws.amazon.com/waf/preconfiguredrules/)
+* [Logging Web ACL Traffic Information](https://docs.aws.amazon.com/waf/latest/developerguide/logging.html)
+### AWS VPC
