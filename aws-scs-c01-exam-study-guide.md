@@ -35,3 +35,14 @@
 19. [Automating Incident Response and Forensics](https://youtu.be/f_EcwmmXkXk)
 20. [AWS re:Invent 2017: Incident Response in the Cloud (SID319)](https://www.youtube.com/watch?v=ufmgB9M2WII)
 21. [AWS re:Invent 2017: Security Anti-Patterns: Mistakes to Avoid (FSV301)](https://www.youtube.com/watch?v=tzJmE_Jlas0)
+
+# AWS Blogs
+ 1. [How to Receive Notifications When Your AWS Account’s Root Access Keys Are Used](https://aws.amazon.com/blogs/security/how-to-receive-notifications-when-your-aws-accounts-root-access-keys-are-used/)
+ 2. [Are KMS custom key stores right for you?](https://aws.amazon.com/blogs/security/are-kms-custom-key-stores-right-for-you/)
+ 3. [How to Help Prepare for DDoS Attacks by Reducing Your Attack Surface](https://aws.amazon.com/blogs/security/how-to-help-prepare-for-ddos-attacks-by-reducing-your-attack-surface/)
+ 4. [How to Visualize and Refine Your Network’s Security by Adding Security Group IDs to Your VPC Flow Logs](https://aws.amazon.com/blogs/security/how-to-visualize-and-refine-your-networks-security-by-adding-security-group-ids-to-your-vpc-flow-logs/)
+ 5. [AWS Shield Engagement Lambda](https://s3.amazonaws.com/aws-shield-lambda/ShieldEngagementLambda.pdf)
+ 6. [Replacing a Bastion Host with Amazon EC2 Systems Manager](https://aws.amazon.com/blogs/mt/replacing-a-bastion-host-with-amazon-ec2-systems-manager/)
+ 7. [AWS Federated Authentication with Active Directory Federation Services (AD FS)](https://aws.amazon.com/blogs/security/aws-federated-authentication-with-active-directory-federation-services-ad-fs/)
+ 8. [Building a Cloud-Specific Incident Response Plan](https://aws.amazon.com/blogs/publicsector/building-a-cloud-specific-incident-response-plan/)
+ 9. []()
