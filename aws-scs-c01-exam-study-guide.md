@@ -45,7 +45,19 @@
  6. [Replacing a Bastion Host with Amazon EC2 Systems Manager](https://aws.amazon.com/blogs/mt/replacing-a-bastion-host-with-amazon-ec2-systems-manager/)
  7. [AWS Federated Authentication with Active Directory Federation Services (AD FS)](https://aws.amazon.com/blogs/security/aws-federated-authentication-with-active-directory-federation-services-ad-fs/)
  8. [Building a Cloud-Specific Incident Response Plan](https://aws.amazon.com/blogs/publicsector/building-a-cloud-specific-incident-response-plan/)
-
+ 9. [New – AWS PrivateLink for AWS Services: Kinesis, Service Catalog, EC2 Systems Manager, Amazon EC2 APIs, and ELB APIs in your VPC](https://aws.amazon.com/blogs/aws/new-aws-privatelink-endpoints-kinesis-ec2-systems-manager-and-elb-apis-in-your-vpc/?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+AmazonWebServicesBlog+%28Amazon+Web+Services+Blog%29)
+10. [AWS Key Management Service now offers FIPS 140-2 validated cryptographic modules enabling easier adoption of the service for regulated workloads](https://aws.amazon.com/blogs/security/aws-key-management-service-now-offers-fips-140-2-validated-cryptographic-modules-enabling-easier-adoption-of-the-service-for-regulated-workloads/)
+11. [How to Manage Amazon GuardDuty Security Findings Across Multiple Accounts](https://aws.amazon.com/blogs/security/how-to-manage-amazon-guardduty-security-findings-across-multiple-accounts/)
+12. [Visualizing Amazon GuardDuty findings](https://aws.amazon.com/blogs/security/visualizing-amazon-guardduty-findings/)
+13. [Monitoring your security with GuardDuty in real time with Amazon Elasticsearch Service](https://aws.amazon.com/blogs/database/monitoring-your-security-with-guardduty-in-real-time-with-amazon-elasticsearch-service/)
+14. [Setting permissions to enable accounts for upcoming AWS Regions](https://aws.amazon.com/blogs/security/setting-permissions-to-enable-accounts-for-upcoming-aws-regions/)
+15. [Easier way to control access to AWS regions using IAM policies](https://aws.amazon.com/blogs/security/easier-way-to-control-access-to-aws-regions-using-iam-policies/)
+16. [Delegate permission management to developers by using IAM permissions boundaries](https://aws.amazon.com/blogs/security/delegate-permission-management-to-developers-using-iam-permissions-boundaries/)
+17. [Add Tags to Manage Your AWS IAM Users and Roles](https://aws.amazon.com/blogs/security/add-tags-to-manage-your-aws-iam-users-and-roles/)
+18. [Recover your impaired instances using EC2Rescue and Amazon EC2 Systems Manager Automation](https://aws.amazon.com/blogs/mt/recover-your-impaired-instances-using-ec2rescue-and-amazon-ec2-systems-manager-automation/)
+19. [New! Set permission guardrails confidently by using IAM access advisor to analyze service-last-accessed information for accounts in your AWS organization](https://aws.amazon.com/blogs/security/set-permission-guardrails-using-iam-access-advisor-analyze-service-last-accessed-information-aws-organization/)
+20. [How to Create an AWS IAM Policy to Grant AWS Lambda Access to an Amazon DynamoDB Table](https://aws.amazon.com/blogs/security/how-to-create-an-aws-iam-policy-to-grant-aws-lambda-access-to-an-amazon-dynamodb-table/)
+21. [How to Encrypt and Decrypt Your Data with the AWS Encryption CLI](https://aws.amazon.com/blogs/security/how-to-encrypt-and-decrypt-your-data-with-the-aws-encryption-cli/)
 # AWS Documentation
 ### AWS Config
 * [AWS Config Custom Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules.html)
@@ -64,3 +76,55 @@
 * [AWS WAF Tutorials](https://aws.amazon.com/waf/preconfiguredrules/)
 * [Logging Web ACL Traffic Information](https://docs.aws.amazon.com/waf/latest/developerguide/logging.html)
 ### AWS VPC
+* [Ephemeral Ports](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html#nacl-ephemeral-ports)
+* [AWS Solutions - Global Transit Network](https://aws.amazon.com/solutions/aws-global-transit-network/)
+* [Security Best Practices for Your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
+* [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html)
+### AWS CloudHSM
+* [What Is AWS CloudHSM?](https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html)
+### Amazon GuardDuty
+* [What Is Amazon GuardDuty?](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)
+* [Subscribing to GuardDuty Announcements SNS Topic](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_sns.html)
+### Amazon Athena
+* [What is Amazon Athena?](https://docs.aws.amazon.com/athena/latest/ug/what-is.html)
+* [Querying AWS CloudTrail Logs](https://docs.aws.amazon.com/athena/latest/ug/cloudtrail-logs.html)
+### AWS Secrets Manager
+* [What Is AWS Secrets Manager?](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
+* [Enabling Rotation for an Amazon RDS Database Secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/enable-rotation-rds.html)
+### AWS IAM
+* [Policy Evaluation Logic] (https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html)
+* [What to Do If You Inadvertently Expose an AWS Access Key](https://aws.amazon.com/blogs/security/what-to-do-if-you-inadvertently-expose-an-aws-access-key/)
+* [Best Practices - AWS Identity and Access Management](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+* [Temporary Security Credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html)
+* [Using an IAM Role in the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html)
+* [Allow IAM users to access the Reports console page](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-example-policies.html#example-billing-view-reports)
+* [How to Use an External ID When Granting Access to Your AWS Resources to a Third Party] (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html)
+* [What If an MFA Device Is Lost or Stops Working?](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_lost-or-broken.html)
+* [Deactivating MFA Devices](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_disable.html)
+* [Amazon DynamoDB: Allows Access to a Specific Table](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_dynamodb_specific-table.html)
+* [Overview of the Role to Allow SAML-Federated Access to Your AWS Resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html#CreatingSAML-configuring-role)
+### AWS ELB
+* [SSL Negotiation Configurations for Classic Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-ssl-security-policy.html)
+### Amazon S3/Glacier
+* [Protecting Data Using Encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingEncryption.html)
+* [https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-troubleshoot.html](https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-troubleshoot.htm)
+* [Locking a Vault by Using the Amazon S3 Glacier API](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock-how-to-api.html)
+* [Amazon S3 Glacier Vault Lock](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock.html)
+### Amazon Cognito
+* [What Is Amazon Cognito?](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html)
+* [Integrate a REST API with an Amazon Cognito User Pool](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-enable-cognito-user-pool.html)
+* [Custom Authentication Challenge Lambda Triggers](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-challenge.html)
+### Amazon CloudFront
+* [Choosing Between Signed URLs and Signed Cookies](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-choosing-signed-urls-cookies.html)
+### AWS Systems Manager
+* [Create an IAM Service Role for a Hybrid Environment ](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-service-role.html)
+* [Troubleshooting Systems Manager Run Command](https://docs.aws.amazon.com/systems-manager/latest/userguide/troubleshooting-remote-commands.html)
+### Amazon Redshift
+* [How Amazon Redshift Uses AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/services-redshift.html)
+### Amazon Kinesis Data Streams
+* [What Is Server-Side Encryption for Kinesis Data Streams?](https://docs.aws.amazon.com/streams/latest/dev/what-is-sse.html)
+* [Logging Amazon Kinesis Data Streams API Calls with AWS CloudTrail](https://docs.aws.amazon.com/streams/latest/dev/logging-using-cloudtrail.html)
+### Amazon SQS
+* [Custom Amazon SQS Access Policy Language Examples](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-creating-custom-policies-access-policy-examples.html)
+
+
