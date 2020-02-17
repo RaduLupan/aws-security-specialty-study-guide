@@ -1,3 +1,6 @@
+# Exam Guide and Sample Questions
+* [AWS Certified Security Specialty (SCS-C01) Exam Guide](https://d1.awsstatic.com/training-and-certification/eligibilityupdates/AWS%20Certified%20Security%20Specialty_Exam%20Guide_v1.6_FINAL.pdf)
+* [AWS Certified Security Specialty (SCS-C01) Sample Exam Questions](https://d1.awsstatic.com/training-and-certification/docs-security-spec/AWS%20Certified%20Security%20-%20Specialty_Sample%20Questions.pdf)
 # AWS Whitepapers
  1. [Amazon Web Services: Overview of Security Processes](https://d0.awsstatic.com/whitepapers/aws-security-whitepaper.pdf)
  2. [Operational Checklists for AWS](https://d1.awsstatic.com/whitepapers/compliance/AWS_Security_at_Scale_Logging_in_AWS_Whitepaper.pdf)
