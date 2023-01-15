@@ -1,2 +1,3 @@
 # aws-security-specialty-study-guide
-My study guide for AWS Security Specialty 2020 exam. 
+My study guide for AWS Security Specialty exam.
+[2020](../aws-security-specialty-study-guide.md)
