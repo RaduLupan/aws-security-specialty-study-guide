@@ -2,11 +2,12 @@
 * [AWS Certified Security Specialty (SCS-C01) Exam Guide](https://d1.awsstatic.com/training-and-certification/docs-security-spec/AWS-Certified-Security-Specialty_Exam-Guide.pdf)
 * [AWS Certified Security Specialty (SCS-C01) Sample Exam Questions](https://d1.awsstatic.com/training-and-certification/docs-security-spec/AWS-Certified-Security-Speciality_Sample-Questions.pdf)
 
-# TODO
 # AWS Whitepapers
+ 1. [AWS Key Management Service Best Practices](https://d1.awsstatic.com/whitepapers/aws-kms-best-practices.pdf)
+ TODO
  1. [Amazon Web Services: Overview of Security Processes](https://d0.awsstatic.com/whitepapers/aws-security-whitepaper.pdf)
  2. [Operational Checklists for AWS](https://d1.awsstatic.com/whitepapers/compliance/AWS_Security_at_Scale_Logging_in_AWS_Whitepaper.pdf)
- 3. [AWS Key Management Service Best Practices](https://d1.awsstatic.com/whitepapers/aws-kms-best-practices.pdf)
+ 3. 
  4. [AWS Key Management Service Cryptographic Details](https://d1.awsstatic.com/whitepapers/KMS-Cryptographic-Details.pdf)
  5. [AWS Best Practices for DDoS Resiliency](https://d1.awsstatic.com/whitepapers/Security/DDoS_White_Paper.pdf)
  6. [AWS Security Pillar](https://d1.awsstatic.com/whitepapers/architecture/AWS-Security-Pillar.pdf)
