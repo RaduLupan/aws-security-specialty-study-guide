@@ -43,6 +43,8 @@
 21. [AWS re:Invent 2017: Security Anti-Patterns: Mistakes to Avoid (FSV301)](https://www.youtube.com/watch?v=tzJmE_Jlas0)
 
 # AWS Blogs
+ 1. [Top 10 security items to improve in your AWS account](https://aws.amazon.com/blogs/security/top-10-security-items-to-improve-in-your-aws-account/)
+TODO
  1. [How to Receive Notifications When Your AWS Account’s Root Access Keys Are Used](https://aws.amazon.com/blogs/security/how-to-receive-notifications-when-your-aws-accounts-root-access-keys-are-used/)
  2. [Are KMS custom key stores right for you?](https://aws.amazon.com/blogs/security/are-kms-custom-key-stores-right-for-you/)
  3. [How to Help Prepare for DDoS Attacks by Reducing Your Attack Surface](https://aws.amazon.com/blogs/security/how-to-help-prepare-for-ddos-attacks-by-reducing-your-attack-surface/)
