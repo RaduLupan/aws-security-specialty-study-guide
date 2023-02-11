@@ -75,19 +75,17 @@ aws.amazon.com/blogs/security/set-permission-guardrails-using-iam-access-advisor
 * [Determining Past Usage of a Customer Master Key ](https://docs.aws.amazon.com/kms/latest/developerguide/deleting-keys-determining-usage.html)
 * [kms:GrantIsForAWSResource](https://docs.aws.amazon.com/kms/latest/developerguide/conditions-kms.html#conditions-kms-grant-is-for-aws-resource)
 ### AWS WAF
-TODO
-* [AWS WAF Tutorials](https://aws.amazon.com/waf/preconfiguredrules/)
+* [Security Automations for AWS WAF](https://aws.amazon.com/solutions/implementations/security-automations-for-aws-waf/)
 * [Logging Web ACL Traffic Information](https://docs.aws.amazon.com/waf/latest/developerguide/logging.html)
 ### AWS VPC
 * [Ephemeral Ports](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html#nacl-ephemeral-ports)
-* [AWS Solutions - Global Transit Network](https://aws.amazon.com/solutions/aws-global-transit-network/)
 * [Security Best Practices for Your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
-* [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html)
+* [AWS PrivateLink concepts](https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html)
 * [Publishing Flow Logs to CloudWatch Logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html)
 ### AWS CloudHSM
 * [What Is AWS CloudHSM?](https://docs.aws.amazon.com/cloudhsm/latest/userguide/introduction.html)
 ### Amazon GuardDuty
-* [What Is Amazon GuardDuty?](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html)
+* [Malware Protection in Amazon GuardDuty](https://docs.aws.amazon.com/guardduty/latest/ug/malware-protection.html)
 * [Subscribing to GuardDuty Announcements SNS Topic](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_sns.html)
 * [Remediating a Compromised EC2 Instance](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_remediate.html#compromised-ec2)
 ### Amazon Athena
@@ -98,6 +96,7 @@ TODO
 * [What Is AWS Secrets Manager?](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
 * [Enabling Rotation for an Amazon RDS Database Secret](https://docs.aws.amazon.com/secretsmanager/latest/userguide/enable-rotation-rds.html)
 ### AWS IAM
+TODO
 * [Policy Evaluation Logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html)
 * [What to Do If You Inadvertently Expose an AWS Access Key](https://aws.amazon.com/blogs/security/what-to-do-if-you-inadvertently-expose-an-aws-access-key/)
 * [Best Practices - AWS Identity and Access Management](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
