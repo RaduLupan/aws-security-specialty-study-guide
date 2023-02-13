@@ -12,9 +12,21 @@
  7. [AWS Security Incident Response Guide](https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/aws-security-incident-response-guide.html)
 
 # AWS re:Invent/re:Inforce videos
- TODO
  1. [AWS re:Inforce 2022: Introducing Amazon GuardDuty Malware Protection (TDR210)](https://www.youtube.com/watch?v=9wCxAZtrjpw)
- 2. 
+ 2. [AWS re:Inforce 2022: What’s new with AWS threat detection services (TDR202)](https://www.youtube.com/watch?v=uDvP6tlkpjQ)
+ 3. [AWS re:Inforce 2022: New AWS security services for container threat detection (TDR304)](https://www.youtube.com/watch?v=cQzE9IxisPA)
+ 4. [AWS re:Inforce 2022: Running effective security incident response simulations (TDR201)](https://www.youtube.com/watch?v=63EdzHT25_A)
+ 5. [AWS re:Inforce 2022: A proactive approach to zero-days: Lessons learned from Log4j (TDR301)](https://www.youtube.com/watch?v=CEq5wGJjh1g)
+ 6. [AWS re:Inforce 2022: Designing a well-architected identity & access management solution (IAM309)](https://www.youtube.com/watch?v=qrQzUzDyjks)
+ 7. [AWS re:Inforce 2022: Security best practices with AWS IAM (IAM201)](https://www.youtube.com/watch?v=SMjvtxXOXdU)
+ 8. [AWS re:Invent 2022: Harness power of IAM policies & rein in permissions w/Access Analyzer (SEC313)](https://www.youtube.com/watch?v=x-Kh8hKVX74)
+ 9. [AWS re:Invent 2022: Setting up controls at scale in your AWS environment (COP318)](https://www.youtube.com/watch?v=NkE9_okfPG8)
+ 10. [AWS re:Invent 2022: Introducing AWS Verified Access: Secure connections to your apps (NET214)](https://www.youtube.com/watch?v=Kkxn-bAIlnI)
+ 11. [AWS re:Invent 2022: Protecting secrets, keys, and data: Cryptography for the long term (SEC403)](https://www.youtube.com/watch?v=9vr3oMODIUE)
+ 12. [AWS re:Invent 2022: Protect against ransomware with a Zero Trust architecture (STG208)](https://www.youtube.com/watch?v=ELSm3WgR8RE)
+ 13. [AWS re:Invent 2022: Amazon S3 security and access control best practices (STG301)](https://www.youtube.com/watch?v=VeE-O0imUVY)
+ 14. [AWS re:Invent 2022: Architecting secure serverless applications (SVS302-R)](https://www.youtube.com/watch?v=A8iHQjHv8nY)
+
 # AWS Blogs
  1. [Top 10 security items to improve in your AWS account](https://aws.amazon.com/blogs/security/top-10-security-items-to-improve-in-your-aws-account/)
  2. [How to Receive Notifications When Your AWS Account’s Root Access Keys Are Used](https://aws.amazon.com/blogs/security/how-to-receive-notifications-when-your-aws-accounts-root-access-keys-are-used/)
