@@ -116,7 +116,6 @@ aws.amazon.com/blogs/security/set-permission-guardrails-using-iam-access-advisor
 * [Blocking public access to your Amazon S3 storage](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html)
 * [Amazon S3 Glacier Vault Lock](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock.html)
 ### Amazon Cognito
-TODO
 * [What Is Amazon Cognito?](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html)
 * [Integrate a REST API with an Amazon Cognito User Pool](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-enable-cognito-user-pool.html)
 * [Custom Authentication Challenge Lambda Triggers](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-challenge.html)
@@ -132,6 +131,7 @@ TODO
 * [Logging Amazon Kinesis Data Streams API Calls with AWS CloudTrail](https://docs.aws.amazon.com/streams/latest/dev/logging-using-cloudtrail.html)
 ### Amazon SQS
 * [Custom Amazon SQS Access Policy Language Examples](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-creating-custom-policies-access-policy-examples.html)
+TODO
 ### Amazon Inspector
 * [Amazon Inspector Rules Packages and Rules](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_rule-packages.html)
 * [Security Best Practices for Amazon Inspector](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_security-best-practices.html)
