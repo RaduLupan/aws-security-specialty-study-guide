@@ -77,6 +77,7 @@ aws.amazon.com/blogs/security/set-permission-guardrails-using-iam-access-advisor
 ### AWS WAF
 * [Security Automations for AWS WAF](https://aws.amazon.com/solutions/implementations/security-automations-for-aws-waf/)
 * [Logging Web ACL Traffic Information](https://docs.aws.amazon.com/waf/latest/developerguide/logging.html)
+* [AWS Firewall Manager](https://docs.aws.amazon.com/waf/latest/developerguide/fms-chapter.html)
 ### AWS VPC
 * [Ephemeral Ports](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html#nacl-ephemeral-ports)
 * [Security Best Practices for Your VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
@@ -104,18 +105,18 @@ aws.amazon.com/blogs/security/set-permission-guardrails-using-iam-access-advisor
 * [Allow IAM users to access the Reports console page](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-example-policies.html#example-billing-view-reports)
 * [What If an MFA Device Is Lost or Stops Working?](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_lost-or-broken.html)
 * [Deactivating MFA Devices](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_disable.html)
-TODO
-### AWS ELB
-* [SSL Negotiation Configurations for Classic Load Balancers](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-ssl-security-policy.html)
+### Amazon EC2
+* [Encryption in transit](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html#encryption-transit)
+### AWS Network Firewall
+* [What is AWS Network Firewall](https://docs.aws.amazon.com/network-firewall/latest/developerguide/what-is-aws-network-firewall.html)
 ### Amazon S3/Glacier
 * [Protecting Data Using Encryption](https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingEncryption.html)
 * [Replication](https://docs.aws.amazon.com/AmazonS3/latest/dev/replication.html)
-* [How Do I Add a Replication Rule to an S3 Bucket?](https://docs.aws.amazon.com/AmazonS3/latest/user-guide/enable-replication.html)
-* [https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-troubleshoot.html](https://docs.aws.amazon.com/AmazonS3/latest/dev/replication-troubleshoot.htm)
-* [Bucket Policy Examples](https://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html)
-* [Locking a Vault by Using the Amazon S3 Glacier API](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock-how-to-api.html)
+* [Walkthroughs: Examples for configuring replication](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-example-walkthroughs.html)
+* [Blocking public access to your Amazon S3 storage](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html)
 * [Amazon S3 Glacier Vault Lock](https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-lock.html)
 ### Amazon Cognito
+TODO
 * [What Is Amazon Cognito?](https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html)
 * [Integrate a REST API with an Amazon Cognito User Pool](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-enable-cognito-user-pool.html)
 * [Custom Authentication Challenge Lambda Triggers](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-challenge.html)
