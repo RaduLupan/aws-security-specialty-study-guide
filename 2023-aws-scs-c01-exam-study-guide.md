@@ -11,33 +11,10 @@
  6. [Detecting and responding to security issues in your AWS environment](https://d1.awsstatic.com/Marketplace/scenarios/security/SEC_11_TSB_Final.pdf)
  7. [AWS Security Incident Response Guide](https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/aws-security-incident-response-guide.html)
 
- 
 # AWS re:Invent/re:Inforce videos
  TODO
- 1. [AWS re:invent 2017: Best Practices for Implementing AWS Key Management Service (SID330)](https://www.youtube.com/watch?v=X1eZjXQ55ec)
- 2. [AWS re:Invent 2017: A Deep Dive into AWS Encryption Services (SID329)](https://www.youtube.com/watch?v=gTZgxsCTfbk)
- 3. [AWS re:Invent 2018: Data Protection: Encryption, Availability, Resiliency, & Durability (SEC325-R1)
-](https://www.youtube.com/watch?v=FH6AXreSQWQ)
- 4. [Best Practices for DDoS Mitigation on AWS](https://www.youtube.com/watch?v=HnoZS5jj7pk)
- 5. [AWS re:Invent 2017: Automating DDoS Response in the Cloud (SID324)](https://www.youtube.com/watch?v=6pQ3j4IcpY8)
- 6. [AWS re:Invent 2017: Using AWS Lambda as a Security Team (SID301)](https://www.youtube.com/watch?v=oMlGHP8-yHU)
- 7. [AWS re:Invent 2017: Living on the Edge, It’s Safer Than You Think! Building Strong w (CTD310)](https://www.youtube.com/watch?v=U-Xc3k0pmfo)
- 8. [AWS re:Invent 2017: Best Practices for Managing Security Operations on AWS (SID206)](https://www.youtube.com/watch?v=gjrcoK8T3To)
- 9. [Achieving Continuous Compliance using AWS Config](https://www.youtube.com/watch?v=QbA0859qNI8)
-10. [AWS re:Inforce 2019: Achieving Security Goals with AWS CloudHSM (SDD333)](https://www.youtube.com/watch?v=_gezaWmwzYY)
-11. [AWS re:Inforce 2019: Encrypting Everything with AWS (SEP402)](https://www.youtube.com/watch?v=oqHLLbOoxDg)
-12. [AWS re:Invent 2017: Cloud-Native App Protection: Web Application Security at Pearson (SID216)
-](https://www.youtube.com/watch?v=xtAXg7zll3w)
-13. [AWS re:Invent 2018: [REPEAT 1] Become an IAM Policy Master in 60 Minutes or Less (SEC316-R1)](https://www.youtube.com/watch?v=YQsK4MtsELU)
-14. [AWS re:Invent 2018: Advanced VPC Design and New Capabilities for Amazon VPC (NET303)](https://www.youtube.com/watch?v=fnxXNZdf6ew)
-15. [AWS re:Invent 2017: IAM Policy Ninja (SID314)](https://www.youtube.com/watch?v=aISWoPf_XNE)
-16. [AWS re:Invent 2018: Your Virtual Data Center: VPC Fundamentals and Connectivity Options (NET201)](https://www.youtube.com/watch?v=jZAvKgqlrjY)
-17. [AWS re:Invent 2017: How Dow Jones Identifies, Analyzes, and Remediates Security Issues (SID350)](https://www.youtube.com/watch?v=Z0wl_lIq4Ys)
-18. [AWS re:Invent 2019: [REPEAT 1] Achieving security goals with AWS CloudHSM (SEC305-R1)](https://www.youtube.com/watch?v=Vox-PDRHIUs)
-19. [Automating Incident Response and Forensics](https://youtu.be/f_EcwmmXkXk)
-20. [AWS re:Invent 2017: Incident Response in the Cloud (SID319)](https://www.youtube.com/watch?v=ufmgB9M2WII)
-21. [AWS re:Invent 2017: Security Anti-Patterns: Mistakes to Avoid (FSV301)](https://www.youtube.com/watch?v=tzJmE_Jlas0)
-
+ 1. [AWS re:Inforce 2022: Introducing Amazon GuardDuty Malware Protection (TDR210)](https://www.youtube.com/watch?v=9wCxAZtrjpw)
+ 2. 
 # AWS Blogs
  1. [Top 10 security items to improve in your AWS account](https://aws.amazon.com/blogs/security/top-10-security-items-to-improve-in-your-aws-account/)
  2. [How to Receive Notifications When Your AWS Account’s Root Access Keys Are Used](https://aws.amazon.com/blogs/security/how-to-receive-notifications-when-your-aws-accounts-root-access-keys-are-used/)
@@ -131,9 +108,9 @@ aws.amazon.com/blogs/security/set-permission-guardrails-using-iam-access-advisor
 * [Logging Amazon Kinesis Data Streams API Calls with AWS CloudTrail](https://docs.aws.amazon.com/streams/latest/dev/logging-using-cloudtrail.html)
 ### Amazon SQS
 * [Custom Amazon SQS Access Policy Language Examples](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-creating-custom-policies-access-policy-examples.html)
-TODO
 ### Amazon Inspector
-* [Amazon Inspector Rules Packages and Rules](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_rule-packages.html)
-* [Security Best Practices for Amazon Inspector](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_security-best-practices.html)
+* [Amazon Inspector Classic Rules Packages and Rules](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_rule-packages.html)
+* [Security Best Practices for Amazon Inspector Classic](https://docs.aws.amazon.com/inspector/latest/userguide/inspector_security-best-practices.html)
 ### AWS Organizations
 * [Example Service Control Policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
+* [Best practices for AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_best-practices.html)
