@@ -40,7 +40,7 @@
 11. [Delegate permission management to developers by using IAM permissions boundaries](https://aws.amazon.com/blogs/security/delegate-permission-management-to-developers-using-iam-permissions-boundaries/)
 11. [Add Tags to Manage Your AWS IAM Users and Roles](https://aws.amazon.com/blogs/security/add-tags-to-manage-your-aws-iam-users-and-roles/) 
 12. [Recover your impaired instances using EC2Rescue and Amazon EC2 Systems Manager Automation](https://aws.amazon.com/blogs/mt/recover-your-impaired-instances-using-ec2rescue-and-amazon-ec2-systems-manager-automation/)
-13. [New! Set permission guardrails confidently by using IAM access advisor to analyze service-last-accessed information for accounts in your AWS organization](https://
+13. [Set permission guardrails confidently by using IAM access advisor to analyze service-last-accessed information for accounts in your AWS organization](https://
 aws.amazon.com/blogs/security/set-permission-guardrails-using-iam-access-advisor-analyze-service-last-accessed-information-aws-organization/)
 14. [How to Encrypt and Decrypt Your Data with the AWS Encryption CLI](https://aws.amazon.com/blogs/security/how-to-encrypt-and-decrypt-your-data-with-the-aws-encryption-cli/)
 15. [Review and Respond to an AWS Abuse Report](https://aws.amazon.com/premiumsupport/knowledge-center/aws-abuse-report/)
