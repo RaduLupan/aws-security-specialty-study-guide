@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuardDuty Extended Threat Detection Quiz | AWS Security Specialty</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #1c2128;
+            --bg-hover: #262c36;
+            --accent-orange: #ff6b35;
+            --accent-cyan: #00d4aa;
+            --accent-purple: #a855f7;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border-color: #30363d;
+            --success: #3fb950;
+            --error: #f85149;
+            --warning: #d29922;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(ellipse at 20% 0%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(0, 212, 170, 0.06) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0.5rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .mode-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .mode-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
+            color: white;
+        }
+
+        .mode-description {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.75rem;
+        }
+
+        /* Exam mode specific */
+        body.exam-mode .btn-reveal {
+            display: none;
+        }
+
+        body.exam-mode .answer-section {
+            display: none !important;
+        }
+
+        body.exam-mode .answer-section.visible {
+            display: block !important;
+        }
+
+        .submit-container {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        body.exam-mode .submit-container {
+            display: block;
+        }
+
+        body.exam-mode .submit-container.hidden {
+            display: none;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .unanswered-warning {
+            color: var(--warning);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .unanswered-warning.visible {
+            display: block;
+        }
+
+        .progress-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Timer Styles */
+        .timer-container {
+            display: none;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        body.exam-mode .timer-container {
+            display: block;
+        }
+
+        .timer-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timer-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            letter-spacing: 2px;
+        }
+
+        .timer-display.warning {
+            color: var(--warning);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .timer-display.critical {
+            color: var(--error);
+            animation: pulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .timer-per-question {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .progress-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .progress-stats {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-cyan));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .question-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.1);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background: var(--bg-hover);
+            border-color: var(--text-muted);
+        }
+
+        .option.selected {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 170, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(63, 185, 80, 0.15);
+        }
+
+        .option.incorrect {
+            border-color: var(--error);
+            background: rgba(248, 81, 73, 0.15);
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        .option-marker {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .option.selected .option-marker {
+            border-color: var(--accent-cyan);
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+        }
+
+        .option.correct .option-marker {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .option.incorrect .option-marker {
+            border-color: var(--error);
+            background: var(--error);
+            color: white;
+        }
+
+        .option-text {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .answer-section {
+            display: none;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        .answer-section.visible {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .answer-header svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .explanation {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-orange);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .doc-link:hover {
+            background: rgba(255, 107, 53, 0.2);
+        }
+
+        .doc-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reveal {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-reveal:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-cyan);
+        }
+
+        .btn-reveal:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .results-card {
+            display: none;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .results-card.visible {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        .results-score {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-label {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .pass-fail-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+        }
+
+        .pass-fail-badge.passed {
+            background: rgba(63, 185, 80, 0.15);
+            border: 2px solid var(--success);
+            color: var(--success);
+        }
+
+        .pass-fail-badge.failed {
+            background: rgba(248, 81, 73, 0.15);
+            border: 2px solid var(--error);
+            color: var(--error);
+        }
+
+        .pass-fail-badge svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .pass-threshold {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .results-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-stat {
+            text-align: center;
+        }
+
+        .result-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .result-stat-value.correct {
+            color: var(--success);
+        }
+
+        .result-stat-value.incorrect {
+            color: var(--error);
+        }
+
+        .result-stat-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+
+        footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .question-card {
+                padding: 1.5rem;
+            }
+
+            .results-breakdown {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">AWS Security Specialty</div>
+            <h1>GuardDuty Extended Threat Detection</h1>
+            <p class="subtitle">15 questions to test your knowledge</p>
+            <div class="mode-toggle-container">
+                <button class="mode-btn active" id="learnModeBtn" onclick="setMode('learn')">
+                    📚 Learn Mode
+                </button>
+                <button class="mode-btn" id="examModeBtn" onclick="setMode('exam')">
+                    📝 Exam Mode
+                </button>
+            </div>
+            <p class="mode-description" id="modeDescription">Reveal answers one at a time as you go</p>
+        </header>
+
+        <div class="timer-container" id="timerContainer">
+            <div class="timer-label">⏱️ Time Remaining</div>
+            <div class="timer-display" id="timerDisplay">37:30</div>
+            <div class="timer-per-question">2.5 minutes per question</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <span class="progress-label">Quiz Progress</span>
+                <span class="progress-stats"><span id="answered">0</span> / 15 answered</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div id="questions">
+            <!-- Question 1 -->
+            <div class="question-card" data-question="1" data-answer="B">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <div class="question-text">What is GuardDuty Extended Threat Detection primarily designed to detect?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">Single API call anomalies in real-time</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">Multi-stage attacks that span data sources, resource types, and time</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">Configuration drift in AWS resources</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">Network bandwidth anomalies</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(1)">Show Answer</button>
+                <div class="answer-section" id="answer1">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: B
+                    </div>
+                    <p class="explanation">GuardDuty Extended Threat Detection automatically detects multi-stage attacks that span data sources, multiple types of AWS resources, and time within an AWS account. It correlates multiple events including API activities and GuardDuty findings (called "signals") to identify scenarios that present a potential threat.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card" data-question="2" data-answer="C">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <div class="question-text">What severity level does GuardDuty assign to all attack sequence finding types?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">High</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">Medium to High (varies by attack type)</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">Critical</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">Severity is determined dynamically based on impact</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(2)">Show Answer</button>
+                <div class="answer-section" id="answer2">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: C
+                    </div>
+                    <p class="explanation">Because of the nature of the associated threat scenarios, GuardDuty considers ALL attack sequence finding types as Critical. This reflects the serious nature of multi-stage attacks that typically indicate active compromise.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-attack-sequence-finding-types.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card" data-question="3" data-answer="A">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <div class="question-text">When you enable GuardDuty in a Region, what happens with Extended Threat Detection?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">It is enabled automatically at no additional cost</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">It requires a separate enablement step and additional cost</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">It is only available in specific Regions</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">It requires Enterprise Support tier</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(3)">Show Answer</button>
+                <div class="answer-section" id="answer3">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: A
+                    </div>
+                    <p class="explanation">When you enable Amazon GuardDuty in your account in a specific AWS Region, Extended Threat Detection is also enabled by default. There is no additional cost associated with the usage of Extended Threat Detection.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card" data-question="4" data-answer="D">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <div class="question-text">What does GuardDuty call the individual events it correlates to detect attack sequences?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">Indicators</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">Triggers</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">Events</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">Signals</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(4)">Show Answer</button>
+                <div class="answer-section" id="answer4">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: D
+                    </div>
+                    <p class="explanation">GuardDuty correlates multiple events, including API activities and GuardDuty findings. These events are called "Signals". Some events are termed "weak signals" because, on their own, they don't present a clear potential threat but become significant when correlated with other activities.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card" data-question="5" data-answer="B">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <div class="question-text">Which of the following is NOT one of the attack sequence finding types in GuardDuty?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">AttackSequence:IAM/CompromisedCredentials</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">AttackSequence:Lambda/CompromisedFunction</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">AttackSequence:S3/CompromisedData</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">AttackSequence:EKS/CompromisedCluster</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(5)">Show Answer</button>
+                <div class="answer-section" id="answer5">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: B
+                    </div>
+                    <p class="explanation">The five attack sequence finding types are: AttackSequence:EKS/CompromisedCluster, AttackSequence:ECS/CompromisedCluster, AttackSequence:EC2/CompromisedInstanceGroup, AttackSequence:IAM/CompromisedCredentials, and AttackSequence:S3/CompromisedData. There is no Lambda-specific attack sequence finding type.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-attack-sequence-finding-types.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-card" data-question="6" data-answer="C">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <div class="question-text">What is the rolling time window that GuardDuty uses to identify potential in-progress or recent attack behaviors?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">1 hour</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">12 hours</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">24 hours</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">7 days</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(6)">Show Answer</button>
+                <div class="answer-section" id="answer6">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: C
+                    </div>
+                    <p class="explanation">GuardDuty is designed to identify potential in-progress or recent attack behaviors within a 24-hour rolling time window in your account. This allows detection of attack sequences where different stages may occur over several hours.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-card" data-question="7" data-answer="A">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <div class="question-text">How does Extended Threat Detection handle archived findings (including those from suppression rules)?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">It does not consider archived findings for attack sequence correlation</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">It includes all findings regardless of archive status</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">It considers archived findings only for high-severity attack sequences</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">It reactivates archived findings when part of an attack sequence</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(7)">Show Answer</button>
+                <div class="answer-section" id="answer7">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: A
+                    </div>
+                    <p class="explanation">When correlating events for attack sequences, Extended Threat Detection doesn't consider archived findings, including those that are automatically archived because of suppression rules. This ensures only active, relevant signals contribute to attack sequence detection. You should review existing suppression rules to ensure you're not impacted.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-card" data-question="8" data-answer="D">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <div class="question-text">Which THREE foundational data sources does GuardDuty use for threat detection?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">CloudTrail data events, S3 access logs, CloudWatch Logs</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">CloudTrail management events, ELB access logs, CloudWatch metrics</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">VPC Flow Logs, AWS Config, Security Hub findings</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">CloudTrail management events, VPC Flow Logs, Route53 Resolver DNS query logs</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(8)">Show Answer</button>
+                <div class="answer-section" id="answer8">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: D
+                    </div>
+                    <p class="explanation">GuardDuty's three foundational data sources are: AWS CloudTrail management events (control plane operations), VPC Flow Logs (network traffic metadata), and Route53 Resolver DNS query logs (DNS queries). These are automatically analyzed when GuardDuty is enabled at no additional cost for the data source access.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_data-sources.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-card" data-question="9" data-answer="B">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <div class="question-text">To maximize attack sequence detection for Amazon EKS clusters, which protection plans does AWS recommend enabling?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">Only EKS Protection (audit logs)</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">Both EKS Protection and Runtime Monitoring</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">Only Runtime Monitoring</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">S3 Protection and EKS Protection</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(9)">Show Answer</button>
+                <div class="answer-section" id="answer9">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: B
+                    </div>
+                    <p class="explanation">For maximum coverage and comprehensive threat detection in EKS, GuardDuty recommends enabling both EKS Protection and Runtime Monitoring. EKS Protection monitors control plane activities through audit logs, while Runtime Monitoring observes behaviors within containers. Together, they create a complete view enabling detection of complex attack patterns.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-card" data-question="10" data-answer="C">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <div class="question-text">What is a "weak signal" in GuardDuty Extended Threat Detection?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">A low-confidence finding from an untrusted data source</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">A suppressed finding that has been archived</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">An event that on its own doesn't present a clear potential threat</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">A signal from a Region where GuardDuty has limited coverage</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(10)">Show Answer</button>
+                <div class="answer-section" id="answer10">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: C
+                    </div>
+                    <p class="explanation">Weak signals are events in your environment that, on their own, don't present themselves as a clear potential threat. GuardDuty terms individual API activities as weak signals because they don't present themselves as potential threats in isolation. Extended Threat Detection identifies when a sequence of multiple actions (including weak signals) align to potentially suspicious activity.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="question-card" data-question="11" data-answer="A">
+                <div class="question-header">
+                    <div class="question-number">11</div>
+                    <div class="question-text">In a typical attack scenario detected by Extended Threat Detection, what might be the sequence involving S3 data compromise?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q11" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">Unauthorized access → Privilege escalation → Persistence → Data exfiltration from S3</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">S3 bucket creation → Public access enabled → Data uploaded</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">IAM user created → S3 policy modified → Bucket deleted</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q11" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">CloudTrail disabled → S3 logging disabled → VPC Flow Logs disabled</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(11)">Show Answer</button>
+                <div class="answer-section" id="answer11">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: A
+                    </div>
+                    <p class="explanation">A typical attack sequence involving S3 data compromise would include: a threat actor gaining unauthorized access to a compute workload, then performing actions such as privilege escalation and establishing persistence, and finally exfiltrating data from an Amazon S3 resource. This represents the multi-stage nature of attacks that Extended Threat Detection identifies.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="question-card" data-question="12" data-answer="D">
+                <div class="question-header">
+                    <div class="question-number">12</div>
+                    <div class="question-text">Which data sources does the AttackSequence:ECS/CompromisedCluster finding type use?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q12" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">ECS audit logs and CloudTrail management events only</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">VPC Flow Logs, Route53 DNS logs, and CloudWatch Container Insights</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">EKS audit logs and Runtime Monitoring for ECS</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q12" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">Runtime Monitoring for ECS Fargate, Runtime Monitoring for EC2 in ECS, and Malware Protection for EC2</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(12)">Show Answer</button>
+                <div class="answer-section" id="answer12">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: D
+                    </div>
+                    <p class="explanation">The AttackSequence:ECS/CompromisedCluster finding uses: Runtime Monitoring for Amazon ECS Fargate, Runtime Monitoring for EC2 Instances in Amazon ECS, and GuardDuty Malware Protection for Amazon EC2. These sources detect malicious processes, communications with malicious endpoints, or cryptocurrency mining behaviors in ECS clusters.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-attack-sequence-finding-types.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="question-card" data-question="13" data-answer="B">
+                <div class="question-header">
+                    <div class="question-number">13</div>
+                    <div class="question-text">How does GuardDuty handle CloudTrail Global Service Events (GSE) like IAM and STS?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q13" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">It only processes them in us-east-1</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">It replicates and processes them in each Region where GuardDuty is enabled</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">It ignores them and only uses regional events</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q13" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">It requires a separate configuration to enable GSE processing</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(13)">Show Answer</button>
+                <div class="answer-section" id="answer13">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: B
+                    </div>
+                    <p class="explanation">When GuardDuty consumes CloudTrail Global Service Events (like IAM, STS, S3, CloudFront, Route 53) with security value, it replicates those events and processes them in each Region where you have enabled GuardDuty. This helps maintain user and role profiles in each Region, vital for detecting anomalous events.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_data-sources.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="question-card" data-question="14" data-answer="C">
+                <div class="question-header">
+                    <div class="question-number">14</div>
+                    <div class="question-text">What does the AttackSequence:EC2/CompromisedInstanceGroup finding typically indicate about the affected resources?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q14" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">A single EC2 instance has been compromised</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">All EC2 instances in the account are at risk</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">A group of EC2 instances with similar configurations (like ASG, IAM profile, or VPC) may be compromised</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q14" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">EC2 instances across multiple AWS accounts are affected</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(14)">Show Answer</button>
+                <div class="answer-section" id="answer14">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: C
+                    </div>
+                    <p class="explanation">Instance groups typically represent applications managed through infrastructure-as-code, sharing similar configurations such as Auto-scaling group, IAM instance profile role, AWS CloudFormation stack, Amazon EC2 launch template, AMI or VPC ID. The finding indicates potential compromise across this group of related instances.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-attack-sequence-finding-types.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="question-card" data-question="15" data-answer="A">
+                <div class="question-header">
+                    <div class="question-number">15</div>
+                    <div class="question-text">When EKS Protection detects an attack sequence, which threat scenario can it identify through EKS audit logs?</div>
+                </div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q15" value="A">
+                        <span class="option-marker">A</span>
+                        <span class="option-text">Unauthorized access to cluster secrets, RBAC permission modifications, and privileged pod creation</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="B">
+                        <span class="option-marker">B</span>
+                        <span class="option-text">Container-level cryptomining processes and malicious endpoint connections</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="C">
+                        <span class="option-marker">C</span>
+                        <span class="option-text">S3 bucket exfiltration from within pods</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q15" value="D">
+                        <span class="option-marker">D</span>
+                        <span class="option-text">VPC security group modifications by pods</span>
+                    </label>
+                </div>
+                <button class="btn btn-reveal" onclick="revealAnswer(15)">Show Answer</button>
+                <div class="answer-section" id="answer15">
+                    <div class="answer-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Correct Answer: A
+                    </div>
+                    <p class="explanation">EKS Protection through audit logs allows GuardDuty to correlate EKS audit logs and AWS API activity. It can detect attack sequences where an actor attempts unauthorized access to cluster secrets, modifies Kubernetes role-based access control (RBAC) permissions, and creates privileged pods. Container-level behaviors like cryptomining are detected by Runtime Monitoring instead.</p>
+                    <a href="https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html" target="_blank" class="doc-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        View AWS Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="submit-container" id="submitContainer">
+            <button class="btn-submit" id="submitBtn" onclick="submitExam()">Submit Quiz</button>
+            <p class="unanswered-warning" id="unansweredWarning">
+                ⚠️ You have <span id="unansweredCount">0</span> unanswered questions
+            </p>
+        </div>
+
+        <div class="results-card" id="resultsCard">
+            <div class="results-score"><span id="finalScore">0</span>%</div>
+            <div class="results-label">Quiz Complete!</div>
+            <div class="pass-fail-badge" id="passFailBadge">
+                <svg id="passFailIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"></svg>
+                <span id="passFailText">PASS</span>
+            </div>
+            <div class="pass-threshold">Pass threshold: 80%</div>
+            <div class="results-breakdown">
+                <div class="result-stat">
+                    <div class="result-stat-value correct" id="correctCount">0</div>
+                    <div class="result-stat-label">Correct</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value incorrect" id="incorrectCount">0</div>
+                    <div class="result-stat-label">Incorrect</div>
+                </div>
+            </div>
+            <button class="btn btn-restart" onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+
+        <footer>
+            <p>AWS Security Specialty Exam Preparation | 
+               <a href="https://docs.aws.amazon.com/guardduty/latest/ug/" target="_blank">GuardDuty Documentation</a>
+            </p>
+            <p style="margin-top: 0.5rem;">Created: January 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        let answeredQuestions = new Set();
+        let correctAnswers = 0;
+        const totalQuestions = 15;
+        let currentMode = 'learn';
+        let selectedAnswers = {}; // Track selections in exam mode
+        
+        // Timer variables
+        let timerInterval = null;
+        let timeRemaining = 0;
+        const MINUTES_PER_QUESTION = 2.5;
+
+        // Timer functions
+        function startTimer() {
+            timeRemaining = totalQuestions * MINUTES_PER_QUESTION * 60; // Convert to seconds
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    stopTimer();
+                    alert('⏰ Time is up! Your quiz will be submitted automatically.');
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            const timerEl = document.getElementById('timerDisplay');
+            timerEl.textContent = display;
+            
+            // Warning states
+            const totalTime = totalQuestions * MINUTES_PER_QUESTION * 60;
+            const percentRemaining = (timeRemaining / totalTime) * 100;
+            
+            timerEl.classList.remove('warning', 'critical');
+            if (percentRemaining <= 10) {
+                timerEl.classList.add('critical');
+            } else if (percentRemaining <= 25) {
+                timerEl.classList.add('warning');
+            }
+        }
+
+        // Shuffle functions
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function shuffleQuiz() {
+            const questionsContainer = document.getElementById('questions');
+            const questionCards = Array.from(questionsContainer.querySelectorAll('.question-card'));
+            
+            // Shuffle question order
+            const shuffledCards = shuffleArray(questionCards);
+            
+            // Clear and re-append in new order
+            questionsContainer.innerHTML = '';
+            shuffledCards.forEach((card, index) => {
+                const newQuestionNum = index + 1;
+                const oldQuestionNum = card.dataset.question;
+                
+                // Update question number display and data attribute
+                card.querySelector('.question-number').textContent = newQuestionNum;
+                card.dataset.question = newQuestionNum;
+                
+                // Update radio input names to match new question number
+                card.querySelectorAll('input[type="radio"]').forEach(input => {
+                    input.name = `q${newQuestionNum}`;
+                });
+                
+                // Update answer section ID
+                const answerSection = card.querySelector('.answer-section');
+                if (answerSection) {
+                    answerSection.id = `answer${newQuestionNum}`;
+                }
+                
+                // Update reveal button onclick
+                const revealBtn = card.querySelector('.btn-reveal');
+                if (revealBtn) {
+                    revealBtn.setAttribute('onclick', `revealAnswer(${newQuestionNum})`);
+                }
+                
+                // Shuffle options within the question
+                const optionsContainer = card.querySelector('.options');
+                const options = Array.from(optionsContainer.querySelectorAll('.option'));
+                const shuffledOptions = shuffleArray(options);
+                
+                // First, find which letter is currently the correct answer
+                const originalCorrectLetter = card.dataset.answer;
+                let newCorrectLetter = null;
+                
+                // Update option letters and re-append
+                const letters = ['A', 'B', 'C', 'D'];
+                optionsContainer.innerHTML = '';
+                shuffledOptions.forEach((option, optIndex) => {
+                    const input = option.querySelector('input[type="radio"]');
+                    const oldValue = input.value;
+                    const newLetter = letters[optIndex];
+                    
+                    // Update marker text
+                    option.querySelector('.option-marker').textContent = newLetter;
+                    
+                    // Update input value
+                    input.value = newLetter;
+                    
+                    // Track if this was the correct answer
+                    if (oldValue === originalCorrectLetter) {
+                        newCorrectLetter = newLetter;
+                    }
+                    
+                    optionsContainer.appendChild(option);
+                });
+                
+                // Update the correct answer on the card
+                if (newCorrectLetter) {
+                    card.dataset.answer = newCorrectLetter;
+                    
+                    // Also update the answer explanation text
+                    const answerHeaderDisplay = card.querySelector('.answer-header');
+                    if (answerHeaderDisplay) {
+                        answerHeaderDisplay.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Correct Answer: ${newCorrectLetter}`;
+                    }
+                }
+                
+                questionsContainer.appendChild(card);
+            });
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Stop any existing timer
+            stopTimer();
+            
+            // Update UI
+            document.getElementById('learnModeBtn').classList.toggle('active', mode === 'learn');
+            document.getElementById('examModeBtn').classList.toggle('active', mode === 'exam');
+            document.body.classList.toggle('exam-mode', mode === 'exam');
+            
+            // Update description
+            const desc = document.getElementById('modeDescription');
+            if (mode === 'learn') {
+                desc.textContent = 'Reveal answers one at a time as you go';
+            } else {
+                desc.textContent = 'Answer all questions, then submit to see your score';
+            }
+            
+            // Reset quiz when switching modes
+            restartQuiz();
+            
+            // Start timer in exam mode
+            if (mode === 'exam') {
+                startTimer();
+            }
+        }
+
+        function updateExamProgress() {
+            // Count how many questions have a selection
+            let answered = 0;
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) answered++;
+            }
+            
+            document.getElementById('answered').textContent = answered;
+            document.getElementById('progressFill').style.width = `${(answered / totalQuestions) * 100}%`;
+            
+            // Update unanswered warning
+            const unanswered = totalQuestions - answered;
+            document.getElementById('unansweredCount').textContent = unanswered;
+            document.getElementById('unansweredWarning').classList.toggle('visible', unanswered > 0);
+        }
+
+        function submitExam() {
+            // Stop the timer
+            stopTimer();
+            
+            // Count answered
+            let answered = 0;
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) answered++;
+            }
+            
+            // If not all answered, confirm (skip if auto-submitted due to time)
+            if (answered < totalQuestions && timeRemaining > 0) {
+                if (!confirm(`You have ${totalQuestions - answered} unanswered questions. Submit anyway?`)) {
+                    // Restart timer if they cancel
+                    startTimer();
+                    return;
+                }
+            }
+            
+            // Grade all questions
+            correctAnswers = 0;
+            answeredQuestions.clear();
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const card = document.querySelector(`[data-question="${i}"]`);
+                const correctAnswer = card.dataset.answer;
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                const answerSection = document.getElementById(`answer${i}`);
+                
+                // Disable inputs
+                card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true);
+                
+                if (selectedOption) {
+                    answeredQuestions.add(i);
+                    const selectedValue = selectedOption.value;
+                    const selectedLabel = selectedOption.closest('.option');
+                    
+                    if (selectedValue === correctAnswer) {
+                        selectedLabel.classList.add('correct');
+                        correctAnswers++;
+                    } else {
+                        selectedLabel.classList.add('incorrect');
+                        card.querySelector(`input[value="${correctAnswer}"]`).closest('.option').classList.add('correct');
+                    }
+                } else {
+                    // Mark correct answer even if not answered
+                    card.querySelector(`input[value="${correctAnswer}"]`).closest('.option').classList.add('correct');
+                }
+                
+                // Show answer section
+                answerSection.classList.add('visible');
+            }
+            
+            // Hide submit button
+            document.getElementById('submitContainer').classList.add('hidden');
+            
+            // Show results
+            showResults();
+        }
+
+        function revealAnswer(questionNum) {
+            const card = document.querySelector(`[data-question="${questionNum}"]`);
+            const correctAnswer = card.dataset.answer;
+            const selectedOption = card.querySelector(`input[name="q${questionNum}"]:checked`);
+            const answerSection = document.getElementById(`answer${questionNum}`);
+            const btn = card.querySelector('.btn-reveal');
+
+            if (!selectedOption) {
+                // Flash the options to indicate selection needed
+                card.querySelectorAll('.option').forEach(opt => {
+                    opt.style.animation = 'shake 0.3s ease';
+                    setTimeout(() => opt.style.animation = '', 300);
+                });
+                return;
+            }
+
+            // Disable further changes
+            card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true);
+            btn.disabled = true;
+            btn.textContent = 'Answer Revealed';
+
+            const selectedValue = selectedOption.value;
+            const selectedLabel = selectedOption.closest('.option');
+
+            // Mark correct/incorrect
+            if (selectedValue === correctAnswer) {
+                selectedLabel.classList.add('correct');
+                if (!answeredQuestions.has(questionNum)) {
+                    correctAnswers++;
+                }
+            } else {
+                selectedLabel.classList.add('incorrect');
+                // Highlight the correct answer
+                card.querySelector(`input[value="${correctAnswer}"]`).closest('.option').classList.add('correct');
+            }
+
+            // Track answered questions
+            if (!answeredQuestions.has(questionNum)) {
+                answeredQuestions.add(questionNum);
+                updateProgress();
+            }
+
+            // Show answer section
+            answerSection.classList.add('visible');
+
+            // Check if quiz is complete
+            if (answeredQuestions.size === totalQuestions) {
+                showResults();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (answeredQuestions.size / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('answered').textContent = answeredQuestions.size;
+        }
+
+        function showResults() {
+            const resultsCard = document.getElementById('resultsCard');
+            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            const passed = score >= 80;
+            
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('correctCount').textContent = correctAnswers;
+            document.getElementById('incorrectCount').textContent = totalQuestions - correctAnswers;
+            
+            // Set pass/fail badge
+            const badge = document.getElementById('passFailBadge');
+            const icon = document.getElementById('passFailIcon');
+            const text = document.getElementById('passFailText');
+            
+            if (passed) {
+                badge.className = 'pass-fail-badge passed';
+                icon.innerHTML = '<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+                text.textContent = 'PASSED';
+            } else {
+                badge.className = 'pass-fail-badge failed';
+                icon.innerHTML = '<path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+                text.textContent = 'NOT PASSED';
+            }
+            
+            resultsCard.classList.add('visible');
+            resultsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function restartQuiz() {
+            // Stop any existing timer
+            stopTimer();
+            
+            answeredQuestions.clear();
+            correctAnswers = 0;
+
+            // Reset all questions
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.querySelectorAll('input[type="radio"]').forEach(input => {
+                    input.disabled = false;
+                    input.checked = false;
+                });
+                card.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                const btn = card.querySelector('.btn-reveal');
+                btn.disabled = false;
+                btn.textContent = 'Show Answer';
+            });
+
+            // Hide answer sections
+            document.querySelectorAll('.answer-section').forEach(section => {
+                section.classList.remove('visible');
+            });
+
+            // Hide results
+            document.getElementById('resultsCard').classList.remove('visible');
+
+            // Reset submit container (show it again in exam mode)
+            document.getElementById('submitContainer').classList.remove('hidden');
+            document.getElementById('unansweredWarning').classList.remove('visible');
+
+            // Shuffle questions and options for fresh experience
+            shuffleQuiz();
+            
+            // Re-attach click handlers after shuffle
+            attachOptionHandlers();
+
+            // Reset progress
+            updateProgress();
+            
+            // Handle exam mode specifics
+            if (currentMode === 'exam') {
+                updateExamProgress();
+                startTimer();
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Function to attach click handlers for option selection
+        function attachOptionHandlers() {
+            document.querySelectorAll('.option').forEach(option => {
+                // Remove existing listener to prevent duplicates
+                option.replaceWith(option.cloneNode(true));
+            });
+            
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const input = this.querySelector('input[type="radio"]');
+                    if (input.disabled) return;
+                    
+                    // Remove selected class from siblings
+                    this.closest('.options').querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class
+                    this.classList.add('selected');
+                    input.checked = true;
+                    
+                    // Update progress in exam mode
+                    if (currentMode === 'exam') {
+                        updateExamProgress();
+                    }
+                });
+            });
+        }
+        
+        // Initial setup
+        attachOptionHandlers();
+    </script>
+</body>
+</html>
