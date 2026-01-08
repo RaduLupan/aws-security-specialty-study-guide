@@ -16,6 +16,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 
 | Quiz | Topic | Questions | Domain |
 |------|-------|-----------|--------|
+| [guardduty-comprehensive.html](./guardduty-comprehensive.html) | **Amazon GuardDuty (All Topics)** | 25 | Domain 1 |
 | [guardduty-extended-threat-detection.html](./guardduty-extended-threat-detection.html) | GuardDuty Extended Threat Detection | 15 | Domain 1 |
 
 ## How to Use
