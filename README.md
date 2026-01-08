@@ -37,6 +37,8 @@ This repository contains curated study materials, interactive quizzes, and resou
 | 2023 | ✅ First Recertification | SCS-C01 |
 | 2026 | 🎯 Second Recertification | SCS-C03 |
 
+> 💡 Fun fact: Skipped SCS-C02 entirely! C02 was only active from ~2024 to December 2025.
+
 > 💡 See [archive/](./archive/) for previous years' study guides.
 
 ---
