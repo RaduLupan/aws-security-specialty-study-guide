@@ -42,6 +42,12 @@ This domain covers logging, monitoring, and analysis of security-related data in
 - KMS key with cross-account access
 - SNS topic for notifications
 
+### Key Documentation Links
+
+- [Logging and monitoring in AWS Audit Manager](https://docs.aws.amazon.com/audit-manager/latest/userguide/security-logging-and-monitoring.html)
+- CloudTrail Lake for querying events
+- Organization trails for multi-account logging
+
 📖 **Documentation**: [CloudTrail User Guide](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/)
 
 ---
@@ -69,6 +75,19 @@ This domain covers logging, monitoring, and analysis of security-related data in
 - Monitor IAM policy changes
 
 📖 **Documentation**: [CloudWatch User Guide](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/)
+
+---
+
+## 🛡️ AWS Security Hub (also in Domain 1)
+
+### Key Documentation Links
+
+- [Using Security Hub for vulnerability management](https://docs.aws.amazon.com/prescriptive-guidance/latest/vulnerability-management/aws-security-hub.html)
+- [Exposure findings in Security Hub](https://docs.aws.amazon.com/securityhub/latest/userguide/exposure-findings.html)
+- [Compliance validation for Security Hub](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-compliance.html)
+- [Creating and updating findings](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings.html)
+
+📖 **Documentation**: [Security Hub User Guide](https://docs.aws.amazon.com/securityhub/latest/userguide/)
 
 ---
 
@@ -112,6 +131,12 @@ This domain covers logging, monitoring, and analysis of security-related data in
 
 - Cross-account/cross-region aggregation
 - View compliance across organization
+
+### Key Documentation Links
+
+- [What Is AWS Config?](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html)
+- [Conformance Packs](https://docs.aws.amazon.com/config/latest/developerguide/conformance-packs.html)
+- [Components of an AWS Config Rule](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_components.html)
 
 📖 **Documentation**: [AWS Config User Guide](https://docs.aws.amazon.com/config/latest/developerguide/)
 

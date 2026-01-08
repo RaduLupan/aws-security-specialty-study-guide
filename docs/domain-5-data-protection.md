@@ -65,6 +65,14 @@ This domain covers encryption, key management, and data security in AWS.
 - **On-demand rotation**: Manual rotation
 - Old key material retained for decryption
 
+### Key Documentation Links
+
+- [AWS KMS best practices - Introduction](https://docs.aws.amazon.com/prescriptive-guidance/latest/aws-kms-best-practices/introduction.html)
+- [Key management best practices](https://docs.aws.amazon.com/prescriptive-guidance/latest/aws-kms-best-practices/key-management.html)
+- [AWS KMS keys concepts](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
+- [Create symmetric encryption KMS key](https://docs.aws.amazon.com/kms/latest/developerguide/create-symmetric-cmk.html)
+- [Best practices for KMS grants](https://docs.aws.amazon.com/kms/latest/developerguide/grant-best-practices.html)
+
 📖 **Documentation**: [KMS Developer Guide](https://docs.aws.amazon.com/kms/latest/developerguide/)
 
 ---
@@ -105,6 +113,14 @@ This domain covers encryption, key management, and data security in AWS.
 2. **setSecret**: Update database credentials
 3. **testSecret**: Verify new credentials work
 4. **finishSecret**: Move AWSPENDING to AWSCURRENT
+
+### Key Documentation Links
+
+- [What is AWS Secrets Manager?](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
+- [Rotate Secrets Manager secrets](https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html)
+- [Rotate external secrets](https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotate-secrets_external.html)
+- [Secrets in Lambda functions](https://docs.aws.amazon.com/secretsmanager/latest/userguide/retrieving-secrets_lambda.html)
+- [Manage credentials pattern](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/manage-credentials-using-aws-secrets-manager.html)
 
 📖 **Documentation**: [Secrets Manager User Guide](https://docs.aws.amazon.com/secretsmanager/latest/userguide/)
 

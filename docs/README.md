@@ -2,6 +2,30 @@
 
 Detailed study materials organized by exam domain.
 
+---
+
+## 🔗 Quick Reference Links
+
+### Official Exam Resources
+
+| Resource | Link |
+|----------|------|
+| **Exam Guide (PDF)** | [AWS Certified Security - Specialty](https://aws.amazon.com/certification/certified-security-specialty/) |
+| **AWS Skill Builder** | [Security Learning Path](https://skillbuilder.aws/) |
+| **Sample Questions** | [AWS Certification Page](https://aws.amazon.com/certification/certified-security-specialty/) |
+
+### AWS Whitepapers (Must Read)
+
+| Whitepaper | Description |
+|------------|-------------|
+| [Security Pillar](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html) | Well-Architected Framework Security Pillar |
+| [Incident Response Guide](https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/introduction.html) | AWS Security Incident Response procedures |
+| [Introduction to AWS Security](https://docs.aws.amazon.com/whitepapers/latest/introduction-aws-security/welcome.html) | Security fundamentals and overview |
+| [KMS Best Practices](https://docs.aws.amazon.com/prescriptive-guidance/latest/aws-kms-best-practices/introduction.html) | Key management best practices |
+| [AWS CAF Security Perspective](https://docs.aws.amazon.com/whitepapers/latest/aws-caf-security-perspective/further-reading.html) | Cloud Adoption Framework security guidance |
+
+---
+
 ## Exam Domains
 
 | Domain | Weight | Study Guide | Status |

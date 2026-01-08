@@ -45,6 +45,13 @@ This domain covers network security, edge protection, and compute security in AW
 - **Peering**: 1-to-1, non-transitive
 - **Transit Gateway**: Hub-and-spoke, transitive routing
 
+### Key Documentation Links
+
+- [Control subnet traffic with NACLs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)
+- [Security best practices for VPC](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
+- [Infrastructure security in VPC](https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html)
+- [VPC Sharing](https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/amazon-vpc-sharing.html)
+
 📖 **Documentation**: [VPC Security Best Practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
 
 ---
@@ -94,6 +101,14 @@ This domain covers network security, edge protection, and compute security in AW
 - 24/7 DDoS Response Team (DRT)
 - Advanced metrics and reporting
 - WAF included at no additional cost
+
+### Key Documentation Links (WAF & Shield)
+
+- [How AWS Shield works](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-overview.html)
+- [Manually mitigating application layer DDoS](https://docs.aws.amazon.com/waf/latest/developerguide/ddos-responding-manual.html)
+- [Resource-level DDoS protection for ALB](https://docs.aws.amazon.com/waf/latest/developerguide/waf-anti-ddos-alb.html)
+- [Advanced Anti-DDoS with WAF managed rules](https://docs.aws.amazon.com/waf/latest/developerguide/waf-anti-ddos-advanced.html)
+- [Automatic app layer DDoS mitigation](https://docs.aws.amazon.com/waf/latest/developerguide/shield-policies-auto-app-layer-mitigation.html)
 
 📖 **Documentation**: [AWS Shield User Guide](https://docs.aws.amazon.com/waf/latest/developerguide/shield-chapter.html)
 

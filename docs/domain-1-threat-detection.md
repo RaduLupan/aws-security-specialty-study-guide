@@ -43,6 +43,12 @@ This domain covers threat detection services, incident response procedures, and 
 - Triggered by specific GuardDuty findings
 - Creates snapshot, scans, then deletes snapshot
 
+### Key Documentation Links
+
+- [GuardDuty Extended Threat Detection](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html)
+- [Working with GuardDuty in Network Firewall](https://docs.aws.amazon.com/network-firewall/latest/developerguide/nwfw-atd-guardduty-use-case.html)
+- [Detect threats with GuardDuty (Secrets Manager)](https://docs.aws.amazon.com/secretsmanager/latest/userguide/monitoring-guardduty.html)
+
 📖 **Documentation**: [GuardDuty User Guide](https://docs.aws.amazon.com/guardduty/latest/ug/)
 
 ---
@@ -99,6 +105,11 @@ This domain covers threat detection services, incident response procedures, and 
 5. **Tag** - mark as compromised
 6. **Investigate** - use Detective, CloudTrail, VPC Flow Logs
 
+### Key Documentation Links
+
+- [AWS Security Incident Response Guide - Introduction](https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/introduction.html)
+- [Threat Detection - AWS CAF Security Perspective](https://docs.aws.amazon.com/whitepapers/latest/aws-caf-security-perspective/threat-detection.html)
+
 📖 **Documentation**: [AWS Security Incident Response Guide](https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/)
 
 ---
@@ -112,7 +123,8 @@ This domain covers threat detection services, incident response procedures, and 
 
 ## 🎮 Practice Quizzes
 
-- [GuardDuty Extended Threat Detection Quiz](../quizzes/guardduty-extended-threat-detection.html)
+- [Amazon GuardDuty Comprehensive Quiz](../quizzes/guardduty-comprehensive.html) (25 questions)
+- [GuardDuty Extended Threat Detection Quiz](../quizzes/guardduty-extended-threat-detection.html) (15 questions)
 
 ---
 

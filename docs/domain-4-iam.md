@@ -52,6 +52,14 @@ This domain covers identity management, access control, and federation in AWS.
 - Rotate credentials regularly
 - Remove unused credentials
 
+### Key Documentation Links
+
+- [Security best practices and use cases in IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices-use-cases.html)
+- [Security best practices in IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+- [IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html)
+- [What is IAM?](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+- [IAM roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html)
+
 📖 **Documentation**: [IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 
 ---
@@ -80,6 +88,13 @@ This domain covers identity management, access control, and federation in AWS.
   }
 }
 ```
+
+### Key Documentation Links
+
+- [Service Control Policies (SCPs)](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+- [SCP examples](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_examples.html)
+- [Management policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_management_policies.html)
+- [Choosing an AWS cloud governance service](https://docs.aws.amazon.com/decision-guides/latest/cloud-governance-on-aws-how-to-choose/cloud-governance-on-aws-how-to-choose.html)
 
 📖 **Documentation**: [SCPs User Guide](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
 

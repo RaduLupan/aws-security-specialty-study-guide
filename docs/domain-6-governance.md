@@ -44,6 +44,14 @@ This domain covers security governance, compliance, and multi-account strategies
 - **Log Archive Account**: Centralized logging
 - **Audit Account**: Cross-account security access
 
+### Key Documentation Links
+
+- [Security Pillar - Welcome](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html)
+- [Security overview in Well-Architected](https://docs.aws.amazon.com/wellarchitected/latest/framework/security.html)
+- [Well-Architected Framework overview](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
+- [Introduction to AWS Security](https://docs.aws.amazon.com/whitepapers/latest/introduction-aws-security/welcome.html)
+- [Security and Compliance overview](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/security-and-compliance.html)
+
 📖 **Documentation**: [Control Tower User Guide](https://docs.aws.amazon.com/controltower/latest/userguide/)
 
 ---
