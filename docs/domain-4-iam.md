@@ -1,6 +1,7 @@
-# Domain 4: Identity & Access Management (16%)
+# Domain 4: Identity & Access Management (20%)
 
-> 🚧 **Status:** In Progress
+> 🚧 **Status:** In Progress  
+> **SCS-C03 Update:** This is now the highest weighted domain at 20% (was 16% in SCS-C02)
 
 ## Overview
 
@@ -102,7 +103,7 @@ This domain covers identity management, access control, and federation in AWS.
 
 ## 🔐 IAM Identity Center (AWS SSO)
 
-### What You Need to Know (Renamed for SCS-C02)
+### What You Need to Know
 
 - **Centralized access** to multiple AWS accounts
 - **Identity sources**: Identity Center directory, AD Connector, external IdP
@@ -185,4 +186,4 @@ This domain covers identity management, access control, and federation in AWS.
 
 ---
 
-*Last updated: January 2026*
+*Last updated: January 2026 (SCS-C03)*

@@ -14,6 +14,7 @@ This folder contains study guides from previous certification attempts.
 These guides are preserved for historical reference. The exam has evolved:
 
 - **SCS-C01** (2018-2024): Original exam version
-- **SCS-C02** (2024-present): Current version with updated content
+- **SCS-C02** (2024-2025): Added new services like GuardDuty Malware Protection, Verified Access
+- **SCS-C03** (December 2, 2025-present): Current version with restructured domains and new GenAI content
 
 For the latest study materials, see the main [README](../README.md).

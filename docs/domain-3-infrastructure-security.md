@@ -1,4 +1,4 @@
-# Domain 3: Infrastructure Security (20%)
+# Domain 3: Infrastructure Security (18%)
 
 > 🚧 **Status:** In Progress
 
@@ -116,7 +116,7 @@ This domain covers network security, edge protection, and compute security in AW
 
 ## 🔥 AWS Network Firewall
 
-### What You Need to Know (Emphasized in SCS-C02)
+### What You Need to Know
 
 - **Managed service** - scales automatically
 - **Stateful and stateless** rule groups
@@ -147,7 +147,7 @@ This domain covers network security, edge protection, and compute security in AW
 
 ---
 
-## 🔐 AWS Verified Access (NEW for SCS-C02)
+## 🔐 AWS Verified Access
 
 ### What You Need to Know
 
@@ -179,4 +179,4 @@ This domain covers network security, edge protection, and compute security in AW
 
 ---
 
-*Last updated: January 2026*
+*Last updated: January 2026 (SCS-C03)*

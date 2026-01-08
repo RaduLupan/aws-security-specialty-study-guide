@@ -1,18 +1,19 @@
-# 📚 Domain Study Guides
+# 📚 Domain Study Guides (SCS-C03)
 
-Detailed study materials organized by exam domain.
+Detailed study materials organized by exam domain for the **SCS-C03 exam** (effective December 2, 2025).
 
 ---
 
 ## 🔗 Quick Reference Links
 
-### Official Exam Resources
+### Official Exam Resources (SCS-C03)
 
 | Resource | Link |
 |----------|------|
-| **Exam Guide (PDF)** | [AWS Certified Security - Specialty](https://aws.amazon.com/certification/certified-security-specialty/) |
-| **AWS Skill Builder** | [Security Learning Path](https://skillbuilder.aws/) |
-| **Sample Questions** | [AWS Certification Page](https://aws.amazon.com/certification/certified-security-specialty/) |
+| **Exam Guide (SCS-C03)** | [AWS Exam Guide](https://docs.aws.amazon.com/aws-certification/latest/examguides/security-specialty-03.html) |
+| **AWS Skill Builder** | [Exam Prep Plan](https://skillbuilder.aws/category/exam-prep/security-specialty-scs-c03) |
+| **SCS-C02 vs SCS-C03** | [Comparison Guide](https://docs.aws.amazon.com/aws-certification/latest/examguides/security-specialty-03-appendix-b.html) |
+| **AWS Certification Page** | [Schedule Exam](https://aws.amazon.com/certification/certified-security-specialty/) |
 
 ### AWS Whitepapers (Must Read)
 
@@ -26,27 +27,27 @@ Detailed study materials organized by exam domain.
 
 ---
 
-## Exam Domains
+## Exam Domains (SCS-C03)
 
 | Domain | Weight | Study Guide | Status |
 |--------|--------|-------------|--------|
-| 1. Threat Detection & Incident Response | 14% | [domain-1-threat-detection.md](./domain-1-threat-detection.md) | 🚧 In Progress |
-| 2. Security Logging & Monitoring | 18% | [domain-2-logging-monitoring.md](./domain-2-logging-monitoring.md) | 🚧 In Progress |
-| 3. Infrastructure Security | 20% | [domain-3-infrastructure-security.md](./domain-3-infrastructure-security.md) | 🚧 In Progress |
-| 4. Identity & Access Management | 16% | [domain-4-iam.md](./domain-4-iam.md) | 🚧 In Progress |
+| 1. Detection | 16% | [domain-1-detection.md](./domain-1-detection.md) | 🚧 In Progress |
+| 2. Incident Response | 14% | [domain-2-incident-response.md](./domain-2-incident-response.md) | 🚧 In Progress |
+| 3. Infrastructure Security | 18% | [domain-3-infrastructure-security.md](./domain-3-infrastructure-security.md) | 🚧 In Progress |
+| 4. Identity & Access Management | 20% | [domain-4-iam.md](./domain-4-iam.md) | 🚧 In Progress |
 | 5. Data Protection | 18% | [domain-5-data-protection.md](./domain-5-data-protection.md) | 🚧 In Progress |
-| 6. Management & Security Governance | 14% | [domain-6-governance.md](./domain-6-governance.md) | 🚧 In Progress |
+| 6. Security Foundations & Governance | 14% | [domain-6-governance.md](./domain-6-governance.md) | 🚧 In Progress |
 
-## Study Order Recommendation
+## Study Order Recommendation (SCS-C03)
 
-Based on exam weights and topic dependencies:
+Based on updated exam weights and topic dependencies:
 
-1. **Domain 3** (20%) - Infrastructure Security forms the foundation
-2. **Domain 2** (18%) - Logging & Monitoring is essential for all security
+1. **Domain 4** (20%) - IAM is now the highest weighted domain!
+2. **Domain 3** (18%) - Infrastructure Security forms the foundation
 3. **Domain 5** (18%) - Data Protection applies across all services
-4. **Domain 4** (16%) - IAM is central to everything in AWS
-5. **Domain 1** (14%) - Threat Detection builds on the above
-6. **Domain 6** (14%) - Governance ties everything together
+4. **Domain 1** (16%) - Detection (monitoring, logging, alerting)
+5. **Domain 2** (14%) - Incident Response (separate from Detection now)
+6. **Domain 6** (14%) - Security Foundations & Governance ties everything together
 
 ## How to Use These Guides
 

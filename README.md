@@ -3,12 +3,12 @@
 <div align="center">
 
 ![AWS Security Specialty](https://img.shields.io/badge/AWS-Security%20Specialty-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Exam Code](https://img.shields.io/badge/Exam-SCS--C02-232F3E?style=for-the-badge)
+![Exam Code](https://img.shields.io/badge/Exam-SCS--C03-232F3E?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Stars](https://img.shields.io/github/stars/RaduLupan/aws-security-specialty-study-guide?style=for-the-badge)
 ![Forks](https://img.shields.io/github/forks/RaduLupan/aws-security-specialty-study-guide?style=for-the-badge)
 
-**A comprehensive, community-driven study guide for the AWS Certified Security - Specialty exam**
+**A comprehensive, community-driven study guide for the AWS Certified Security - Specialty exam (SCS-C03)**
 
 [📚 Study Materials](#-study-materials) • [🎮 Practice Quizzes](#-practice-quizzes) • [📺 Video Resources](#-video-resources) • [🤝 Contributing](#-contributing)
 
@@ -18,12 +18,12 @@
 
 ## 📋 About This Guide
 
-This repository contains curated study materials, interactive quizzes, and resources for the **AWS Certified Security - Specialty (SCS-C02)** certification exam.
+This repository contains curated study materials, interactive quizzes, and resources for the **AWS Certified Security - Specialty (SCS-C03)** certification exam.
 
 | Attribute | Details |
 |-----------|---------|
-| **Exam Code** | SCS-C02 |
-| **Format** | 65 questions (multiple choice & multiple response) |
+| **Exam Code** | SCS-C03 (effective December 2, 2025) |
+| **Format** | 65 questions (multiple choice, multiple response, ordering, matching) |
 | **Duration** | 170 minutes |
 | **Passing Score** | 750/1000 |
 | **Cost** | $300 USD |
@@ -35,45 +35,46 @@ This repository contains curated study materials, interactive quizzes, and resou
 |------|--------|--------------|
 | 2020 | ✅ Initial Certification | SCS-C01 |
 | 2023 | ✅ First Recertification | SCS-C01 |
-| 2026 | 🎯 Second Recertification | SCS-C02 |
+| 2026 | 🎯 Second Recertification | SCS-C03 |
 
 > 💡 See [archive/](./archive/) for previous years' study guides.
 
 ---
 
-## 🎯 Exam Domains
+## 🎯 Exam Domains (SCS-C03)
 
-The SCS-C02 exam covers six domains:
+The SCS-C03 exam covers six domains with updated weights:
 
 | Domain | Weight | Key Topics |
 |--------|--------|------------|
-| **1. Threat Detection & Incident Response** | 14% | GuardDuty, Security Hub, Detective, Incident Response |
-| **2. Security Logging & Monitoring** | 18% | CloudTrail, CloudWatch, VPC Flow Logs, Config |
-| **3. Infrastructure Security** | 20% | VPC, WAF, Shield, Network Firewall, Security Groups |
-| **4. Identity & Access Management** | 16% | IAM, Organizations, SCPs, Federation, Identity Center |
+| **1. Detection** | 16% | GuardDuty, Security Hub, CloudTrail, CloudWatch, VPC Flow Logs |
+| **2. Incident Response** | 14% | Incident Response Plans, Security Events, Forensics |
+| **3. Infrastructure Security** | 18% | VPC, WAF, Shield, Network Firewall, Compute Security |
+| **4. Identity & Access Management** | 20% | IAM, Organizations, SCPs, Federation, Identity Center |
 | **5. Data Protection** | 18% | KMS, Secrets Manager, ACM, Macie, Encryption |
-| **6. Management & Security Governance** | 14% | Control Tower, Organizations, Compliance, Audit |
+| **6. Security Foundations & Governance** | 14% | Control Tower, Organizations, Compliance, Audit |
 
 ---
 
 ## 📚 Study Materials
 
-### Official AWS Resources
+### Official AWS Resources (SCS-C03)
 
-- 📄 [Exam Guide (PDF)](https://d1.awsstatic.com/training-and-certification/docs-security-spec/AWS-Certified-Security-Specialty_Exam-Guide.pdf)
-- 📝 [Sample Questions](https://d1.awsstatic.com/training-and-certification/docs-security-spec/AWS-Certified-Security-Speciality_Sample-Questions.pdf)
-- 🎓 [AWS Skill Builder](https://explore.skillbuilder.aws/learn/course/14297/aws-certified-security-specialty-official-practice-question-set-scs-c02-english)
+- 📄 [Exam Guide (SCS-C03)](https://docs.aws.amazon.com/aws-certification/latest/examguides/security-specialty-03.html)
+- 🎓 [AWS Skill Builder Exam Prep Plan](https://skillbuilder.aws/category/exam-prep/security-specialty-scs-c03)
+- 🔄 [Comparison: SCS-C02 vs SCS-C03](https://docs.aws.amazon.com/aws-certification/latest/examguides/security-specialty-03-appendix-b.html)
+- 🌐 [AWS Certification Page](https://aws.amazon.com/certification/certified-security-specialty/)
 
-### Domain-Specific Study Guides
+### Domain-Specific Study Guides (SCS-C03)
 
 | Domain | Study Guide | Status |
 |--------|-------------|--------|
-| Domain 1 | [Threat Detection & Incident Response](./docs/domain-1-threat-detection.md) | 🚧 In Progress |
-| Domain 2 | [Security Logging & Monitoring](./docs/domain-2-logging-monitoring.md) | 🚧 In Progress |
+| Domain 1 | [Detection](./docs/domain-1-detection.md) | 🚧 In Progress |
+| Domain 2 | [Incident Response](./docs/domain-2-incident-response.md) | 🚧 In Progress |
 | Domain 3 | [Infrastructure Security](./docs/domain-3-infrastructure-security.md) | 🚧 In Progress |
 | Domain 4 | [Identity & Access Management](./docs/domain-4-iam.md) | 🚧 In Progress |
 | Domain 5 | [Data Protection](./docs/domain-5-data-protection.md) | 🚧 In Progress |
-| Domain 6 | [Management & Security Governance](./docs/domain-6-governance.md) | 🚧 In Progress |
+| Domain 6 | [Security Foundations & Governance](./docs/domain-6-governance.md) | 🚧 In Progress |
 
 ### AWS Whitepapers (Must Read)
 
@@ -168,34 +169,45 @@ python -m http.server 8080
 
 ---
 
-## 🗺️ Study Plan
+## 🗺️ Study Plan (SCS-C03)
 
-A suggested 10-week study plan:
+A suggested 10-week study plan based on new domain weights:
 
 | Week | Focus Area | Activities |
 |------|------------|------------|
-| 1-2 | Domain 3: Infrastructure Security (20%) | VPC, Security Groups, NACLs, WAF, Shield |
-| 3-4 | Domain 2 & 5: Logging & Data Protection (36%) | CloudTrail, CloudWatch, KMS, Encryption |
-| 5-6 | Domain 4: IAM (16%) | Policies, SCPs, Federation, Identity Center |
-| 7-8 | Domain 1: Threat Detection (14%) | GuardDuty, Security Hub, Detective |
-| 9 | Domain 6: Governance (14%) | Control Tower, Organizations, Compliance |
+| 1-2 | Domain 4: IAM (20%) | Policies, SCPs, Federation, Identity Center |
+| 3-4 | Domain 3 & 5: Infrastructure & Data Protection (36%) | VPC, WAF, Shield, KMS, Encryption |
+| 5-6 | Domain 1: Detection (16%) | GuardDuty, Security Hub, CloudTrail, CloudWatch |
+| 7-8 | Domain 2: Incident Response (14%) | Response plans, forensics, automation |
+| 9 | Domain 6: Security Foundations & Governance (14%) | Control Tower, Organizations, Compliance |
 | 10 | Review & Practice | Quizzes, sample questions, weak areas |
 
 ---
 
-## 🆕 What's New in SCS-C02
+## 🆕 What's New in SCS-C03
 
-Services and features added since SCS-C01:
+> **SCS-C03 launched December 2, 2025** - Key changes from SCS-C02:
 
-| Service/Feature | Description |
-|-----------------|-------------|
-| **GuardDuty Extended Threat Detection** | Multi-stage attack sequence detection |
-| **GuardDuty Malware Protection** | EBS volume scanning for malware |
-| **AWS Verified Access** | Zero-trust access to applications |
-| **IAM Identity Center** | Centralized SSO (formerly AWS SSO) |
-| **Security Lake** | Centralized security data lake |
-| **Amazon Inspector v2** | Continuous vulnerability scanning |
-| **AWS Network Firewall** | Managed network firewall service |
+### New Content Added
+| Topic | Description |
+|-------|-------------|
+| **Generative AI Security** | OWASP Top 10 for LLM Applications protections |
+| **OCSF Format Integration** | Open Cybersecurity Schema Framework for data ingestion |
+| **Inter-Resource Encryption** | EMR, EKS, SageMaker AI, Nitro encryption configs |
+| **Data Masking** | CloudWatch Logs data protection, SNS message data protection |
+| **Multi-Region Key Management** | KMS keys and certificates across regions |
+
+### New Question Types
+- **Ordering Questions** - Select and arrange steps in correct sequence
+- **Matching Questions** - Pair items from two lists correctly
+
+### Domain Restructuring
+- Domain 1 renamed to "Detection" (16%, was 14%)
+- Domain 2 is now separate "Incident Response" (14%)
+- Domain 4 (IAM) increased to 20% (was 16%) - now highest weighted!
+- Domain 3 (Infrastructure) decreased to 18% (was 20%)
+
+See [full comparison](https://docs.aws.amazon.com/aws-certification/latest/examguides/security-specialty-03-appendix-b.html)
 
 ---
 
@@ -206,12 +218,13 @@ aws-security-specialty-study-guide/
 ├── README.md                 # This file
 ├── LICENSE                   # MIT License
 ├── CONTRIBUTING.md           # Contribution guidelines
+├── index.html                # GitHub Pages landing page
 ├── archive/                  # Previous years' study guides
 │   ├── 2020-scs-c01-study-guide.md
 │   └── 2023-scs-c01-study-guide.md
-├── docs/                     # Domain-specific study materials
-│   ├── domain-1-threat-detection.md
-│   ├── domain-2-logging-monitoring.md
+├── docs/                     # Domain-specific study materials (SCS-C03)
+│   ├── domain-1-detection.md
+│   ├── domain-2-incident-response.md
 │   ├── domain-3-infrastructure-security.md
 │   ├── domain-4-iam.md
 │   ├── domain-5-data-protection.md
