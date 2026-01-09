@@ -105,6 +105,7 @@ Interactive HTML-based quizzes with two modes:
 
 | Topic | Questions | Difficulty | Quiz |
 |-------|-----------|------------|------|
+| **AWS Security Hub (Comprehensive)** | 25 | Intermediate | [Start Quiz](./quizzes/security-hub-comprehensive.html) |
 | **Amazon GuardDuty (Comprehensive)** | 25 | Intermediate | [Start Quiz](./quizzes/guardduty-comprehensive.html) |
 | GuardDuty Extended Threat Detection | 15 | Intermediate | [Start Quiz](./quizzes/guardduty-extended-threat-detection.html) |
 | *More quizzes coming soon...* | | | |

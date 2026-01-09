@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Security Hub Comprehensive Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141b2d;
+            --bg-tertiary: #1a2236;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-primary: #f97316;
+            --accent-secondary: #fb923c;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #eab308;
+            --info: #3b82f6;
+            --border: #2d3a52;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .mode-btn {
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .mode-btn.active {
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(251, 146, 60, 0.1));
+        }
+
+        .progress-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .timer {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            font-family: 'Consolas', monospace;
+        }
+
+        .timer.warning {
+            color: var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+        .timer.danger {
+            color: var(--error);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .question-number {
+            background: var(--bg-tertiary);
+            color: var(--accent-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .question-domain {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .question-text {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: var(--accent-primary);
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        .option.selected {
+            border-color: var(--accent-primary);
+            background: rgba(249, 115, 22, 0.15);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(34, 197, 94, 0.15);
+        }
+
+        .option.incorrect {
+            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .option.disabled {
+            cursor: default;
+        }
+
+        .option-marker {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .option.selected .option-marker {
+            border-color: var(--accent-primary);
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .option.correct .option-marker {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+        }
+
+        .option.incorrect .option-marker {
+            border-color: var(--error);
+            background: var(--error);
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+            padding-top: 2px;
+        }
+
+        .explanation {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            border-left: 4px solid var(--info);
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--info);
+        }
+
+        .answer-header {
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+
+        .explanation-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .doc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            background: rgba(249, 115, 22, 0.1);
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .doc-link:hover {
+            background: rgba(249, 115, 22, 0.2);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            display: none;
+        }
+
+        .results-card.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results-score {
+            font-size: 4rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .results-score.pass {
+            color: var(--success);
+        }
+
+        .results-score.fail {
+            color: var(--error);
+        }
+
+        .results-status {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-status.pass {
+            color: var(--success);
+        }
+
+        .results-status.fail {
+            color: var(--error);
+        }
+
+        .results-details {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .results-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+        }
+
+        .breakdown-item {
+            text-align: center;
+        }
+
+        .breakdown-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .breakdown-value.correct {
+            color: var(--success);
+        }
+
+        .breakdown-value.incorrect {
+            color: var(--error);
+        }
+
+        .breakdown-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .shuffle-notice {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(249, 115, 22, 0.1);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            color: var(--accent-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-bar {
+                gap: 1rem;
+            }
+
+            .mode-selector {
+                flex-direction: column;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .results-breakdown {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 1: Detection</span>
+            <h1>AWS Security Hub</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-value">25</div>
+                    <div class="stat-label">Questions</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">80%</div>
+                    <div class="stat-label">Pass Score</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">62:30</div>
+                    <div class="stat-label">Exam Time</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" data-mode="learn" onclick="startQuiz('learn')">
+                📚 Learn Mode
+            </button>
+            <button class="mode-btn" data-mode="exam" onclick="startQuiz('exam')">
+                ⏱️ Exam Mode
+            </button>
+        </div>
+
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">25</span></span>
+                    <span class="timer" id="timer">62:30</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="shuffle-notice" id="shuffleNotice">
+                🔀 Questions and options have been randomized
+            </div>
+
+            <div id="questionsContainer"></div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item">
+                    <div class="breakdown-value correct" id="correctCount">0</div>
+                    <div class="breakdown-label">Correct</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-value incorrect" id="incorrectCount">0</div>
+                    <div class="breakdown-label">Incorrect</div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                question: "What is the primary purpose of AWS Security Hub?",
+                options: [
+                    "To provide a centralized view of security alerts and compliance status across AWS accounts",
+                    "To detect and block network intrusions in real-time",
+                    "To manage IAM users and their permissions",
+                    "To encrypt data at rest and in transit"
+                ],
+                correct: 0,
+                explanation: "AWS Security Hub provides a comprehensive view of your security state in AWS. It aggregates, organizes, and prioritizes security findings from multiple AWS services (like GuardDuty, Inspector, and Macie) and third-party products into a single pane of glass. It also runs continuous security checks against best practices and standards.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html"
+            },
+            {
+                id: 2,
+                question: "Which format does AWS Security Hub use to normalize and aggregate findings from different sources?",
+                options: [
+                    "Common Vulnerability Scoring System (CVSS)",
+                    "AWS Security Finding Format (ASFF)",
+                    "STIX/TAXII format",
+                    "JSON Web Token (JWT) format"
+                ],
+                correct: 1,
+                explanation: "AWS Security Hub uses the AWS Security Finding Format (ASFF) to normalize and aggregate findings. ASFF is a standard JSON format that eliminates the need for time-consuming data conversion efforts when processing findings from multiple sources. All integrated AWS services and third-party products send findings in ASFF format.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-format.html"
+            },
+            {
+                id: 3,
+                question: "Which of the following security standards is developed by AWS and focuses on security best practices regardless of sector or size?",
+                options: [
+                    "CIS AWS Foundations Benchmark",
+                    "PCI DSS",
+                    "AWS Foundational Security Best Practices (FSBP)",
+                    "NIST SP 800-53"
+                ],
+                correct: 2,
+                explanation: "AWS Foundational Security Best Practices (FSBP) is developed by AWS and industry professionals. It provides a set of controls that detect when your AWS accounts and resources deviate from security best practices, along with prescriptive guidance about how to improve and maintain your security posture. It applies to organizations of any sector or size.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/fsbp-standard.html"
+            },
+            {
+                id: 4,
+                question: "What is the maximum number of automation rules that can be created per Security Hub administrator account?",
+                options: [
+                    "50",
+                    "100",
+                    "200",
+                    "500"
+                ],
+                correct: 1,
+                explanation: "Security Hub currently supports a maximum of 100 automation rules per administrator account. These rules can automatically update findings based on defined criteria and actions, such as suppressing findings, changing severity, or adding notes.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/automation-rules.html"
+            },
+            {
+                id: 5,
+                question: "In Security Hub cross-Region aggregation, which types of data are replicated from linked Regions to the home Region?",
+                options: [
+                    "Findings only",
+                    "Findings and insights",
+                    "Findings, resources, and trends",
+                    "Findings, resources, trends, and automation rules"
+                ],
+                correct: 2,
+                explanation: "When cross-Region aggregation is enabled, Security Hub replicates findings, resources, and trends from linked Regions to the home Region. This allows you to manage all security data from a single Region. Automation rules are NOT replicated; they must be created in each Region, though rules in the home Region apply to all linked Regions.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/security-hub-region-aggregation.html"
+            },
+            {
+                id: 6,
+                question: "Which of the following correctly describes the workflow status values available for Security Hub findings?",
+                options: [
+                    "OPEN, IN_PROGRESS, CLOSED, RESOLVED",
+                    "NEW, NOTIFIED, RESOLVED, SUPPRESSED",
+                    "ACTIVE, PENDING, COMPLETED, ARCHIVED",
+                    "DETECTED, INVESTIGATING, MITIGATED, CLOSED"
+                ],
+                correct: 1,
+                explanation: "Security Hub findings have four workflow status values: NEW (initial status), NOTIFIED (owner has been notified), RESOLVED (finding has been remediated), and SUPPRESSED (finding is suppressed and not actively tracked). The workflow status helps track the investigation and remediation progress of findings.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/findings-workflow-status.html"
+            },
+            {
+                id: 7,
+                question: "Which AWS service is NOT a native integration that sends findings to Security Hub?",
+                options: [
+                    "Amazon GuardDuty",
+                    "Amazon Inspector",
+                    "AWS CloudTrail",
+                    "Amazon Macie"
+                ],
+                correct: 2,
+                explanation: "AWS CloudTrail is not a native integration that sends findings directly to Security Hub. GuardDuty, Inspector, and Macie are native AWS security services that automatically send their findings to Security Hub. CloudTrail provides logging of API calls but doesn't generate security findings in ASFF format for Security Hub.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-findings-providers.html"
+            },
+            {
+                id: 8,
+                question: "What happens to existing findings when a Region becomes a linked Region in cross-Region aggregation?",
+                options: [
+                    "They are immediately replicated to the home Region",
+                    "They are only replicated if there is an update to the finding",
+                    "They are automatically deleted from the linked Region",
+                    "They are archived in both Regions"
+                ],
+                correct: 1,
+                explanation: "Any findings that existed in a Region at the time it becomes a linked Region will NOT be replicated to the home Region unless there is an update to the finding. Once a Region is linked, there will be a difference in findings between the home Region and linked Region until findings are updated or age out. New findings are replicated immediately.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/security-hub-region-aggregation.html"
+            },
+            {
+                id: 9,
+                question: "In Security Hub, what is a 'consolidated control finding'?",
+                options: [
+                    "A finding that combines multiple related security issues into one alert",
+                    "A single finding generated per control regardless of how many standards it applies to",
+                    "A summary finding that aggregates all findings for an account",
+                    "A finding that consolidates results from multiple AWS Regions"
+                ],
+                correct: 1,
+                explanation: "When consolidated control findings is enabled, Security Hub generates a single finding for each control, even if that control applies to multiple enabled standards. Without this feature, if a control applies to two standards, you would receive two separate findings. Consolidated findings reduce noise and simplify finding management.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/controls-findings-create-update.html"
+            },
+            {
+                id: 10,
+                question: "Which compliance framework standard in Security Hub is specifically designed for protecting Controlled Unclassified Information (CUI)?",
+                options: [
+                    "PCI DSS",
+                    "NIST SP 800-53 Revision 5",
+                    "NIST SP 800-171 Revision 2",
+                    "CIS AWS Foundations Benchmark"
+                ],
+                correct: 2,
+                explanation: "NIST SP 800-171 Revision 2 aligns with NIST security recommendations for protecting the confidentiality of Controlled Unclassified Information (CUI) in systems and organizations that aren't part of the U.S. federal government. CUI is sensitive information that doesn't meet government classification criteria but requires protection.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/standards-reference-nist-800-171.html"
+            },
+            {
+                id: 11,
+                question: "When using Security Hub with AWS Organizations, which account can designate the delegated administrator?",
+                options: [
+                    "Any account with SecurityHubFullAccess policy",
+                    "Only the organization management account",
+                    "Any account in the organization",
+                    "Only accounts with administrator IAM role"
+                ],
+                correct: 1,
+                explanation: "Only the organization management account can designate a delegated administrator for Security Hub. Once designated, the delegated administrator can enable Security Hub for member accounts, manage central configuration, and view findings from all member accounts across the organization.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/designate-orgs-admin-account.html"
+            },
+            {
+                id: 12,
+                question: "What happens to automation rules created in linked Regions after cross-Region aggregation is enabled?",
+                options: [
+                    "They are automatically migrated to the home Region",
+                    "They continue to apply independently in each Region",
+                    "They will no longer apply once an aggregator is created",
+                    "They are merged with rules in the home Region"
+                ],
+                correct: 2,
+                explanation: "Rules previously created in linked Regions will no longer apply once a cross-Region aggregator is created. After enabling aggregation, automation rules can only be created in the home Region, and they apply to all linked Regions. Rules defined in linked Regions will resume applying only if the aggregator is deleted or the Region is unlinked.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/security-hub-region-aggregation.html"
+            },
+            {
+                id: 13,
+                question: "Which Security Hub standard can help you determine whether your AWS resources have proper tagging?",
+                options: [
+                    "AWS Foundational Security Best Practices",
+                    "AWS Resource Tagging Standard",
+                    "CIS AWS Foundations Benchmark",
+                    "PCI DSS"
+                ],
+                correct: 1,
+                explanation: "The AWS Resource Tagging Standard, developed by Security Hub, helps determine whether your AWS resources have tags. Tags are key-value pairs that act as metadata for AWS resources and help with identification, categorization, management, and searching for resources.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/standards-tagging.html"
+            },
+            {
+                id: 14,
+                question: "Which action can Security Hub automation rules perform on findings?",
+                options: [
+                    "Automatically remediate the underlying security issue",
+                    "Delete findings from the Security Hub database",
+                    "Suppress findings and change their severity",
+                    "Send findings directly to AWS Support"
+                ],
+                correct: 2,
+                explanation: "Security Hub automation rules can perform actions like suppressing findings, changing their severity, adding notes, and updating workflow status. They cannot automatically remediate issues or delete findings. For automated remediation, you would integrate with Amazon EventBridge and trigger Lambda functions or other remediation workflows.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/automation-rules.html"
+            },
+            {
+                id: 15,
+                question: "What is the service-managed standard in Security Hub that integrates with AWS Control Tower?",
+                options: [
+                    "AWS Foundational Security Best Practices",
+                    "Service-managed standard: AWS Control Tower",
+                    "CIS AWS Foundations Benchmark Level 2",
+                    "AWS Landing Zone Security Standard"
+                ],
+                correct: 1,
+                explanation: "The 'Service-managed standard: AWS Control Tower' helps configure the detective controls provided by Security Hub from AWS Control Tower. AWS Control Tower offers a straightforward way to set up and govern an AWS multi-account environment following prescriptive best practices.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/service-managed-standards.html"
+            },
+            {
+                id: 16,
+                question: "In Security Hub, which compliance status indicates that a control check found non-compliant resources?",
+                options: [
+                    "WARNING",
+                    "NOT_AVAILABLE",
+                    "FAILED",
+                    "NON_COMPLIANT"
+                ],
+                correct: 2,
+                explanation: "The FAILED compliance status indicates that a control check found non-compliant resources. Other statuses include: PASSED (compliant), NOT_AVAILABLE (check couldn't be performed), and WARNING (some resources comply but require attention). NON_COMPLIANT is not a valid Security Hub status.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards.html"
+            },
+            {
+                id: 17,
+                question: "How does Security Hub calculate security scores?",
+                options: [
+                    "Based on the number of findings per account",
+                    "Based on the ratio of passed controls to total enabled controls",
+                    "Based on the severity of failed findings only",
+                    "Based on the number of active GuardDuty findings"
+                ],
+                correct: 1,
+                explanation: "Security Hub calculates security scores based on the ratio of passed controls to total enabled controls. The score represents the percentage of controls that are passing. Controls that have a status of NOT_AVAILABLE are not counted in the score calculation. Higher scores indicate better compliance with the enabled security standards.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/standards-security-score.html"
+            },
+            {
+                id: 18,
+                question: "Which of the following is a valid use case for Security Hub custom actions?",
+                options: [
+                    "Automatically enable new security standards",
+                    "Send specific findings to Amazon EventBridge for automated response",
+                    "Create new IAM policies based on findings",
+                    "Directly invoke AWS Lambda functions from findings"
+                ],
+                correct: 1,
+                explanation: "Custom actions in Security Hub allow you to send selected findings to Amazon EventBridge. From there, you can define EventBridge rules to trigger automated responses like invoking Lambda functions, sending SNS notifications, or creating tickets. Custom actions do not directly invoke Lambda; they work through EventBridge integration.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cwe-custom-actions.html"
+            },
+            {
+                id: 19,
+                question: "What is a Security Hub 'insight'?",
+                options: [
+                    "A machine learning-based threat detection feature",
+                    "A collection of related findings grouped by a filter and grouping criteria",
+                    "A recommendation for improving your security posture",
+                    "A real-time dashboard showing current security status"
+                ],
+                correct: 1,
+                explanation: "A Security Hub insight is a collection of related findings that are grouped by a filter and a grouping attribute. Insights help identify common security issues that may require attention. Security Hub provides managed (predefined) insights, and you can also create custom insights based on your specific needs.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-insights.html"
+            },
+            {
+                id: 20,
+                question: "Which ASFF attribute is required for every Security Hub finding?",
+                options: [
+                    "Remediation",
+                    "Malware",
+                    "AwsAccountId",
+                    "NetworkPath"
+                ],
+                correct: 2,
+                explanation: "AwsAccountId is one of the required top-level ASFF attributes for every Security Hub finding. Other required attributes include SchemaVersion, Id, ProductArn, GeneratorId, Types, CreatedAt, UpdatedAt, Severity, and Title. Remediation, Malware, and NetworkPath are optional attributes.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/asff-required-attributes.html"
+            },
+            {
+                id: 21,
+                question: "When you enable Security Hub for the first time, which security standard is automatically enabled by default?",
+                options: [
+                    "All available standards",
+                    "AWS Foundational Security Best Practices and CIS AWS Foundations Benchmark",
+                    "Only PCI DSS",
+                    "No standards are enabled by default"
+                ],
+                correct: 1,
+                explanation: "When you enable Security Hub for the first time, AWS Foundational Security Best Practices (FSBP) and CIS AWS Foundations Benchmark are automatically enabled by default. You can disable these or enable additional standards based on your compliance requirements.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-auto-enabled-standards.html"
+            },
+            {
+                id: 22,
+                question: "What is 'central configuration' in Security Hub?",
+                options: [
+                    "A feature to centralize all findings in one Region",
+                    "A way to configure Security Hub settings across multiple accounts and Regions from the delegated administrator",
+                    "A method to combine multiple security standards into one",
+                    "A tool for centralizing AWS Config rules"
+                ],
+                correct: 1,
+                explanation: "Central configuration allows the delegated administrator to configure Security Hub settings (standards, controls) across multiple AWS accounts and Regions from a single location using configuration policies. This simplifies managing Security Hub at scale across an entire AWS Organization.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/central-configuration-intro.html"
+            },
+            {
+                id: 23,
+                question: "Which finding severity label represents the HIGHEST priority in Security Hub?",
+                options: [
+                    "HIGH",
+                    "CRITICAL",
+                    "SEVERE",
+                    "URGENT"
+                ],
+                correct: 1,
+                explanation: "CRITICAL is the highest severity label in Security Hub's severity classification. The severity levels from highest to lowest are: CRITICAL, HIGH, MEDIUM, LOW, and INFORMATIONAL. SEVERE and URGENT are not valid Security Hub severity labels.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/asff-top-level-attributes.html#asff-severity"
+            },
+            {
+                id: 24,
+                question: "A company wants to receive Security Hub findings from third-party security tools. What is required for this integration?",
+                options: [
+                    "The third-party tool must be installed in the same VPC",
+                    "The third-party product must send findings in ASFF format to Security Hub",
+                    "An AWS Direct Connect connection to the third-party provider",
+                    "A custom Lambda function to translate findings"
+                ],
+                correct: 1,
+                explanation: "For third-party products to integrate with Security Hub, they must send findings in AWS Security Finding Format (ASFF). AWS maintains a list of verified third-party partner integrations that have been validated to work with Security Hub. Partners map their findings to ASFF before sending them to Security Hub.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-partner-providers.html"
+            },
+            {
+                id: 25,
+                question: "Which of the following is TRUE about Security Hub pricing with cross-Region aggregation?",
+                options: [
+                    "You are charged for each Region where aggregation is enabled",
+                    "Data transfer charges apply when replicating findings between Regions",
+                    "Cross-Region aggregation does not add to the cost of Security Hub",
+                    "You are charged based on the number of linked Regions"
+                ],
+                correct: 2,
+                explanation: "Cross-Region aggregation does not add to the cost of Security Hub. You are not charged when Security Hub replicates new data or updates between Regions. Security Hub pricing is based on the number of security checks and findings ingested, not on cross-Region aggregation features.",
+                docLink: "https://docs.aws.amazon.com/securityhub/latest/userguide/security-hub-region-aggregation.html"
+            }
+        ];
+
+        let currentMode = 'learn';
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let shuffledQuestions = [];
+        let timerInterval = null;
+        let timeRemaining = 0;
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function shuffleQuestionOptions(question) {
+            const optionIndices = [0, 1, 2, 3];
+            const shuffledIndices = shuffleArray(optionIndices);
+            
+            const newQuestion = { ...question };
+            newQuestion.options = shuffledIndices.map(i => question.options[i]);
+            newQuestion.correct = shuffledIndices.indexOf(question.correct);
+            newQuestion.shuffleMap = shuffledIndices;
+            
+            return newQuestion;
+        }
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            
+            shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
+            
+            document.getElementById('modeSelector').classList.add('hidden');
+            document.getElementById('quizContent').classList.remove('hidden');
+            document.getElementById('resultsCard').classList.remove('hidden');
+            document.getElementById('resultsCard').classList.remove('show');
+            
+            document.getElementById('totalQ').textContent = shuffledQuestions.length;
+            
+            if (mode === 'exam') {
+                timeRemaining = shuffledQuestions.length * 150; // 2.5 min per question
+                startTimer();
+                document.getElementById('shuffleBtn').classList.add('hidden');
+            } else {
+                document.getElementById('timer').textContent = 'Learn Mode';
+                document.getElementById('shuffleBtn').classList.remove('hidden');
+            }
+            
+            renderQuestion();
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmitQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const timerEl = document.getElementById('timer');
+            timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            timerEl.classList.remove('warning', 'danger');
+            if (timeRemaining <= 60) {
+                timerEl.classList.add('danger');
+            } else if (timeRemaining <= 300) {
+                timerEl.classList.add('warning');
+            }
+        }
+
+        function renderQuestion() {
+            const q = shuffledQuestions[currentQuestion];
+            const container = document.getElementById('questionsContainer');
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            const userAnswer = userAnswers[currentQuestion];
+            
+            let optionsHtml = q.options.map((opt, idx) => {
+                let classes = 'option';
+                if (currentMode === 'learn' && userAnswer !== null) {
+                    classes += ' disabled';
+                    if (idx === q.correct) classes += ' correct';
+                    else if (idx === userAnswer) classes += ' incorrect';
+                } else if (userAnswer === idx) {
+                    classes += ' selected';
+                }
+                
+                return `
+                    <div class="${classes}" onclick="selectOption(${idx})">
+                        <span class="option-marker">${letters[idx]}</span>
+                        <span class="option-text">${opt}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            let explanationHtml = '';
+            if (currentMode === 'learn') {
+                explanationHtml = `
+                    <div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation">
+                        <div class="explanation-title">📖 Explanation</div>
+                        <div class="answer-header">Correct Answer: ${letters[q.correct]}</div>
+                        <p class="explanation-text">${q.explanation}</p>
+                        <a href="${q.docLink}" target="_blank" class="doc-link">
+                            📄 View AWS Documentation →
+                        </a>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question ${currentQuestion + 1}</span>
+                        <span class="question-domain">Security Hub</span>
+                    </div>
+                    <p class="question-text">${q.question}</p>
+                    <div class="options">${optionsHtml}</div>
+                    ${currentMode === 'learn' && userAnswer === null ? 
+                        '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}
+                    ${explanationHtml}
+                </div>
+            `;
+            
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            document.getElementById('progressFill').style.width = 
+                `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
+            
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentQuestion === shuffledQuestions.length - 1) {
+                nextBtn.textContent = currentMode === 'exam' ? 'Submit Quiz' : 'See Results';
+            } else {
+                nextBtn.textContent = 'Next →';
+            }
+        }
+
+        function selectOption(idx) {
+            if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return;
+            
+            userAnswers[currentQuestion] = idx;
+            
+            if (currentMode === 'exam') {
+                renderQuestion();
+            }
+        }
+
+        function revealAnswer() {
+            if (userAnswers[currentQuestion] === null) {
+                userAnswers[currentQuestion] = -1; // Mark as revealed but not answered
+            }
+            renderQuestion();
+        }
+
+        function navigate(direction) {
+            if (direction === 1 && currentQuestion === shuffledQuestions.length - 1) {
+                showResults();
+                return;
+            }
+            
+            currentQuestion += direction;
+            currentQuestion = Math.max(0, Math.min(currentQuestion, shuffledQuestions.length - 1));
+            renderQuestion();
+        }
+
+        function shuffleQuiz() {
+            if (currentMode !== 'learn') return;
+            
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
+            renderQuestion();
+            
+            const notice = document.getElementById('shuffleNotice');
+            notice.style.animation = 'none';
+            notice.offsetHeight;
+            notice.style.animation = 'fadeIn 0.5s ease';
+        }
+
+        function autoSubmitQuiz() {
+            showResults();
+        }
+
+        function showResults() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            let correct = 0;
+            let answered = 0;
+            
+            shuffledQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] !== null && userAnswers[idx] !== -1) {
+                    answered++;
+                    if (userAnswers[idx] === q.correct) correct++;
+                }
+            });
+            
+            const total = shuffledQuestions.length;
+            const percentage = Math.round((correct / total) * 100);
+            const passed = percentage >= 80;
+            
+            document.getElementById('quizContent').classList.add('hidden');
+            document.getElementById('resultsCard').classList.add('show');
+            
+            const scoreEl = document.getElementById('scorePercent');
+            scoreEl.textContent = percentage + '%';
+            scoreEl.className = 'results-score ' + (passed ? 'pass' : 'fail');
+            
+            const statusEl = document.getElementById('resultStatus');
+            statusEl.textContent = passed ? '🎉 PASSED!' : '📚 Keep Studying';
+            statusEl.className = 'results-status ' + (passed ? 'pass' : 'fail');
+            
+            document.getElementById('resultDetails').textContent = 
+                `You answered ${correct} out of ${total} questions correctly. ${passed ? 'Great job!' : 'You need 80% to pass.'}`;
+            
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('incorrectCount').textContent = total - correct;
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('modeSelector').classList.remove('hidden');
+            document.getElementById('quizContent').classList.add('hidden');
+            
+            if (timerInterval) clearInterval(timerInterval);
+        }
+    </script>
+</body>
+</html>
