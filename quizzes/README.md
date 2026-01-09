@@ -59,6 +59,14 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [acm-s3-encryption-comprehensive.html](./acm-s3-encryption-comprehensive.html) | **ACM & S3 Encryption** | 18 |
 | [macie-comprehensive.html](./macie-comprehensive.html) | **Amazon Macie** | 18 |
 
+### Domain 6: Security Governance (Complete - 58 questions!)
+
+| Quiz | Topic | Questions | 
+|------|-------|-----------|
+| [control-tower-comprehensive.html](./control-tower-comprehensive.html) | **AWS Control Tower** | 20 |
+| [config-compliance-comprehensive.html](./config-compliance-comprehensive.html) | **AWS Config & Compliance** | 20 |
+| [audit-manager-artifact-comprehensive.html](./audit-manager-artifact-comprehensive.html) | **Audit Manager & Artifact** | 18 |
+
 ## How to Use
 
 ### Option 1: Direct File Access

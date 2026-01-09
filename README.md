@@ -103,7 +103,7 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-> **Total: 422 questions across 20 quizzes (5 domains complete)**
+> **🎉 Total: 480 questions across 23 quizzes - ALL 6 DOMAINS COMPLETE!**
 
 #### ✅ Domain 1: Detection (130 questions)
 
@@ -150,11 +150,13 @@ Interactive HTML-based quizzes with two modes:
 | **ACM & S3 Encryption** | 18 | [Start Quiz](./quizzes/acm-s3-encryption-comprehensive.html) |
 | **Amazon Macie** | 18 | [Start Quiz](./quizzes/macie-comprehensive.html) |
 
-#### 🚧 Coming Soon
+#### ✅ Domain 6: Security Governance (58 questions)
 
-| Domain | Topics |
-|--------|--------|
-| Domain 6 | Control Tower, Organizations, Security Foundations |
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **AWS Control Tower** | 20 | [Start Quiz](./quizzes/control-tower-comprehensive.html) |
+| **AWS Config & Compliance** | 20 | [Start Quiz](./quizzes/config-compliance-comprehensive.html) |
+| **Audit Manager & Artifact** | 18 | [Start Quiz](./quizzes/audit-manager-artifact-comprehensive.html) |
 
 ### Running Quizzes Locally
 
