@@ -103,7 +103,9 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-#### ✅ Domain 1: Detection (Complete - 130 questions!)
+> **Total: 175 questions across 8 quizzes (2 domains complete)**
+
+#### ✅ Domain 1: Detection (130 questions)
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
@@ -114,11 +116,17 @@ Interactive HTML-based quizzes with two modes:
 | **CloudWatch Security** | 20 | [Start Quiz](./quizzes/cloudwatch-security-comprehensive.html) |
 | GuardDuty Extended Threat Detection | 15 | [Start Quiz](./quizzes/guardduty-extended-threat-detection.html) |
 
+#### ✅ Domain 2: Incident Response (45 questions)
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **Incident Response Fundamentals** | 25 | [Start Quiz](./quizzes/incident-response-fundamentals.html) |
+| **Automated Remediation** | 20 | [Start Quiz](./quizzes/automated-remediation.html) |
+
 #### 🚧 Coming Soon
 
 | Domain | Topics |
 |--------|--------|
-| Domain 2 | Incident Response, Forensics |
 | Domain 3 | VPC, WAF, Shield, Network Firewall |
 | Domain 4 | IAM, SCPs, Federation, Identity Center |
 | Domain 5 | KMS, Secrets Manager, ACM, Macie |
