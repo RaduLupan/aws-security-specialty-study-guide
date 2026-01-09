@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Macie Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #a855f7; --accent-secondary: #c084fc; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(168, 85, 247, 0.1); }
+        .option.selected { border-color: var(--accent-primary); background: rgba(168, 85, 247, 0.15); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(168, 85, 247, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(168, 85, 247, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(168, 85, 247, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 5: Data Protection (18%)</span>
+            <h1>Amazon Macie</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">18</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">45:00</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">18</span></span>
+                    <span class="timer" id="timer">45:00</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { id: 1, question: "What is the primary purpose of Amazon Macie?", options: ["To encrypt S3 data", "To discover and protect sensitive data in S3 using machine learning", "To manage S3 bucket policies", "To replicate S3 buckets"], correct: 1, explanation: "Amazon Macie uses machine learning and pattern matching to discover and protect sensitive data stored in Amazon S3. It automatically identifies PII, PHI, financial data, and other sensitive information across your S3 buckets.", docLink: "https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html" },
+            { id: 2, question: "What are managed data identifiers in Macie?", options: ["User-created regex patterns", "Pre-built detection criteria maintained by AWS for common sensitive data types", "S3 bucket tags", "IAM policies for Macie"], correct: 1, explanation: "Managed data identifiers are built-in, AWS-maintained criteria for detecting sensitive data types like credit card numbers, SSNs, passport numbers, and PHI. They use a combination of techniques including machine learning, pattern matching, and proximity detection.", docLink: "https://docs.aws.amazon.com/macie/latest/user/managed-data-identifiers.html" },
+            { id: 3, question: "What is a custom data identifier in Macie?", options: ["A Macie API endpoint", "A user-defined regex pattern to detect specific data types", "An S3 bucket configuration", "A CloudWatch alarm"], correct: 1, explanation: "Custom data identifiers let you define your own criteria using regular expressions to detect data specific to your organization, like employee IDs, project codes, or proprietary identifiers that aren't covered by managed data identifiers.", docLink: "https://docs.aws.amazon.com/macie/latest/user/custom-data-identifiers.html" },
+            { id: 4, question: "What are the two main discovery modes in Macie?", options: ["Real-time and batch", "Automated sensitive data discovery and sensitive data discovery jobs", "Continuous and scheduled", "Active and passive"], correct: 1, explanation: "Macie offers automated sensitive data discovery (continuous sampling and analysis across your S3 estate) and sensitive data discovery jobs (targeted, scheduled analysis of specific buckets or objects you define).", docLink: "https://docs.aws.amazon.com/macie/latest/user/data-classification.html" },
+            { id: 5, question: "What does Macie's sensitivity score indicate?", options: ["The encryption strength of an S3 bucket", "The estimated percentage of objects in a bucket that contain sensitive data", "The number of IAM users with access", "The bucket's storage cost"], correct: 1, explanation: "The sensitivity score is a percentage (0-100) indicating the proportion of bucket objects estimated to contain sensitive data. Macie calculates this based on sampling and analysis during automated sensitive data discovery.", docLink: "https://docs.aws.amazon.com/macie/latest/user/discovery-asdd-how-it-works.html" },
+            { id: 6, question: "Where can Macie publish its findings?", options: ["Only to CloudWatch Logs", "Security Hub, EventBridge, and optionally to an S3 bucket for long-term storage", "Only to SNS topics", "Only to the Macie console"], correct: 1, explanation: "Macie findings automatically integrate with Security Hub and EventBridge for centralized security management and automated response. You can also configure Macie to store detailed discovery results in an S3 bucket for long-term retention.", docLink: "https://docs.aws.amazon.com/macie/latest/user/findings.html" },
+            { id: 7, question: "What is an allow list in Macie?", options: ["A list of approved IAM users", "Text or patterns to ignore during sensitive data discovery (e.g., test data)", "A list of allowed S3 buckets", "A list of permitted encryption types"], correct: 1, explanation: "Allow lists specify text or patterns that Macie should ignore during discovery. Use them to exclude known non-sensitive data like test values, sample data, or false positives, improving the accuracy of findings.", docLink: "https://docs.aws.amazon.com/macie/latest/user/allow-lists.html" },
+            { id: 8, question: "What types of sensitive data can Macie detect?", options: ["Only credit card numbers", "PII, PHI, financial data, credentials, and custom patterns", "Only SSNs", "Only encrypted data"], correct: 1, explanation: "Macie detects multiple categories: PII (names, addresses, SSNs), PHI (health records), financial data (credit cards, bank accounts), credentials (API keys, passwords), and any custom patterns you define.", docLink: "https://docs.aws.amazon.com/macie/latest/user/managed-data-identifiers.html" },
+            { id: 9, question: "How does Macie handle encrypted S3 objects?", options: ["It cannot analyze encrypted objects", "It can analyze objects encrypted with SSE-S3, SSE-KMS (if granted access), but not SSE-C", "It only analyzes unencrypted objects", "It decrypts all objects automatically"], correct: 1, explanation: "Macie can analyze SSE-S3 encrypted objects automatically. For SSE-KMS, you must grant Macie's service role access to the KMS key. SSE-C objects cannot be analyzed because Macie doesn't have the customer keys.", docLink: "https://docs.aws.amazon.com/macie/latest/user/discovery-supported-encryption-types.html" },
+            { id: 10, question: "What is the delegated administrator for Macie?", options: ["An AWS support engineer", "A member account designated to manage Macie across an organization", "The root account", "An external auditor"], correct: 1, explanation: "A delegated administrator is a member account authorized to manage Macie for all accounts in an AWS Organization. This allows centralized management without using the management account.", docLink: "https://docs.aws.amazon.com/macie/latest/user/macie-organizations.html" },
+            { id: 11, question: "What does a policy finding in Macie indicate?", options: ["A sensitive data detection", "A potential security issue with bucket configuration (e.g., public access)", "An IAM policy violation", "An encryption failure"], correct: 1, explanation: "Policy findings indicate potential security or privacy issues with S3 bucket configurations, such as public accessibility, disabled encryption, or missing bucket policies. They help identify S3 security posture issues.", docLink: "https://docs.aws.amazon.com/macie/latest/user/findings-types.html" },
+            { id: 12, question: "How is Macie priced?", options: ["Flat monthly fee", "Per S3 bucket and per GB analyzed during discovery jobs", "Free tier only", "Per finding generated"], correct: 1, explanation: "Macie pricing has two components: a monthly fee per evaluated bucket for bucket-level analysis, and a per-GB charge for data analyzed during sensitive data discovery jobs. There's a 30-day free trial for new accounts.", docLink: "https://aws.amazon.com/macie/pricing/" },
+            { id: 13, question: "What file formats can Macie analyze?", options: ["Only text files", "Multiple formats including text, CSV, JSON, Parquet, PDF, Office documents, and compressed archives", "Only JSON and XML", "Only uncompressed files"], correct: 1, explanation: "Macie supports numerous formats: plain text, CSV, TSV, JSON, Parquet, Avro, PDF, Microsoft Office (Word, Excel, PowerPoint), Open Document formats, and compressed archives (ZIP, GZIP, TAR).", docLink: "https://docs.aws.amazon.com/macie/latest/user/discovery-supported-formats.html" },
+            { id: 14, question: "What is automated sensitive data discovery's sampling approach?", options: ["It analyzes all objects in every bucket", "It intelligently samples objects across buckets to estimate sensitivity", "It only analyzes new objects", "It randomly selects one object per day"], correct: 1, explanation: "Automated discovery uses intelligent sampling to analyze a representative subset of objects across your S3 estate. It prioritizes new/modified objects and buckets with potential sensitivity indicators to efficiently assess your data.", docLink: "https://docs.aws.amazon.com/macie/latest/user/discovery-asdd-how-it-works.html" },
+            { id: 15, question: "How long does Macie retain sensitive data discovery results by default?", options: ["30 days", "90 days", "1 year", "Indefinitely"], correct: 1, explanation: "Macie retains sensitive data discovery results for 90 days. For longer retention, configure Macie to export detailed results to an S3 bucket where you control the retention period.", docLink: "https://docs.aws.amazon.com/macie/latest/user/discovery-results-repository-s3.html" },
+            { id: 16, question: "What is a Macie classification job?", options: ["A job to encrypt S3 objects", "A targeted analysis of specific S3 resources on a schedule or one-time basis", "An IAM role assignment", "A CloudWatch scheduled event"], correct: 1, explanation: "A classification job (sensitive data discovery job) lets you target specific buckets, prefixes, or objects for analysis. Jobs can run once or on a schedule, and you control the scope, criteria, and timing.", docLink: "https://docs.aws.amazon.com/macie/latest/user/discovery-jobs.html" },
+            { id: 17, question: "What Security Hub integration does Macie provide?", options: ["Macie replaces Security Hub", "Macie findings are automatically sent to Security Hub as ASFF findings", "Security Hub manages Macie", "There is no integration"], correct: 1, explanation: "Macie automatically publishes findings to Security Hub in AWS Security Finding Format (ASFF). This enables centralized visibility of sensitive data findings alongside other security findings.", docLink: "https://docs.aws.amazon.com/macie/latest/user/securityhub-integration.html" },
+            { id: 18, question: "What is the purpose of suppression rules in Macie?", options: ["To encrypt findings", "To automatically archive findings that match specific criteria", "To delete sensitive data", "To block S3 access"], correct: 1, explanation: "Suppression rules automatically archive findings that match criteria you define (like specific buckets or finding types). This helps reduce noise from expected findings while keeping them recorded for compliance.", docLink: "https://docs.aws.amazon.com/macie/latest/user/findings-suppression.html" }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0;
+        function shuffleArray(a) { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && ans !== null) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${ans !== null ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Macie</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && ans === null ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function selectOption(i) { if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return; userAnswers[currentQuestion] = i; if (currentMode === 'exam') renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = 'results-score ' + (pass ? 'pass' : 'fail'); document.getElementById('resultStatus').textContent = pass ? '🎉 PASSED!' : '📚 Keep Studying'; document.getElementById('resultStatus').className = 'results-status ' + (pass ? 'pass' : 'fail'); document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); if (timerInterval) clearInterval(timerInterval); }
+    </script>
+</body>
+</html>

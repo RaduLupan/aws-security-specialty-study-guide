@@ -50,6 +50,15 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [identity-center-federation-comprehensive.html](./identity-center-federation-comprehensive.html) | **IAM Identity Center & Federation** | 20 |
 | [cognito-sts-comprehensive.html](./cognito-sts-comprehensive.html) | **Amazon Cognito & AWS STS** | 18 |
 
+### Domain 5: Data Protection (Complete - 81 questions!)
+
+| Quiz | Topic | Questions | 
+|------|-------|-----------|
+| [kms-comprehensive.html](./kms-comprehensive.html) | **AWS KMS (All Topics)** | 25 |
+| [secrets-manager-cloudhsm-comprehensive.html](./secrets-manager-cloudhsm-comprehensive.html) | **Secrets Manager & CloudHSM** | 20 |
+| [acm-s3-encryption-comprehensive.html](./acm-s3-encryption-comprehensive.html) | **ACM & S3 Encryption** | 18 |
+| [macie-comprehensive.html](./macie-comprehensive.html) | **Amazon Macie** | 18 |
+
 ## How to Use
 
 ### Option 1: Direct File Access
