@@ -14,11 +14,16 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 
 ## Available Quizzes
 
-| Quiz | Topic | Questions | Domain |
-|------|-------|-----------|--------|
-| [security-hub-comprehensive.html](./security-hub-comprehensive.html) | **AWS Security Hub (All Topics)** | 25 | Domain 1 |
-| [guardduty-comprehensive.html](./guardduty-comprehensive.html) | **Amazon GuardDuty (All Topics)** | 25 | Domain 1 |
-| [guardduty-extended-threat-detection.html](./guardduty-extended-threat-detection.html) | GuardDuty Extended Threat Detection | 15 | Domain 1 |
+### Domain 1: Detection (Complete!)
+
+| Quiz | Topic | Questions | 
+|------|-------|-----------|
+| [security-hub-comprehensive.html](./security-hub-comprehensive.html) | **AWS Security Hub (All Topics)** | 25 |
+| [guardduty-comprehensive.html](./guardduty-comprehensive.html) | **Amazon GuardDuty (All Topics)** | 25 |
+| [detective-comprehensive.html](./detective-comprehensive.html) | **Amazon Detective (All Topics)** | 20 |
+| [cloudtrail-comprehensive.html](./cloudtrail-comprehensive.html) | **AWS CloudTrail (All Topics)** | 25 |
+| [cloudwatch-security-comprehensive.html](./cloudwatch-security-comprehensive.html) | **Amazon CloudWatch Security** | 20 |
+| [guardduty-extended-threat-detection.html](./guardduty-extended-threat-detection.html) | GuardDuty Extended Threat Detection | 15 |
 
 ## How to Use
 

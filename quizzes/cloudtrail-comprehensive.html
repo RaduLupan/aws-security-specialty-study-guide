@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS CloudTrail Comprehensive Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141b2d;
+            --bg-tertiary: #1a2236;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-primary: #06b6d4;
+            --accent-secondary: #22d3ee;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #eab308;
+            --info: #3b82f6;
+            --border: #2d3a52;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .mode-btn.active { border-color: var(--accent-primary); background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(34, 211, 238, 0.1)); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; }
+        .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(6, 182, 212, 0.1); }
+        .option.selected { border-color: var(--accent-primary); background: rgba(6, 182, 212, 0.15); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; transition: all 0.2s ease; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(6, 182, 212, 0.1); border-radius: 6px; transition: background 0.2s ease; }
+        .doc-link:hover { background: rgba(6, 182, 212, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); }
+        .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); }
+        .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 2rem; font-weight: 700; }
+        .breakdown-value.correct { color: var(--success); }
+        .breakdown-value.incorrect { color: var(--error); }
+        .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(6, 182, 212, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector { flex-direction: column; } .btn-container { flex-direction: column; } .results-breakdown { flex-direction: column; gap: 1.5rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 1: Detection</span>
+            <h1>📋 AWS CloudTrail</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">25</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">62:30</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">25</span></span>
+                    <span class="timer" id="timer">62:30</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            {
+                id: 1,
+                question: "What is the primary purpose of AWS CloudTrail?",
+                options: [
+                    "To monitor network traffic between VPCs",
+                    "To record API calls and account activity for auditing and compliance",
+                    "To detect malware on EC2 instances",
+                    "To encrypt data at rest in S3 buckets"
+                ],
+                correct: 1,
+                explanation: "AWS CloudTrail helps you enable operational and risk auditing, governance, and compliance of your AWS account. Actions taken by a user, role, or AWS service are recorded as events in CloudTrail, providing a complete audit trail of API calls.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"
+            },
+            {
+                id: 2,
+                question: "What are the three ways CloudTrail provides to record events?",
+                options: [
+                    "Logs, Metrics, and Alarms",
+                    "Event history, CloudTrail Lake, and Trails",
+                    "Console, API, and SDK",
+                    "Management, Data, and Network events"
+                ],
+                correct: 1,
+                explanation: "CloudTrail provides three ways to record events: Event history (90-day searchable record), CloudTrail Lake (managed data lake for long-term storage up to 10 years), and Trails (deliver events to S3 buckets with optional CloudWatch Logs delivery).",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"
+            },
+            {
+                id: 3,
+                question: "How long does CloudTrail Event history retain management events?",
+                options: [
+                    "30 days",
+                    "90 days",
+                    "365 days",
+                    "Indefinitely"
+                ],
+                correct: 1,
+                explanation: "CloudTrail Event history provides a viewable, searchable, downloadable, and immutable record of the past 90 days of management events in an AWS Region. You automatically have access to Event history at no additional charge.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/view-cloudtrail-events.html"
+            },
+            {
+                id: 4,
+                question: "What is the maximum retention period for CloudTrail Lake event data stores with one-year extendable pricing?",
+                options: [
+                    "1 year",
+                    "3 years",
+                    "7 years",
+                    "About 10 years (3,653 days)"
+                ],
+                correct: 3,
+                explanation: "CloudTrail Lake allows you to keep event data for up to 3,653 days (about 10 years) with the one-year extendable retention pricing option, or up to 2,557 days (about 7 years) with the seven-year retention pricing option.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-lake.html"
+            },
+            {
+                id: 5,
+                question: "What type of events does CloudTrail record by default (without additional configuration)?",
+                options: [
+                    "Data events only",
+                    "Management events only",
+                    "Both management and data events",
+                    "Insights events only"
+                ],
+                correct: 1,
+                explanation: "By default, CloudTrail logs management events, which capture control plane operations like creating S3 buckets, launching EC2 instances, or modifying IAM policies. Data events (like S3 object-level operations) and Insights events require additional configuration.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-events-with-cloudtrail.html"
+            },
+            {
+                id: 6,
+                question: "What is a 'multi-Region trail' in CloudTrail?",
+                options: [
+                    "A trail that only logs cross-region API calls",
+                    "A trail that logs events from all enabled Regions to a single S3 bucket",
+                    "A trail that replicates logs between Regions",
+                    "A trail that requires VPC peering between Regions"
+                ],
+                correct: 1,
+                explanation: "A multi-Region trail logs events from all enabled Regions in your AWS account to a single S3 bucket. This is a security best practice as it ensures you capture activity across your entire AWS footprint in one location.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-multi-region-trails.html"
+            },
+            {
+                id: 7,
+                question: "What are CloudTrail Insights events used for?",
+                options: [
+                    "Logging all successful API calls",
+                    "Detecting unusual API call rates and error rates",
+                    "Encrypting CloudTrail log files",
+                    "Compressing log files for storage"
+                ],
+                correct: 1,
+                explanation: "CloudTrail Insights events help you identify unusual account activity by detecting anomalous API call rates and API error rates. Insights analyzes normal management event patterns and alerts you when activity deviates significantly from the baseline.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/insights-events-understanding.html"
+            },
+            {
+                id: 8,
+                question: "What is an 'organization trail' in CloudTrail?",
+                options: [
+                    "A trail created for a single organizational unit",
+                    "A trail that logs events for all accounts in an AWS Organization",
+                    "A trail that organizes events by service type",
+                    "A trail managed by a third-party organization"
+                ],
+                correct: 1,
+                explanation: "An organization trail logs events for all AWS accounts in your AWS Organization. It's created in the management account and automatically applies to all member accounts, providing centralized logging for the entire organization.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/creating-trail-organization.html"
+            },
+            {
+                id: 9,
+                question: "Which of the following is considered a 'data event' in CloudTrail?",
+                options: [
+                    "Creating an S3 bucket",
+                    "GetObject operations on S3 objects",
+                    "Launching an EC2 instance",
+                    "Creating an IAM user"
+                ],
+                correct: 1,
+                explanation: "Data events capture resource operations performed on or within a resource. Examples include S3 object-level API operations (GetObject, PutObject, DeleteObject), Lambda function invocations, and DynamoDB item-level operations. These must be explicitly enabled.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html"
+            },
+            {
+                id: 10,
+                question: "What is 'log file integrity validation' in CloudTrail?",
+                options: [
+                    "Encrypting log files with KMS",
+                    "A feature that determines whether log files were modified or deleted after delivery",
+                    "Compressing log files to save storage",
+                    "Scanning log files for sensitive data"
+                ],
+                correct: 1,
+                explanation: "Log file integrity validation is a feature that helps you determine whether a CloudTrail log file was modified, deleted, or unchanged after CloudTrail delivered it. CloudTrail creates a digest file with a hash of each log file.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-intro.html"
+            },
+            {
+                id: 11,
+                question: "How can you encrypt CloudTrail log files at rest?",
+                options: [
+                    "CloudTrail logs cannot be encrypted",
+                    "Only with S3 default encryption",
+                    "Using AWS KMS customer managed keys (CMK) or S3-managed keys",
+                    "Only with client-side encryption"
+                ],
+                correct: 2,
+                explanation: "CloudTrail log files can be encrypted at rest using AWS KMS customer managed keys (CMK) for additional control, or S3-managed keys (SSE-S3) for default encryption. Using KMS allows you to control access through key policies.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/encrypting-cloudtrail-log-files-with-aws-kms.html"
+            },
+            {
+                id: 12,
+                question: "What is CloudTrail Lake?",
+                options: [
+                    "A feature for storing logs in Amazon S3 Glacier",
+                    "A managed data lake for capturing, storing, and querying CloudTrail events",
+                    "A service for visualizing CloudTrail data",
+                    "A feature for exporting logs to third-party SIEM tools"
+                ],
+                correct: 1,
+                explanation: "CloudTrail Lake is a managed data lake for capturing, storing, accessing, and analyzing user and API activity. It converts events to Apache ORC format for fast retrieval and allows you to keep data for up to 10 years. You can query events using SQL.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-lake.html"
+            },
+            {
+                id: 13,
+                question: "Which AWS service can CloudTrail deliver log files to for real-time monitoring?",
+                options: [
+                    "Amazon Kinesis only",
+                    "Amazon CloudWatch Logs",
+                    "AWS Lambda only",
+                    "Amazon SQS only"
+                ],
+                correct: 1,
+                explanation: "CloudTrail can deliver log files to Amazon CloudWatch Logs for real-time monitoring and alerting. You can create metric filters and alarms to detect specific API calls or patterns, enabling rapid response to security events.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-events-to-cloudwatch-logs.html"
+            },
+            {
+                id: 14,
+                question: "What is the recommended security best practice for storing CloudTrail logs?",
+                options: [
+                    "Store in the same account as the source events",
+                    "Store in a dedicated, centralized logging account with restricted access",
+                    "Store on EC2 instance EBS volumes",
+                    "Store only in CloudTrail Lake, not S3"
+                ],
+                correct: 1,
+                explanation: "Best practice is to store CloudTrail logs in a dedicated, centralized S3 bucket in a separate logging account with restricted access. This prevents attackers who compromise a workload account from modifying or deleting logs.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/best-practices-security.html"
+            },
+            {
+                id: 15,
+                question: "How many trails can you create per Region in an AWS account?",
+                options: [
+                    "1",
+                    "3",
+                    "5",
+                    "Unlimited"
+                ],
+                correct: 2,
+                explanation: "You can create up to 5 trails per Region in an AWS account. However, multi-Region trails count as a single trail in all Regions. For organization trails, this limit applies to the management account.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/WhatIsCloudTrail-Limits.html"
+            },
+            {
+                id: 16,
+                question: "What additional charges apply for the first copy of management events delivered to S3?",
+                options: [
+                    "$2 per 100,000 events",
+                    "Standard S3 storage charges only, CloudTrail delivery is free",
+                    "Both CloudTrail and S3 charges apply",
+                    "$0.10 per GB of log data"
+                ],
+                correct: 1,
+                explanation: "You can deliver one copy of your ongoing management events to an S3 bucket at no charge from CloudTrail by creating a trail. You only pay for S3 storage charges. Additional copies of management events incur CloudTrail charges.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"
+            },
+            {
+                id: 17,
+                question: "Which query language does CloudTrail Lake use for analyzing events?",
+                options: [
+                    "JSON Path",
+                    "SQL",
+                    "KQL (Kusto Query Language)",
+                    "GraphQL"
+                ],
+                correct: 1,
+                explanation: "CloudTrail Lake uses SQL to query event data. You can run SQL queries against your event data stores to analyze user and API activity, create reports, and investigate security incidents. Sample queries are provided in the console.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-lake-sql-constraints.html"
+            },
+            {
+                id: 18,
+                question: "What is an 'event data store' in CloudTrail Lake?",
+                options: [
+                    "An S3 bucket configured for CloudTrail",
+                    "An immutable collection of events based on criteria you select",
+                    "A backup of CloudTrail configuration",
+                    "A real-time stream of events"
+                ],
+                correct: 1,
+                explanation: "An event data store is an immutable collection of events in CloudTrail Lake based on criteria you select using advanced event selectors. Events are converted to Apache ORC format for fast retrieval. You can create separate stores for different event types.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-lake.html"
+            },
+            {
+                id: 19,
+                question: "How can you receive notifications when CloudTrail publishes new log files?",
+                options: [
+                    "CloudWatch Events only",
+                    "Configure SNS notifications for the trail",
+                    "Email notifications are automatic",
+                    "CloudTrail doesn't support notifications"
+                ],
+                correct: 1,
+                explanation: "You can configure Amazon SNS notifications for a trail to receive alerts when CloudTrail publishes new log files to your S3 bucket. This enables you to take immediate action on new events or trigger automated workflows.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/configure-sns-notifications-for-cloudtrail.html"
+            },
+            {
+                id: 20,
+                question: "What is the purpose of advanced event selectors in CloudTrail?",
+                options: [
+                    "To encrypt specific events",
+                    "To filter which data events are logged based on detailed criteria",
+                    "To prioritize certain events for faster delivery",
+                    "To compress specific event types"
+                ],
+                correct: 1,
+                explanation: "Advanced event selectors allow you to create fine-grained selectors to log only the data events you need. You can filter by event source, event name, resource type, resource ARN, and more, helping control costs and reduce noise.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html"
+            },
+            {
+                id: 21,
+                question: "Which CloudTrail feature helps detect potentially suspicious activity involving AWS accounts?",
+                options: [
+                    "Log file integrity validation",
+                    "CloudTrail Insights",
+                    "Multi-Region trails",
+                    "Organization trails"
+                ],
+                correct: 1,
+                explanation: "CloudTrail Insights helps detect potentially suspicious activity by identifying unusual patterns in API call rates and error rates. It establishes a baseline of normal activity and alerts you when activity deviates significantly.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html"
+            },
+            {
+                id: 22,
+                question: "What happens to CloudTrail events when you stop logging on a trail?",
+                options: [
+                    "All historical logs are deleted",
+                    "Event history continues but no events are delivered to S3",
+                    "CloudTrail is completely disabled",
+                    "Only data events are stopped"
+                ],
+                correct: 1,
+                explanation: "When you stop logging on a trail, CloudTrail stops delivering events to the S3 bucket. However, the Event history (90-day console view) continues to capture events. Existing logs in S3 are retained based on your bucket lifecycle policies.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-turning-off-logging.html"
+            },
+            {
+                id: 23,
+                question: "Which service can you use to query CloudTrail logs stored in S3 without loading them into a database?",
+                options: [
+                    "Amazon RDS",
+                    "Amazon Athena",
+                    "Amazon DynamoDB",
+                    "Amazon ElastiCache"
+                ],
+                correct: 1,
+                explanation: "Amazon Athena allows you to query CloudTrail logs stored in S3 using standard SQL without loading them into a database. You can create tables that reference your CloudTrail log location and run ad-hoc queries for security investigations.",
+                docLink: "https://docs.aws.amazon.com/athena/latest/ug/cloudtrail-logs.html"
+            },
+            {
+                id: 24,
+                question: "What is the recommended practice for MFA Delete on CloudTrail log buckets?",
+                options: [
+                    "MFA Delete is not supported for CloudTrail buckets",
+                    "Enable MFA Delete to require MFA for deleting log files or changing versioning",
+                    "MFA Delete should be disabled for automation",
+                    "MFA Delete only applies to bucket deletion"
+                ],
+                correct: 1,
+                explanation: "Enabling MFA Delete on your CloudTrail log bucket requires multi-factor authentication to delete objects or change the bucket's versioning state. This adds an extra layer of protection against accidental or malicious log deletion.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/best-practices-security.html"
+            },
+            {
+                id: 25,
+                question: "How can CloudTrail events be sent to Amazon EventBridge?",
+                options: [
+                    "CloudTrail events cannot be sent to EventBridge",
+                    "CloudTrail automatically sends events to EventBridge in the Region where they occur",
+                    "You must configure a Lambda function to forward events",
+                    "Only Insights events can be sent to EventBridge"
+                ],
+                correct: 1,
+                explanation: "CloudTrail automatically sends events to Amazon EventBridge in the Region where the API call was made. You can create EventBridge rules to match specific CloudTrail events and trigger automated responses like Lambda functions or SNS notifications.",
+                docLink: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-aws-service-specific-topics.html"
+            }
+        ];
+
+        let currentMode = 'learn';
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let shuffledQuestions = [];
+        let timerInterval = null;
+        let timeRemaining = 0;
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function shuffleQuestionOptions(question) {
+            const optionIndices = [0, 1, 2, 3];
+            const shuffledIndices = shuffleArray(optionIndices);
+            const newQuestion = { ...question };
+            newQuestion.options = shuffledIndices.map(i => question.options[i]);
+            newQuestion.correct = shuffledIndices.indexOf(question.correct);
+            return newQuestion;
+        }
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
+            document.getElementById('modeSelector').classList.add('hidden');
+            document.getElementById('quizContent').classList.remove('hidden');
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('totalQ').textContent = shuffledQuestions.length;
+            if (mode === 'exam') {
+                timeRemaining = shuffledQuestions.length * 150;
+                startTimer();
+                document.getElementById('shuffleBtn').classList.add('hidden');
+            } else {
+                document.getElementById('timer').textContent = 'Learn Mode';
+                document.getElementById('shuffleBtn').classList.remove('hidden');
+            }
+            renderQuestion();
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const timerEl = document.getElementById('timer');
+            timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            timerEl.classList.remove('warning', 'danger');
+            if (timeRemaining <= 60) timerEl.classList.add('danger');
+            else if (timeRemaining <= 300) timerEl.classList.add('warning');
+        }
+
+        function renderQuestion() {
+            const q = shuffledQuestions[currentQuestion];
+            const container = document.getElementById('questionsContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const userAnswer = userAnswers[currentQuestion];
+            let optionsHtml = q.options.map((opt, idx) => {
+                let classes = 'option';
+                if (currentMode === 'learn' && userAnswer !== null) {
+                    classes += ' disabled';
+                    if (idx === q.correct) classes += ' correct';
+                    else if (idx === userAnswer) classes += ' incorrect';
+                } else if (userAnswer === idx) classes += ' selected';
+                return `<div class="${classes}" onclick="selectOption(${idx})"><span class="option-marker">${letters[idx]}</span><span class="option-text">${opt}</span></div>`;
+            }).join('');
+            let explanationHtml = '';
+            if (currentMode === 'learn') {
+                explanationHtml = `<div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>`;
+            }
+            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">CloudTrail</span></div><p class="question-text">${q.question}</p><div class="options">${optionsHtml}</div>${currentMode === 'learn' && userAnswer === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${explanationHtml}</div>`;
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
+        }
+
+        function selectOption(idx) {
+            if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (currentMode === 'exam') renderQuestion();
+        }
+
+        function revealAnswer() {
+            if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1;
+            renderQuestion();
+        }
+
+        function navigate(direction) {
+            if (direction === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; }
+            currentQuestion += direction;
+            currentQuestion = Math.max(0, Math.min(currentQuestion, shuffledQuestions.length - 1));
+            renderQuestion();
+        }
+
+        function shuffleQuiz() {
+            if (currentMode !== 'learn') return;
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
+            renderQuestion();
+        }
+
+        function showResults() {
+            if (timerInterval) clearInterval(timerInterval);
+            let correct = 0;
+            shuffledQuestions.forEach((q, idx) => { if (userAnswers[idx] !== null && userAnswers[idx] !== -1 && userAnswers[idx] === q.correct) correct++; });
+            const total = shuffledQuestions.length;
+            const percentage = Math.round((correct / total) * 100);
+            const passed = percentage >= 80;
+            document.getElementById('quizContent').classList.add('hidden');
+            document.getElementById('resultsCard').classList.add('show');
+            const scoreEl = document.getElementById('scorePercent');
+            scoreEl.textContent = percentage + '%';
+            scoreEl.className = 'results-score ' + (passed ? 'pass' : 'fail');
+            const statusEl = document.getElementById('resultStatus');
+            statusEl.textContent = passed ? '🎉 PASSED!' : '📚 Keep Studying';
+            statusEl.className = 'results-status ' + (passed ? 'pass' : 'fail');
+            document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`;
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('incorrectCount').textContent = total - correct;
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('modeSelector').classList.remove('hidden');
+            document.getElementById('quizContent').classList.add('hidden');
+            if (timerInterval) clearInterval(timerInterval);
+        }
+    </script>
+</body>
+</html>

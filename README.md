@@ -103,12 +103,26 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-| Topic | Questions | Difficulty | Quiz |
-|-------|-----------|------------|------|
-| **AWS Security Hub (Comprehensive)** | 25 | Intermediate | [Start Quiz](./quizzes/security-hub-comprehensive.html) |
-| **Amazon GuardDuty (Comprehensive)** | 25 | Intermediate | [Start Quiz](./quizzes/guardduty-comprehensive.html) |
-| GuardDuty Extended Threat Detection | 15 | Intermediate | [Start Quiz](./quizzes/guardduty-extended-threat-detection.html) |
-| *More quizzes coming soon...* | | | |
+#### ✅ Domain 1: Detection (Complete - 130 questions!)
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **AWS Security Hub** | 25 | [Start Quiz](./quizzes/security-hub-comprehensive.html) |
+| **Amazon GuardDuty** | 25 | [Start Quiz](./quizzes/guardduty-comprehensive.html) |
+| **Amazon Detective** | 20 | [Start Quiz](./quizzes/detective-comprehensive.html) |
+| **AWS CloudTrail** | 25 | [Start Quiz](./quizzes/cloudtrail-comprehensive.html) |
+| **CloudWatch Security** | 20 | [Start Quiz](./quizzes/cloudwatch-security-comprehensive.html) |
+| GuardDuty Extended Threat Detection | 15 | [Start Quiz](./quizzes/guardduty-extended-threat-detection.html) |
+
+#### 🚧 Coming Soon
+
+| Domain | Topics |
+|--------|--------|
+| Domain 2 | Incident Response, Forensics |
+| Domain 3 | VPC, WAF, Shield, Network Firewall |
+| Domain 4 | IAM, SCPs, Federation, Identity Center |
+| Domain 5 | KMS, Secrets Manager, ACM, Macie |
+| Domain 6 | Control Tower, Organizations |
 
 ### Running Quizzes Locally
 
