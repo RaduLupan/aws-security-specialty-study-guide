@@ -103,7 +103,7 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-> **Total: 175 questions across 8 quizzes (2 domains complete)**
+> **Total: 258 questions across 12 quizzes (3 domains complete)**
 
 #### ✅ Domain 1: Detection (130 questions)
 
@@ -123,11 +123,19 @@ Interactive HTML-based quizzes with two modes:
 | **Incident Response Fundamentals** | 25 | [Start Quiz](./quizzes/incident-response-fundamentals.html) |
 | **Automated Remediation** | 20 | [Start Quiz](./quizzes/automated-remediation.html) |
 
+#### ✅ Domain 3: Infrastructure Security (83 questions)
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **Amazon VPC Security** | 25 | [Start Quiz](./quizzes/vpc-security-comprehensive.html) |
+| **AWS WAF** | 20 | [Start Quiz](./quizzes/waf-comprehensive.html) |
+| **AWS Shield & DDoS Protection** | 18 | [Start Quiz](./quizzes/shield-ddos-comprehensive.html) |
+| **AWS Network Firewall** | 20 | [Start Quiz](./quizzes/network-firewall-comprehensive.html) |
+
 #### 🚧 Coming Soon
 
 | Domain | Topics |
 |--------|--------|
-| Domain 3 | VPC, WAF, Shield, Network Firewall |
 | Domain 4 | IAM, SCPs, Federation, Identity Center |
 | Domain 5 | KMS, Secrets Manager, ACM, Macie |
 | Domain 6 | Control Tower, Organizations |

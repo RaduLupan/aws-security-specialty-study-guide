@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS WAF Comprehensive Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141b2d;
+            --bg-tertiary: #1a2236;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-primary: #a855f7;
+            --accent-secondary: #c084fc;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #eab308;
+            --info: #3b82f6;
+            --border: #2d3a52;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .mode-btn.active { border-color: var(--accent-primary); background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(192, 132, 252, 0.1)); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; }
+        .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(168, 85, 247, 0.1); }
+        .option.selected { border-color: var(--accent-primary); background: rgba(168, 85, 247, 0.15); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; transition: all 0.2s ease; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(168, 85, 247, 0.1); border-radius: 6px; transition: background 0.2s ease; }
+        .doc-link:hover { background: rgba(168, 85, 247, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); }
+        .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); }
+        .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 2rem; font-weight: 700; }
+        .breakdown-value.correct { color: var(--success); }
+        .breakdown-value.incorrect { color: var(--error); }
+        .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(168, 85, 247, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.5rem; }
+            .stats-bar { gap: 1rem; }
+            .mode-selector { flex-direction: column; }
+            .btn-container { flex-direction: column; }
+            .results-breakdown { flex-direction: column; gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 3: Infrastructure Security</span>
+            <h1>AWS WAF</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat">
+                    <div class="stat-value">20</div>
+                    <div class="stat-label">Questions</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">80%</div>
+                    <div class="stat-label">Pass Score</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">50:00</div>
+                    <div class="stat-label">Exam Time</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">20</span></span>
+                    <span class="timer" id="timer">50:00</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item">
+                    <div class="breakdown-value correct" id="correctCount">0</div>
+                    <div class="breakdown-label">Correct</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-value incorrect" id="incorrectCount">0</div>
+                    <div class="breakdown-label">Incorrect</div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                question: "What is the primary component in AWS WAF that contains rules and actions for web requests?",
+                options: [
+                    "Rule Group",
+                    "Web ACL",
+                    "IP Set",
+                    "Regex Pattern Set"
+                ],
+                correct: 1,
+                explanation: "A Web ACL (Web Access Control List) is the primary component in AWS WAF. It contains rules that inspect web requests and specifies actions to take when requests match the conditions defined in those rules. You associate Web ACLs with protected resources.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/web-acl.html"
+            },
+            {
+                id: 2,
+                question: "Which AWS service is NOT a valid integration point for AWS WAF?",
+                options: [
+                    "Amazon CloudFront",
+                    "Application Load Balancer",
+                    "Network Load Balancer",
+                    "Amazon API Gateway"
+                ],
+                correct: 2,
+                explanation: "AWS WAF cannot be directly integrated with Network Load Balancer (NLB). WAF integrates with CloudFront, Application Load Balancer (ALB), API Gateway, AppSync, Cognito User Pools, and App Runner. NLB operates at Layer 4, while WAF operates at Layer 7.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html"
+            },
+            {
+                id: 3,
+                question: "What type of rule allows you to limit requests from a single IP address within a specified time period?",
+                options: [
+                    "Regular rule",
+                    "Rate-based rule",
+                    "IP set rule",
+                    "Managed rule"
+                ],
+                correct: 1,
+                explanation: "Rate-based rules track the rate of requests from individual IP addresses. You define a rate limit (requests per 5-minute period), and if an IP exceeds this rate, it triggers the rule action (typically BLOCK). This is essential for DDoS mitigation and brute-force protection.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-rate-based.html"
+            },
+            {
+                id: 4,
+                question: "What is the purpose of AWS Managed Rules in WAF?",
+                options: [
+                    "To provide custom rule creation tools",
+                    "To offer pre-configured rule groups maintained by AWS that protect against common threats",
+                    "To manage WAF across multiple accounts",
+                    "To automatically scale WAF capacity"
+                ],
+                correct: 1,
+                explanation: "AWS Managed Rules are pre-configured rule groups created and maintained by AWS and AWS Marketplace sellers. They provide protection against common threats like OWASP Top 10 vulnerabilities, SQL injection, XSS, and known bad actors without requiring you to write custom rules.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups.html"
+            },
+            {
+                id: 5,
+                question: "How are rules evaluated within a Web ACL?",
+                options: [
+                    "Alphabetically by rule name",
+                    "In order of priority (lowest number first)",
+                    "Randomly for load balancing",
+                    "Based on rule complexity"
+                ],
+                correct: 1,
+                explanation: "Rules within a Web ACL are evaluated in priority order, starting with the lowest numeric priority value. When a rule matches, its action is applied. If the action is not ALLOW or BLOCK with custom response, evaluation continues to the next rule.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/web-acl-processing-order.html"
+            },
+            {
+                id: 6,
+                question: "What is the CAPTCHA action in AWS WAF used for?",
+                options: [
+                    "To block all automated traffic",
+                    "To present a puzzle that verifies the requester is human",
+                    "To encrypt web traffic",
+                    "To log suspicious requests"
+                ],
+                correct: 1,
+                explanation: "The CAPTCHA action presents an interstitial CAPTCHA puzzle to the client browser. It helps distinguish between human users and bots. If the client solves the CAPTCHA correctly, the request is allowed. This is useful for protecting against automated attacks while allowing legitimate users.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-action.html"
+            },
+            {
+                id: 7,
+                question: "Which AWS WAF rule statement type is used to detect SQL injection attempts?",
+                options: [
+                    "String match statement",
+                    "Size constraint statement",
+                    "SQLi attack rule statement",
+                    "Regex pattern statement"
+                ],
+                correct: 2,
+                explanation: "The SQLi attack rule statement (SqliMatchStatement) detects malicious SQL code in web requests. It uses inspection criteria to identify SQL injection patterns in request components like query strings, body, and headers. AWS WAF inspects using signatures and patterns.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-sqli-match.html"
+            },
+            {
+                id: 8,
+                question: "What is the purpose of scope-down statements in WAF rule groups?",
+                options: [
+                    "To reduce the cost of WAF",
+                    "To narrow which requests a rule evaluates within a rule group",
+                    "To limit the geographic scope of rules",
+                    "To decrease rule processing time"
+                ],
+                correct: 1,
+                explanation: "Scope-down statements narrow the scope of requests that a managed rule group evaluates. For example, you can use them to exclude certain URIs or request patterns from evaluation by a rule group, reducing false positives while maintaining protection for other requests.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-managed-rule-groups-testing.html"
+            },
+            {
+                id: 9,
+                question: "What is the Count action in AWS WAF used for?",
+                options: [
+                    "To count the total number of requests",
+                    "To evaluate requests without blocking them (for testing)",
+                    "To count the number of rule matches",
+                    "To limit request rates"
+                ],
+                correct: 1,
+                explanation: "The Count action allows requests to pass through while recording metrics and logs. It's essential for testing new rules before enabling block actions, monitoring traffic patterns, and fine-tuning rules without impacting production traffic. Labels can be applied for further processing.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-action.html"
+            },
+            {
+                id: 10,
+                question: "Which destination is NOT supported for AWS WAF logging?",
+                options: [
+                    "Amazon S3",
+                    "Amazon CloudWatch Logs",
+                    "Amazon Kinesis Data Firehose",
+                    "Amazon DynamoDB"
+                ],
+                correct: 3,
+                explanation: "AWS WAF logging supports three destinations: Amazon S3 (for storage and analysis), Amazon CloudWatch Logs (for real-time monitoring), and Amazon Kinesis Data Firehose (for streaming to analytics services). DynamoDB is not a supported logging destination.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/logging.html"
+            },
+            {
+                id: 11,
+                question: "What is the purpose of AWS WAF labels?",
+                options: [
+                    "To categorize Web ACLs for billing purposes",
+                    "To tag matched requests for further processing by downstream rules",
+                    "To organize rule groups in the console",
+                    "To identify protected resources"
+                ],
+                correct: 1,
+                explanation: "Labels are metadata that rules can add to matching web requests. Downstream rules in the same Web ACL can then match against these labels. This enables complex, multi-stage evaluation logic where rules can build upon decisions made by previous rules.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-labels.html"
+            },
+            {
+                id: 12,
+                question: "What is the maximum size of a request body that AWS WAF can inspect for Application Load Balancer?",
+                options: [
+                    "8 KB",
+                    "16 KB",
+                    "64 KB",
+                    "128 KB"
+                ],
+                correct: 2,
+                explanation: "AWS WAF can inspect up to 64 KB of the request body for regional resources like ALB and API Gateway. For CloudFront, it can inspect up to 64 KB as well. You can configure body inspection limits, but content beyond the limit is not inspected.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/web-request-body-inspection.html"
+            },
+            {
+                id: 13,
+                question: "Which managed rule group protects against OWASP Top 10 web application security risks?",
+                options: [
+                    "Anonymous IP list",
+                    "Core rule set (CRS)",
+                    "Known bad inputs",
+                    "Bot Control"
+                ],
+                correct: 1,
+                explanation: "The Core rule set (CRS) managed rule group provides protection against a wide range of vulnerabilities described in OWASP publications, including the OWASP Top 10. It covers common attack patterns like SQL injection, XSS, and local file inclusion.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-baseline.html"
+            },
+            {
+                id: 14,
+                question: "What is the Challenge action in AWS WAF?",
+                options: [
+                    "A puzzle presented to users",
+                    "A silent client verification that runs JavaScript",
+                    "A security question prompt",
+                    "A rate limiting mechanism"
+                ],
+                correct: 1,
+                explanation: "The Challenge action runs a silent verification in the client browser using JavaScript. Unlike CAPTCHA, it doesn't require user interaction. It verifies that the request comes from a real browser capable of running JavaScript, helping to block simple bots and scripts.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-action.html"
+            },
+            {
+                id: 15,
+                question: "What is the purpose of the IP reputation managed rule group?",
+                options: [
+                    "To block requests from known malicious IP addresses",
+                    "To allow requests only from whitelisted IPs",
+                    "To rate limit by IP address",
+                    "To geoblock specific countries"
+                ],
+                correct: 0,
+                explanation: "The Amazon IP reputation list managed rule group blocks requests from IP addresses typically associated with bots or other threats. It uses threat intelligence from various sources to maintain lists of malicious IPs, including those involved in DDoS attacks and botnets.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/aws-managed-rule-groups-ip-rep.html"
+            },
+            {
+                id: 16,
+                question: "Which statement type allows you to block requests from specific countries?",
+                options: [
+                    "IP set match statement",
+                    "Geo match statement",
+                    "String match statement",
+                    "Label match statement"
+                ],
+                correct: 1,
+                explanation: "The Geo match statement allows you to match requests based on the country of origin (determined from IP address). You can use this to implement geo-blocking, allowing or denying requests from specific countries to comply with licensing or regulatory requirements.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-geo-match.html"
+            },
+            {
+                id: 17,
+                question: "What is the AWS WAF Bot Control feature used for?",
+                options: [
+                    "To automatically create bots for load testing",
+                    "To categorize and manage bot traffic with specific actions",
+                    "To encrypt bot traffic",
+                    "To redirect bots to a honeypot"
+                ],
+                correct: 1,
+                explanation: "AWS WAF Bot Control is a managed rule group that categorizes and manages bot traffic. It identifies common bots (like search engines), uncommon bots, and malicious bots. You can configure different actions for each category, such as allowing good bots while blocking malicious ones.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-bot-control.html"
+            },
+            {
+                id: 18,
+                question: "What is the purpose of AWS WAF token domains?",
+                options: [
+                    "To authenticate API requests",
+                    "To specify which domains share WAF tokens for CAPTCHA and Challenge",
+                    "To define DNS zones for WAF",
+                    "To create custom domain names for WAF"
+                ],
+                correct: 1,
+                explanation: "Token domains allow you to specify additional domains that share tokens with the primary domain. When a client solves a CAPTCHA or Challenge on one domain, the token can be valid for other specified domains, improving user experience across related sites.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-tokens.html"
+            },
+            {
+                id: 19,
+                question: "What is a regex pattern set in AWS WAF?",
+                options: [
+                    "A collection of regular expressions used in rule statements",
+                    "A set of URL patterns for routing",
+                    "A pattern for matching file extensions",
+                    "A template for creating rules"
+                ],
+                correct: 0,
+                explanation: "A regex pattern set is a collection of regular expression patterns that you can use in RegexPatternSetReferenceStatement to match against web request components. You can reuse the same pattern set across multiple rules and Web ACLs.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-regex-pattern-set.html"
+            },
+            {
+                id: 20,
+                question: "What happens when a request matches a rule with the BLOCK action and a custom response configured?",
+                options: [
+                    "The request is logged and forwarded",
+                    "WAF returns the custom response to the client",
+                    "The request is rate limited",
+                    "The request is cached for analysis"
+                ],
+                correct: 1,
+                explanation: "When configured with a custom response, the BLOCK action returns your specified response body and HTTP status code to the client instead of the default block response. This allows you to provide user-friendly error messages or redirect to specific pages.",
+                docLink: "https://docs.aws.amazon.com/waf/latest/developerguide/customizing-the-response-for-blocked-requests.html"
+            }
+        ];
+
+        let currentMode = 'learn';
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let shuffledQuestions = [];
+        let timerInterval = null;
+        let timeRemaining = 0;
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function shuffleQuestionOptions(question) {
+            const optionIndices = [0, 1, 2, 3];
+            const shuffledIndices = shuffleArray(optionIndices);
+            const newQuestion = { ...question };
+            newQuestion.options = shuffledIndices.map(i => question.options[i]);
+            newQuestion.correct = shuffledIndices.indexOf(question.correct);
+            newQuestion.shuffleMap = shuffledIndices;
+            return newQuestion;
+        }
+
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
+            document.getElementById('modeSelector').classList.add('hidden');
+            document.getElementById('quizContent').classList.remove('hidden');
+            document.getElementById('resultsCard').classList.remove('hidden');
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('totalQ').textContent = shuffledQuestions.length;
+            if (mode === 'exam') {
+                timeRemaining = shuffledQuestions.length * 150;
+                startTimer();
+                document.getElementById('shuffleBtn').classList.add('hidden');
+            } else {
+                document.getElementById('timer').textContent = 'Learn Mode';
+                document.getElementById('shuffleBtn').classList.remove('hidden');
+            }
+            renderQuestion();
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    showResults();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const timerEl = document.getElementById('timer');
+            timerEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            timerEl.classList.remove('warning', 'danger');
+            if (timeRemaining <= 60) timerEl.classList.add('danger');
+            else if (timeRemaining <= 300) timerEl.classList.add('warning');
+        }
+
+        function renderQuestion() {
+            const q = shuffledQuestions[currentQuestion];
+            const container = document.getElementById('questionsContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const userAnswer = userAnswers[currentQuestion];
+            let optionsHtml = q.options.map((opt, idx) => {
+                let classes = 'option';
+                if (currentMode === 'learn' && userAnswer !== null) {
+                    classes += ' disabled';
+                    if (idx === q.correct) classes += ' correct';
+                    else if (idx === userAnswer) classes += ' incorrect';
+                } else if (userAnswer === idx) {
+                    classes += ' selected';
+                }
+                return `<div class="${classes}" onclick="selectOption(${idx})">
+                    <span class="option-marker">${letters[idx]}</span>
+                    <span class="option-text">${opt}</span>
+                </div>`;
+            }).join('');
+            let explanationHtml = '';
+            if (currentMode === 'learn') {
+                explanationHtml = `<div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation">
+                    <div class="explanation-title">📖 Explanation</div>
+                    <div class="answer-header">Correct Answer: ${letters[q.correct]}</div>
+                    <p class="explanation-text">${q.explanation}</p>
+                    <a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a>
+                </div>`;
+            }
+            container.innerHTML = `<div class="question-card">
+                <div class="question-header">
+                    <span class="question-number">Question ${currentQuestion + 1}</span>
+                    <span class="question-domain">AWS WAF</span>
+                </div>
+                <p class="question-text">${q.question}</p>
+                <div class="options">${optionsHtml}</div>
+                ${currentMode === 'learn' && userAnswer === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}
+                ${explanationHtml}
+            </div>`;
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
+        }
+
+        function selectOption(idx) {
+            if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (currentMode === 'exam') renderQuestion();
+        }
+
+        function revealAnswer() {
+            if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1;
+            renderQuestion();
+        }
+
+        function navigate(direction) {
+            if (direction === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; }
+            currentQuestion += direction;
+            currentQuestion = Math.max(0, Math.min(currentQuestion, shuffledQuestions.length - 1));
+            renderQuestion();
+        }
+
+        function shuffleQuiz() {
+            if (currentMode !== 'learn') return;
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
+            renderQuestion();
+            const notice = document.getElementById('shuffleNotice');
+            notice.style.animation = 'none';
+            notice.offsetHeight;
+            notice.style.animation = 'fadeIn 0.5s ease';
+        }
+
+        function showResults() {
+            if (timerInterval) clearInterval(timerInterval);
+            let correct = 0;
+            shuffledQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] !== null && userAnswers[idx] !== -1 && userAnswers[idx] === q.correct) correct++;
+            });
+            const total = shuffledQuestions.length;
+            const percentage = Math.round((correct / total) * 100);
+            const passed = percentage >= 80;
+            document.getElementById('quizContent').classList.add('hidden');
+            document.getElementById('resultsCard').classList.add('show');
+            document.getElementById('scorePercent').textContent = percentage + '%';
+            document.getElementById('scorePercent').className = 'results-score ' + (passed ? 'pass' : 'fail');
+            document.getElementById('resultStatus').textContent = passed ? '🎉 PASSED!' : '📚 Keep Studying';
+            document.getElementById('resultStatus').className = 'results-status ' + (passed ? 'pass' : 'fail');
+            document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly. ${passed ? 'Great job!' : 'You need 80% to pass.'}`;
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('incorrectCount').textContent = total - correct;
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('modeSelector').classList.remove('hidden');
+            document.getElementById('quizContent').classList.add('hidden');
+            if (timerInterval) clearInterval(timerInterval);
+        }
+    </script>
+</body>
+</html>

@@ -32,6 +32,15 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [incident-response-fundamentals.html](./incident-response-fundamentals.html) | **Incident Response Fundamentals** | 25 |
 | [automated-remediation.html](./automated-remediation.html) | **Automated Remediation** | 20 |
 
+### Domain 3: Infrastructure Security (Complete - 83 questions!)
+
+| Quiz | Topic | Questions | 
+|------|-------|-----------|
+| [vpc-security-comprehensive.html](./vpc-security-comprehensive.html) | **Amazon VPC Security** | 25 |
+| [waf-comprehensive.html](./waf-comprehensive.html) | **AWS WAF** | 20 |
+| [shield-ddos-comprehensive.html](./shield-ddos-comprehensive.html) | **AWS Shield & DDoS Protection** | 18 |
+| [network-firewall-comprehensive.html](./network-firewall-comprehensive.html) | **AWS Network Firewall** | 20 |
+
 ## How to Use
 
 ### Option 1: Direct File Access
