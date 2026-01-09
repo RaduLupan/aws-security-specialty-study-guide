@@ -103,7 +103,7 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-> **Total: 258 questions across 12 quizzes (3 domains complete)**
+> **Total: 341 questions across 16 quizzes (4 domains complete)**
 
 #### ✅ Domain 1: Detection (130 questions)
 
@@ -132,11 +132,19 @@ Interactive HTML-based quizzes with two modes:
 | **AWS Shield & DDoS Protection** | 18 | [Start Quiz](./quizzes/shield-ddos-comprehensive.html) |
 | **AWS Network Firewall** | 20 | [Start Quiz](./quizzes/network-firewall-comprehensive.html) |
 
+#### ✅ Domain 4: Identity & Access Management (83 questions)
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **IAM Policies & Permissions** | 25 | [Start Quiz](./quizzes/iam-policies-comprehensive.html) |
+| **AWS Organizations & SCPs** | 20 | [Start Quiz](./quizzes/organizations-scps-comprehensive.html) |
+| **IAM Identity Center & Federation** | 20 | [Start Quiz](./quizzes/identity-center-federation-comprehensive.html) |
+| **Amazon Cognito & AWS STS** | 18 | [Start Quiz](./quizzes/cognito-sts-comprehensive.html) |
+
 #### 🚧 Coming Soon
 
 | Domain | Topics |
 |--------|--------|
-| Domain 4 | IAM, SCPs, Federation, Identity Center |
 | Domain 5 | KMS, Secrets Manager, ACM, Macie |
 | Domain 6 | Control Tower, Organizations |
 

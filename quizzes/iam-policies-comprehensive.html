@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Policies & Permissions Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #141b2d;
+            --bg-tertiary: #1a2236;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-primary: #f59e0b;
+            --accent-secondary: #fbbf24;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #eab308;
+            --info: #3b82f6;
+            --border: #2d3a52;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; }
+        .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(245, 158, 11, 0.1); }
+        .option.selected { border-color: var(--accent-primary); background: rgba(245, 158, 11, 0.15); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(245, 158, 11, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(245, 158, 11, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); }
+        .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); }
+        .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; }
+        .breakdown-value { font-size: 2rem; font-weight: 700; }
+        .breakdown-value.correct { color: var(--success); }
+        .breakdown-value.incorrect { color: var(--error); }
+        .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 4: Identity & Access Management (20%)</span>
+            <h1>IAM Policies & Permissions</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">25</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">62:30</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">25</span></span>
+                    <span class="timer" id="timer">62:30</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            {
+                id: 1,
+                question: "What is the correct order of IAM policy evaluation when determining access?",
+                options: [
+                    "Identity-based → Resource-based → SCPs → Permissions Boundary",
+                    "Explicit Deny → SCPs → Resource-based → Identity-based → Permissions Boundary → Implicit Deny",
+                    "SCPs → Identity-based → Resource-based → Session Policy",
+                    "Resource-based → Identity-based → SCPs → Explicit Deny"
+                ],
+                correct: 1,
+                explanation: "IAM policy evaluation follows: 1) Explicit Deny (always wins), 2) Organization SCPs (must allow), 3) Resource-based policies (may allow), 4) Identity-based policies (may allow), 5) Permissions Boundaries (must allow), 6) Session policies (must allow), 7) Implicit Deny. An explicit deny at any step results in access denied.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
+            },
+            {
+                id: 2,
+                question: "Which IAM policy type can GRANT permissions on its own without requiring identity-based policies?",
+                options: [
+                    "Permissions Boundary",
+                    "Service Control Policy (SCP)",
+                    "Resource-based Policy",
+                    "Session Policy"
+                ],
+                correct: 2,
+                explanation: "Resource-based policies can grant permissions independently. Unlike SCPs and Permissions Boundaries (which only restrict), resource-based policies attached to resources like S3 buckets or KMS keys can directly grant access to principals, even cross-account, without requiring identity-based policies.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
+            },
+            {
+                id: 3,
+                question: "What is the primary purpose of an IAM Permissions Boundary?",
+                options: [
+                    "To grant maximum permissions to a user",
+                    "To set the maximum permissions that identity-based policies can grant",
+                    "To replace Service Control Policies",
+                    "To define default permissions for new users"
+                ],
+                correct: 1,
+                explanation: "A Permissions Boundary sets the maximum permissions that identity-based policies can grant to a user or role. It doesn't grant permissions itself but limits what permissions can be effective. Both the boundary AND identity-based policy must allow an action for it to be permitted.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
+            },
+            {
+                id: 4,
+                question: "Which element in an IAM policy specifies WHO can perform actions?",
+                options: [
+                    "Action",
+                    "Resource",
+                    "Principal",
+                    "Effect"
+                ],
+                correct: 2,
+                explanation: "The Principal element specifies the user, account, service, or other entity that is allowed or denied access. It's required in resource-based policies but is implicit in identity-based policies (the principal is whoever the policy is attached to).",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html"
+            },
+            {
+                id: 5,
+                question: "What does the policy condition 'aws:PrincipalOrgID' check?",
+                options: [
+                    "The IAM user's unique identifier",
+                    "Whether the principal belongs to a specific AWS Organization",
+                    "The organization unit path of the principal",
+                    "The account ID of the principal"
+                ],
+                correct: 1,
+                explanation: "aws:PrincipalOrgID is a global condition key that checks if the principal making the request belongs to a specific AWS Organization. It's commonly used in resource-based policies to allow access only from accounts within your organization.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-principalorgid"
+            },
+            {
+                id: 6,
+                question: "Which statement about IAM groups is TRUE?",
+                options: [
+                    "Groups can be nested within other groups",
+                    "Groups can be referenced as principals in resource-based policies",
+                    "Groups can only contain IAM users, not roles",
+                    "Groups can have their own access keys"
+                ],
+                correct: 2,
+                explanation: "IAM groups can only contain IAM users, not roles or other groups. Groups cannot be nested, cannot be referenced in resource-based policy principals (you must specify users or roles), and groups don't have credentials - only users do.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html"
+            },
+            {
+                id: 7,
+                question: "What is the 'NotAction' element used for in IAM policies?",
+                options: [
+                    "To explicitly deny specific actions",
+                    "To match all actions EXCEPT the specified ones",
+                    "To create a blocklist of prohibited actions",
+                    "To negate the effect of previous actions"
+                ],
+                correct: 1,
+                explanation: "NotAction matches all actions EXCEPT those specified. It's commonly used with Allow to grant access to everything except certain actions, or with Deny to deny everything except certain actions. It's not a deny - it's an inverse match for the Action element.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_notaction.html"
+            },
+            {
+                id: 8,
+                question: "What happens when an IAM user has no policies attached?",
+                options: [
+                    "They have full access to all resources",
+                    "They can only access read-only resources",
+                    "They have no permissions (implicit deny)",
+                    "They inherit permissions from the account root"
+                ],
+                correct: 2,
+                explanation: "By default, IAM users have no permissions. This is the implicit deny - unless a policy explicitly allows an action, it's denied. Users must have permissions granted through identity-based policies, be added to groups with policies, or assume roles to gain permissions.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
+            },
+            {
+                id: 9,
+                question: "What is IAM Access Analyzer used for?",
+                options: [
+                    "To analyze CloudTrail logs for suspicious activity",
+                    "To identify resources shared with external entities outside your zone of trust",
+                    "To calculate the cost of IAM operations",
+                    "To automatically remediate policy violations"
+                ],
+                correct: 1,
+                explanation: "IAM Access Analyzer helps identify resources (like S3 buckets, IAM roles, KMS keys) that are shared with external entities outside your zone of trust (account or organization). It generates findings for resources that grant access to external principals.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
+            },
+            {
+                id: 10,
+                question: "Which condition key restricts API calls to a specific source IP address or range?",
+                options: [
+                    "aws:SourceArn",
+                    "aws:SourceIp",
+                    "aws:CallerIp",
+                    "aws:RequestIp"
+                ],
+                correct: 1,
+                explanation: "aws:SourceIp is the condition key used to restrict API calls based on the source IP address or CIDR range. Note that this condition doesn't work for calls made through AWS services on your behalf (like CloudFormation or Elastic Beanstalk).",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-sourceip"
+            },
+            {
+                id: 11,
+                question: "What is the purpose of the 'aws:RequestTag' condition key?",
+                options: [
+                    "To check existing tags on a resource",
+                    "To control what tags can be applied during resource creation or tagging",
+                    "To filter resources by tag in list operations",
+                    "To automatically tag resources"
+                ],
+                correct: 1,
+                explanation: "aws:RequestTag controls what tags can be applied during resource creation or tagging operations. It lets you restrict which tag key-value pairs can be used when creating or tagging resources. Use aws:ResourceTag to check existing tags on a resource.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_tags.html"
+            },
+            {
+                id: 12,
+                question: "Which IAM best practice helps prevent privilege escalation?",
+                options: [
+                    "Granting full AdministratorAccess to all developers",
+                    "Using permission boundaries to limit delegated administration",
+                    "Sharing IAM user credentials across team members",
+                    "Disabling CloudTrail logging"
+                ],
+                correct: 1,
+                explanation: "Permissions boundaries help prevent privilege escalation by setting maximum permissions for users/roles created by delegated administrators. Even if an admin can create IAM entities, the boundary limits what permissions those entities can have, preventing them from creating more privileged principals.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
+            },
+            {
+                id: 13,
+                question: "What does the 'iam:PassRole' permission control?",
+                options: [
+                    "The ability to assume an IAM role",
+                    "The ability to pass a role to an AWS service to act on your behalf",
+                    "The ability to create new IAM roles",
+                    "The ability to modify role trust policies"
+                ],
+                correct: 1,
+                explanation: "iam:PassRole controls who can pass an IAM role to an AWS service (like EC2 or Lambda) so the service can assume that role. Without this permission, users can't configure services with roles, even if they can create the resources themselves.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html"
+            },
+            {
+                id: 14,
+                question: "Which policy type would you use to allow a Lambda function in Account A to access an S3 bucket in Account B?",
+                options: [
+                    "SCP in the Organization",
+                    "Resource-based policy (bucket policy) on the S3 bucket",
+                    "Permissions boundary on the Lambda role",
+                    "Session policy on the Lambda function"
+                ],
+                correct: 1,
+                explanation: "For cross-account access, you typically use a resource-based policy on the target resource (S3 bucket policy in Account B) that explicitly allows the Lambda role from Account A. Alternatively, Account B can create a role that Account A's Lambda can assume.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-cross-account-resource-access.html"
+            },
+            {
+                id: 15,
+                question: "What is the maximum size of an IAM managed policy?",
+                options: [
+                    "2 KB",
+                    "6 KB",
+                    "10 KB",
+                    "20 KB"
+                ],
+                correct: 1,
+                explanation: "IAM managed policies have a maximum size of 6,144 characters (approximately 6 KB). This includes all whitespace. Inline policies have a smaller limit. If you need more permissions, use multiple policies or consider restructuring your policies to be more efficient.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html"
+            },
+            {
+                id: 16,
+                question: "What does the condition key 'aws:MultiFactorAuthPresent' check?",
+                options: [
+                    "Whether the AWS account has MFA enabled",
+                    "Whether the API request was authenticated using MFA",
+                    "Whether the IAM user has an MFA device configured",
+                    "Whether MFA is required for the account"
+                ],
+                correct: 1,
+                explanation: "aws:MultiFactorAuthPresent checks whether the current API request was authenticated using MFA. It's true if MFA was used for the current session. Note: this key is NOT present (not false, but missing) for long-term credentials like access keys.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_configure-api-require.html"
+            },
+            {
+                id: 17,
+                question: "Which of the following is a valid IAM principal format?",
+                options: [
+                    "arn:aws:iam::123456789012:group/Admins",
+                    "arn:aws:iam::123456789012:role/EC2Role",
+                    "arn:aws:iam::123456789012:policy/MyPolicy",
+                    "arn:aws:iam::123456789012:mfa/AdminUser"
+                ],
+                correct: 1,
+                explanation: "IAM roles (arn:aws:iam::account:role/role-name) are valid principals. Groups CANNOT be principals in policies. Policies and MFA devices are not principals. Valid principals include AWS accounts, IAM users, IAM roles, federated users, and AWS services.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html"
+            },
+            {
+                id: 18,
+                question: "What is 'policy generation' in IAM Access Analyzer?",
+                options: [
+                    "Automatically creating new IAM policies based on templates",
+                    "Generating least-privilege policies based on CloudTrail activity",
+                    "Creating policy reports for compliance",
+                    "Generating random test policies"
+                ],
+                correct: 1,
+                explanation: "IAM Access Analyzer policy generation analyzes CloudTrail logs to generate least-privilege IAM policies. It identifies the actions, resources, and conditions actually used during a specified time period and creates a policy that only grants those permissions.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-generation.html"
+            },
+            {
+                id: 19,
+                question: "What does the 'Sid' element in an IAM policy statement represent?",
+                options: [
+                    "Security Identifier (required for all policies)",
+                    "Statement ID (optional identifier for the statement)",
+                    "Service ID (identifies the AWS service)",
+                    "Session ID (identifies the user session)"
+                ],
+                correct: 1,
+                explanation: "Sid (Statement ID) is an optional identifier for a policy statement. It's used to differentiate between statements and can be any string. Some services require Sids (like SQS, SNS), but it's generally optional in IAM policies.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_sid.html"
+            },
+            {
+                id: 20,
+                question: "Which AWS service should you use to require MFA for specific API actions?",
+                options: [
+                    "AWS Config",
+                    "IAM policy with aws:MultiFactorAuthAge condition",
+                    "AWS CloudTrail",
+                    "Amazon GuardDuty"
+                ],
+                correct: 1,
+                explanation: "You can use IAM policies with MFA conditions like aws:MultiFactorAuthPresent or aws:MultiFactorAuthAge to require MFA for specific actions. MultiFactorAuthAge checks how many seconds since MFA authentication, allowing you to require recent MFA for sensitive operations.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_configure-api-require.html"
+            },
+            {
+                id: 21,
+                question: "What is a service-linked role?",
+                options: [
+                    "A role you create to link two AWS services",
+                    "A predefined role that an AWS service creates to perform actions on your behalf",
+                    "A role that links on-premises services to AWS",
+                    "A role that can only be used by a single service instance"
+                ],
+                correct: 1,
+                explanation: "Service-linked roles are predefined IAM roles that AWS services create in your account. They include all permissions the service requires to call other AWS services on your behalf. You can't modify their permissions, but you can delete them when no longer needed.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html"
+            },
+            {
+                id: 22,
+                question: "What is the effect of 'aws:SecureTransport': 'false' condition in a Deny statement?",
+                options: [
+                    "Denies all HTTPS requests",
+                    "Denies requests that are not made over SSL/TLS",
+                    "Denies requests from insecure networks",
+                    "Denies requests without encryption at rest"
+                ],
+                correct: 1,
+                explanation: "Using 'aws:SecureTransport': 'false' in a Deny statement denies requests made over HTTP (not HTTPS). This enforces encryption in transit by blocking unencrypted connections. The condition is commonly used in S3 bucket policies to require HTTPS.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-securetransport"
+            },
+            {
+                id: 23,
+                question: "What is the 'trust policy' of an IAM role?",
+                options: [
+                    "A policy that defines what actions the role can perform",
+                    "A resource-based policy that defines who can assume the role",
+                    "A policy that trusts external identity providers",
+                    "A policy attached to resources the role can access"
+                ],
+                correct: 1,
+                explanation: "A trust policy (also called assume role policy) is a resource-based policy attached to a role that defines which principals (users, roles, services, or accounts) can assume the role using sts:AssumeRole. It's separate from the permissions policy that defines what the role can do.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html"
+            },
+            {
+                id: 24,
+                question: "Which condition key helps prevent the confused deputy problem in cross-service access?",
+                options: [
+                    "aws:PrincipalOrgID",
+                    "aws:SourceArn or aws:SourceAccount",
+                    "aws:CalledVia",
+                    "aws:RequestedRegion"
+                ],
+                correct: 1,
+                explanation: "aws:SourceArn and aws:SourceAccount help prevent the confused deputy problem by verifying which resource or account triggered the service-to-service call. This ensures a service only acts on your behalf when called from your specific resources, not an attacker's.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html"
+            },
+            {
+                id: 25,
+                question: "What is the maximum number of managed policies that can be attached to an IAM role?",
+                options: [
+                    "5",
+                    "10",
+                    "20",
+                    "50"
+                ],
+                correct: 1,
+                explanation: "By default, you can attach up to 10 managed policies to an IAM user, role, or group. This quota can be increased through a service limit increase request. Additionally, you can use inline policies, which don't count toward this limit but have their own size limits.",
+                docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html"
+            }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0;
+        function shuffleArray(array) { const a = [...array]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct), shuffleMap: idx }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], container = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ans = userAnswers[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && ans !== null) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${ans !== null ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">IAM Policies</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && ans === null ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function selectOption(i) { if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return; userAnswers[currentQuestion] = i; if (currentMode === 'exam') renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = 'results-score ' + (pass ? 'pass' : 'fail'); document.getElementById('resultStatus').textContent = pass ? '🎉 PASSED!' : '📚 Keep Studying'; document.getElementById('resultStatus').className = 'results-status ' + (pass ? 'pass' : 'fail'); document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); if (timerInterval) clearInterval(timerInterval); }
+    </script>
+</body>
+</html>

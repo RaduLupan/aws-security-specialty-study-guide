@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Cognito & AWS STS Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #ec4899; --accent-secondary: #f472b6; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(236, 72, 153, 0.1); }
+        .option.selected { border-color: var(--accent-primary); background: rgba(236, 72, 153, 0.15); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(236, 72, 153, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(236, 72, 153, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(236, 72, 153, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 4: Identity & Access Management (20%)</span>
+            <h1>Amazon Cognito & AWS STS</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">18</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">45:00</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">18</span></span>
+                    <span class="timer" id="timer">45:00</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { id: 1, question: "What is the primary difference between Cognito User Pools and Identity Pools?", options: ["User Pools are for mobile apps, Identity Pools are for web apps", "User Pools handle authentication (sign-in), Identity Pools provide AWS credentials for accessing services", "User Pools are free, Identity Pools have costs", "There is no difference, they are the same service"], correct: 1, explanation: "Cognito User Pools handle authentication - they are user directories that provide sign-up/sign-in and return JWT tokens. Identity Pools (federated identities) exchange tokens for temporary AWS credentials, enabling access to AWS services like S3 or DynamoDB.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html" },
+            { id: 2, question: "What tokens does a Cognito User Pool return after successful authentication?", options: ["Only access token", "ID token, access token, and refresh token", "Session token and secret key", "OAuth code only"], correct: 1, explanation: "Cognito User Pools return three JWT tokens: ID token (contains user identity claims), access token (for API authorization), and refresh token (to get new ID and access tokens without re-authenticating). Each has different purposes and expiration times.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html" },
+            { id: 3, question: "Which feature allows you to customize the Cognito authentication flow?", options: ["Custom domains", "Lambda triggers", "App clients", "Resource servers"], correct: 1, explanation: "Lambda triggers allow you to customize User Pool workflows at various stages: pre sign-up validation, post confirmation, pre/post authentication, custom authentication challenges, token generation, and user migration from legacy systems.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools-working-with-aws-lambda-triggers.html" },
+            { id: 4, question: "What is the purpose of AWS STS (Security Token Service)?", options: ["To store security credentials permanently", "To provide temporary security credentials for AWS access", "To encrypt data at rest", "To manage SSL certificates"], correct: 1, explanation: "AWS STS is a web service that enables you to request temporary, limited-privilege credentials for IAM users or federated users. Temporary credentials consist of an access key ID, secret access key, and security token with an expiration time.", docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html" },
+            { id: 5, question: "What is the maximum session duration you can request with AssumeRole?", options: ["1 hour only", "Up to 12 hours", "Up to 24 hours", "Up to 36 hours"], correct: 1, explanation: "The maximum session duration for AssumeRole is 12 hours (43,200 seconds), but the role must be configured to allow this duration. The default is 1 hour. Console sessions have a maximum of 12 hours regardless of role settings.", docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use.html" },
+            { id: 6, question: "What is the 'external ID' used for in cross-account role assumption?", options: ["To identify the AWS Region", "To prevent confused deputy attacks by verifying the caller", "To encrypt the session", "To specify the account number"], correct: 1, explanation: "External ID is a condition in role trust policies that helps prevent confused deputy attacks. When a third party assumes your role, you share a secret external ID with them. The role only allows assumption if the correct external ID is provided.", docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html" },
+            { id: 7, question: "What Cognito feature allows unauthenticated (guest) users to access AWS resources?", options: ["User Pool guest mode", "Identity Pool with unauthenticated identities enabled", "Anonymous app clients", "Public resource servers"], correct: 1, explanation: "Identity Pools can be configured to allow unauthenticated identities, enabling guest access to AWS resources. You can assign a separate IAM role with limited permissions for unauthenticated users, allowing basic functionality before sign-in.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html" },
+            { id: 8, question: "How does Cognito User Pool MFA work?", options: ["Only hardware tokens are supported", "SMS, TOTP authenticator apps, or both can be configured", "MFA is not supported in User Pools", "Only email-based MFA is available"], correct: 1, explanation: "Cognito User Pools support MFA via SMS text messages and TOTP (Time-based One-Time Password) authenticator apps like Google Authenticator or Authy. You can make MFA required, optional, or off, and users can set up multiple MFA methods.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-settings-mfa.html" },
+            { id: 9, question: "What is GetFederationToken used for in STS?", options: ["For SAML federation", "For getting temporary credentials for federated users with custom policies", "For web identity federation", "For assuming cross-account roles"], correct: 1, explanation: "GetFederationToken is called by IAM users to get temporary credentials for federated users. Unlike AssumeRole, the calling IAM user's permissions combined with an optional policy define what the federated user can do. Useful for custom identity broker scenarios.", docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html" },
+            { id: 10, question: "What is the Cognito Sync feature used for?", options: ["Syncing user pools across regions", "Syncing application data across devices for a user", "Syncing identity pools with user pools", "Syncing with Active Directory"], correct: 1, explanation: "Cognito Sync enables cross-device syncing of application-related user data. Each user can have up to 20 datasets (up to 1MB each) that sync across devices. Note: AWS recommends AppSync for new applications requiring data sync.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-sync.html" },
+            { id: 11, question: "What happens when you revoke a session in AWS STS?", options: ["The session immediately becomes invalid", "Permissions for all sessions before a certain time are revoked by updating the role's policy", "Only the specific session token is invalidated", "Revocation is not supported in STS"], correct: 1, explanation: "You cannot directly revoke a specific STS token. Instead, you can revoke permissions by updating the role policy to deny access to sessions issued before a certain time using the aws:TokenIssueTime condition key.", docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_control-access_disable-perms.html" },
+            { id: 12, question: "What is a Cognito Identity Pool 'identity'?", options: ["An IAM user", "A unique identifier for a user that persists across devices and sessions", "A temporary credential", "A SAML assertion"], correct: 1, explanation: "A Cognito identity is a unique identifier assigned to each user in an Identity Pool. It persists across sessions and can link multiple logins (e.g., Facebook and Google) to the same identity, enabling a unified user experience.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/identity-pools.html" },
+            { id: 13, question: "Which STS API should you use to get temporary credentials when authenticating with MFA?", options: ["AssumeRole with MFA parameters", "GetSessionToken with MFA parameters", "GetFederationToken with MFA", "AssumeRoleWithMFA"], correct: 1, explanation: "GetSessionToken is commonly used to get MFA-authenticated temporary credentials for your own IAM user identity. You provide the MFA device serial number and token code. AssumeRole can also use MFA but is for assuming a different role.", docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_sample-code.html" },
+            { id: 14, question: "What is the purpose of the Cognito 'hosted UI'?", options: ["To host the application frontend", "To provide a pre-built, customizable authentication web page", "To host backend APIs", "To store user data"], correct: 1, explanation: "The Cognito hosted UI is a pre-built, customizable web page that handles sign-up, sign-in, and password recovery. You can customize its appearance with CSS and use it instead of building your own authentication UI.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-app-integration.html" },
+            { id: 15, question: "What is role chaining in AWS STS?", options: ["Creating a hierarchy of roles", "Using temporary credentials from one role to assume another role", "Linking roles to SCPs", "Chaining Lambda functions"], correct: 1, explanation: "Role chaining occurs when you use temporary credentials from one assumed role to assume another role. Each hop adds a role ARN to the session. The maximum session duration when chaining is 1 hour, regardless of role settings.", docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html" },
+            { id: 16, question: "What AWS feature enables Cognito User Pool users to directly call AWS APIs?", options: ["User Pool groups", "Integrating User Pool with Identity Pool", "API Gateway authorizers only", "Direct IAM policies on users"], correct: 1, explanation: "To enable Cognito User Pool users to call AWS services directly (like S3 or DynamoDB), you integrate the User Pool with an Identity Pool. Users authenticate with the User Pool, then exchange their token for AWS credentials via the Identity Pool.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-integrating-user-pools-with-identity-pools.html" },
+            { id: 17, question: "What is the difference between DecodeAuthorizationMessage and other STS APIs?", options: ["It creates credentials", "It decodes error messages returned when an authorization fails", "It validates tokens", "It refreshes credentials"], correct: 1, explanation: "DecodeAuthorizationMessage decodes the encoded additional information in authorization failure error messages. This helps you understand why a specific request was denied, useful for debugging IAM permission issues.", docLink: "https://docs.aws.amazon.com/STS/latest/APIReference/API_DecodeAuthorizationMessage.html" },
+            { id: 18, question: "What is the purpose of Cognito Advanced Security features?", options: ["To add DDoS protection", "To detect and prevent account takeover with adaptive authentication and compromised credentials detection", "To encrypt user data", "To add API rate limiting"], correct: 1, explanation: "Cognito Advanced Security provides adaptive authentication (risk-based MFA), compromised credentials detection (checking passwords against breach databases), and detailed analytics. It can automatically block or require MFA for risky sign-ins.", docLink: "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pool-settings-advanced-security.html" }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0;
+        function shuffleArray(a) { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && ans !== null) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${ans !== null ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Cognito & STS</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && ans === null ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function selectOption(i) { if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return; userAnswers[currentQuestion] = i; if (currentMode === 'exam') renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = 'results-score ' + (pass ? 'pass' : 'fail'); document.getElementById('resultStatus').textContent = pass ? '🎉 PASSED!' : '📚 Keep Studying'; document.getElementById('resultStatus').className = 'results-status ' + (pass ? 'pass' : 'fail'); document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); if (timerInterval) clearInterval(timerInterval); }
+    </script>
+</body>
+</html>

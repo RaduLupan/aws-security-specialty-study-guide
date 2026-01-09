@@ -41,6 +41,15 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [shield-ddos-comprehensive.html](./shield-ddos-comprehensive.html) | **AWS Shield & DDoS Protection** | 18 |
 | [network-firewall-comprehensive.html](./network-firewall-comprehensive.html) | **AWS Network Firewall** | 20 |
 
+### Domain 4: Identity & Access Management (Complete - 83 questions!)
+
+| Quiz | Topic | Questions | 
+|------|-------|-----------|
+| [iam-policies-comprehensive.html](./iam-policies-comprehensive.html) | **IAM Policies & Permissions** | 25 |
+| [organizations-scps-comprehensive.html](./organizations-scps-comprehensive.html) | **AWS Organizations & SCPs** | 20 |
+| [identity-center-federation-comprehensive.html](./identity-center-federation-comprehensive.html) | **IAM Identity Center & Federation** | 20 |
+| [cognito-sts-comprehensive.html](./cognito-sts-comprehensive.html) | **Amazon Cognito & AWS STS** | 18 |
+
 ## How to Use
 
 ### Option 1: Direct File Access
