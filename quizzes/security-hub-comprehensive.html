@@ -924,7 +924,7 @@
             }
         ];
 
-        let currentMode = 'learn';
+        let currentMode = 'learn', answersRevealed = [];
         let currentQuestion = 0;
         let userAnswers = [];
         let shuffledQuestions = [];
@@ -956,7 +956,7 @@
             currentMode = mode;
             currentQuestion = 0;
             userAnswers = new Array(questions.length).fill(null);
-            
+            answersRevealed = new Array(questions.length).fill(false);
             shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
             
             document.getElementById('modeSelector').classList.add('hidden');
@@ -1073,7 +1073,7 @@
         }
 
         function selectOption(idx) {
-            if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return;
+            if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
             
             userAnswers[currentQuestion] = idx;
             
@@ -1105,6 +1105,7 @@
             
             currentQuestion = 0;
             userAnswers = new Array(questions.length).fill(null);
+            answersRevealed = new Array(questions.length).fill(false);
             shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
             renderQuestion();
             

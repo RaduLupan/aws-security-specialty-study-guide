@@ -51,7 +51,7 @@
         .options { display: flex; flex-direction: column; gap: 0.75rem; }
         .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
         .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(220, 38, 38, 0.1); }
-        .option.selected { border-color: var(--accent-primary); background: rgba(220, 38, 38, 0.15); }
+        .option.selected { border-color: var(--accent-primary); border-width: 3px; background: rgba(220, 38, 38, 0.2); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25), inset 0 0 12px rgba(220, 38, 38, 0.1); }
         .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
         .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
         .option.disabled { cursor: default; }
@@ -431,7 +431,7 @@
             }
         ];
 
-        let currentMode = 'learn';
+        let currentMode = 'learn', answersRevealed = [];
         let currentQuestion = 0;
         let userAnswers = [];
         let shuffledQuestions = [];
@@ -461,6 +461,7 @@
             currentMode = mode;
             currentQuestion = 0;
             userAnswers = new Array(questions.length).fill(null);
+            answersRevealed = new Array(questions.length).fill(false);
             shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
             document.getElementById('modeSelector').classList.add('hidden');
             document.getElementById('quizContent').classList.remove('hidden');
@@ -546,13 +547,14 @@
         }
 
         function selectOption(idx) {
-            if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return;
+            if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
             userAnswers[currentQuestion] = idx;
             if (currentMode === 'exam') renderQuestion();
         }
 
         function revealAnswer() {
             if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1;
+            answersRevealed[currentQuestion] = true;
             renderQuestion();
         }
 
@@ -567,6 +569,7 @@
             if (currentMode !== 'learn') return;
             currentQuestion = 0;
             userAnswers = new Array(questions.length).fill(null);
+            answersRevealed = new Array(questions.length).fill(false);
             shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
             renderQuestion();
             const notice = document.getElementById('shuffleNotice');
