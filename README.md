@@ -103,60 +103,66 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-> **🎉 Total: 480 questions across 23 quizzes - ALL 6 DOMAINS COMPLETE!**
+> **🎉 Total: 490 questions across 24 quizzes - ALL 6 DOMAINS COMPLETE!**
+
+#### 📝 Sample Exam Questions
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **SCS-C03 Sample Questions** | 10 | [View](./quizzes/sample-exam-questions.html) |
 
 #### ✅ Domain 1: Detection (130 questions)
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
-| **AWS Security Hub** | 25 | [Start Quiz](./quizzes/security-hub-comprehensive.html) |
-| **Amazon GuardDuty** | 25 | [Start Quiz](./quizzes/guardduty-comprehensive.html) |
-| **Amazon Detective** | 20 | [Start Quiz](./quizzes/detective-comprehensive.html) |
-| **AWS CloudTrail** | 25 | [Start Quiz](./quizzes/cloudtrail-comprehensive.html) |
-| **CloudWatch Security** | 20 | [Start Quiz](./quizzes/cloudwatch-security-comprehensive.html) |
-| GuardDuty Extended Threat Detection | 15 | [Start Quiz](./quizzes/guardduty-extended-threat-detection.html) |
+| **AWS Security Hub** | 25 | [View](./quizzes/security-hub-comprehensive.html) |
+| **Amazon GuardDuty** | 25 | [View](./quizzes/guardduty-comprehensive.html) |
+| **Amazon Detective** | 20 | [View](./quizzes/detective-comprehensive.html) |
+| **AWS CloudTrail** | 25 | [View](./quizzes/cloudtrail-comprehensive.html) |
+| **CloudWatch Security** | 20 | [View](./quizzes/cloudwatch-security-comprehensive.html) |
+| GuardDuty Extended Threat Detection | 15 | [View](./quizzes/guardduty-extended-threat-detection.html) |
 
 #### ✅ Domain 2: Incident Response (45 questions)
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
-| **Incident Response Fundamentals** | 25 | [Start Quiz](./quizzes/incident-response-fundamentals.html) |
-| **Automated Remediation** | 20 | [Start Quiz](./quizzes/automated-remediation.html) |
+| **Incident Response Fundamentals** | 25 | [View](./quizzes/incident-response-fundamentals.html) |
+| **Automated Remediation** | 20 | [View](./quizzes/automated-remediation.html) |
 
 #### ✅ Domain 3: Infrastructure Security (83 questions)
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
-| **Amazon VPC Security** | 25 | [Start Quiz](./quizzes/vpc-security-comprehensive.html) |
-| **AWS WAF** | 20 | [Start Quiz](./quizzes/waf-comprehensive.html) |
-| **AWS Shield & DDoS Protection** | 18 | [Start Quiz](./quizzes/shield-ddos-comprehensive.html) |
-| **AWS Network Firewall** | 20 | [Start Quiz](./quizzes/network-firewall-comprehensive.html) |
+| **Amazon VPC Security** | 25 | [View](./quizzes/vpc-security-comprehensive.html) |
+| **AWS WAF** | 20 | [View](./quizzes/waf-comprehensive.html) |
+| **AWS Shield & DDoS Protection** | 18 | [View](./quizzes/shield-ddos-comprehensive.html) |
+| **AWS Network Firewall** | 20 | [View](./quizzes/network-firewall-comprehensive.html) |
 
 #### ✅ Domain 4: Identity & Access Management (83 questions)
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
-| **IAM Policies & Permissions** | 25 | [Start Quiz](./quizzes/iam-policies-comprehensive.html) |
-| **AWS Organizations & SCPs** | 20 | [Start Quiz](./quizzes/organizations-scps-comprehensive.html) |
-| **IAM Identity Center & Federation** | 20 | [Start Quiz](./quizzes/identity-center-federation-comprehensive.html) |
-| **Amazon Cognito & AWS STS** | 18 | [Start Quiz](./quizzes/cognito-sts-comprehensive.html) |
+| **IAM Policies & Permissions** | 25 | [View](./quizzes/iam-policies-comprehensive.html) |
+| **AWS Organizations & SCPs** | 20 | [View](./quizzes/organizations-scps-comprehensive.html) |
+| **IAM Identity Center & Federation** | 20 | [View](./quizzes/identity-center-federation-comprehensive.html) |
+| **Amazon Cognito & AWS STS** | 18 | [View](./quizzes/cognito-sts-comprehensive.html) |
 
 #### ✅ Domain 5: Data Protection (81 questions)
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
-| **AWS KMS** | 25 | [Start Quiz](./quizzes/kms-comprehensive.html) |
-| **Secrets Manager & CloudHSM** | 20 | [Start Quiz](./quizzes/secrets-manager-cloudhsm-comprehensive.html) |
-| **ACM & S3 Encryption** | 18 | [Start Quiz](./quizzes/acm-s3-encryption-comprehensive.html) |
-| **Amazon Macie** | 18 | [Start Quiz](./quizzes/macie-comprehensive.html) |
+| **AWS KMS** | 25 | [View](./quizzes/kms-comprehensive.html) |
+| **Secrets Manager & CloudHSM** | 20 | [View](./quizzes/secrets-manager-cloudhsm-comprehensive.html) |
+| **ACM & S3 Encryption** | 18 | [View](./quizzes/acm-s3-encryption-comprehensive.html) |
+| **Amazon Macie** | 18 | [View](./quizzes/macie-comprehensive.html) |
 
 #### ✅ Domain 6: Security Governance (58 questions)
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
-| **AWS Control Tower** | 20 | [Start Quiz](./quizzes/control-tower-comprehensive.html) |
-| **AWS Config & Compliance** | 20 | [Start Quiz](./quizzes/config-compliance-comprehensive.html) |
-| **Audit Manager & Artifact** | 18 | [Start Quiz](./quizzes/audit-manager-artifact-comprehensive.html) |
+| **AWS Control Tower** | 20 | [View](./quizzes/control-tower-comprehensive.html) |
+| **AWS Config & Compliance** | 20 | [View](./quizzes/config-compliance-comprehensive.html) |
+| **Audit Manager & Artifact** | 18 | [View](./quizzes/audit-manager-artifact-comprehensive.html) |
 
 ### Running Quizzes Locally
 
