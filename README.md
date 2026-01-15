@@ -338,6 +338,6 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 **Found this helpful? Give it a ⭐!**
 
 [![LinkedIn](https://img.shields.io/badge/Share%20on-LinkedIn-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/shareArticle?mini=true&url=https://github.com/RaduLupan/aws-security-specialty-study-guide&title=AWS%20Security%20Specialty%20Study%20Guide)
-[![Twitter](https://img.shields.io/badge/Share%20on-Twitter-1DA1F2?style=for-the-badge&logo=twitter)](https://twitter.com/intent/tweet?text=Check%20out%20this%20AWS%20Security%20Specialty%20Study%20Guide!&url=https://github.com/RaduLupan/aws-security-specialty-study-guide)
+[![Bluesky](https://img.shields.io/badge/Share%20on-Bluesky-0085FF?style=for-the-badge&logo=bluesky)](https://bsky.app/intent/compose?text=Check%20out%20this%20AWS%20Security%20Specialty%20Study%20Guide!%20https://github.com/RaduLupan/aws-security-specialty-study-guide)
 
 </div>
