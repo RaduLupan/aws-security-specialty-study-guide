@@ -103,13 +103,7 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-> **🎉 Total: 490 questions across 24 quizzes - ALL 6 DOMAINS COMPLETE!**
-
-#### 📝 Sample Exam Questions
-
-| Topic | Questions | Quiz |
-|-------|-----------|------|
-| **SCS-C03 Sample Questions** | 10 | [View](./quizzes/sample-exam-questions.html) |
+> **🎉 Total: 480 questions across 23 quizzes - ALL 6 DOMAINS COMPLETE!**
 
 #### ✅ Domain 1: Detection (130 questions)
 
@@ -304,6 +298,24 @@ Contributions are welcome! Here's how you can help:
 - ⭐ **Star the repo** - Help others discover this resource
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
+
+---
+
+## ⚖️ Disclaimer
+
+This study guide and all quiz questions are **original content** created by the author based on:
+- Official [AWS Documentation](https://docs.aws.amazon.com/)
+- AWS Whitepapers and Best Practices guides
+- Publicly available AWS training materials
+
+**This repository does NOT contain:**
+- ❌ Actual exam questions (which would violate the AWS Certification NDA)
+- ❌ Content from commercial exam prep providers (Whizlabs, Tutorials Dojo, A Cloud Guru, etc.)
+- ❌ "Brain dumps" or memorized exam content
+
+All questions are designed to test understanding of AWS security concepts and services, not to replicate the actual certification exam. The goal is to help candidates learn the underlying AWS knowledge, not to provide shortcuts.
+
+*AWS, Amazon Web Services, and all related service names are trademarks of Amazon.com, Inc. or its affiliates.*
 
 ---
 
