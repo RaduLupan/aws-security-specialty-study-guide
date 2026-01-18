@@ -173,10 +173,10 @@
                 id: 1,
                 question: "What is the main difference between AWS Shield Standard and Shield Advanced?",
                 options: [
-                    "Shield Standard requires a subscription fee",
-                    "Shield Advanced provides layer 7 DDoS protection, DRT access, and cost protection",
-                    "Shield Standard only protects EC2 instances",
-                    "Shield Advanced is only available in certain regions"
+                    "Shield Standard protects against layer 3/4 attacks while Advanced adds layer 7 detection only",
+                    "Shield Advanced provides layer 7 DDoS protection, 24/7 DRT access, and cost protection",
+                    "Shield Standard uses machine learning while Advanced relies on rule-based detection",
+                    "Shield Advanced requires WAF integration while Standard works independently"
                 ],
                 correct: 1,
                 explanation: "Shield Advanced provides enhanced DDoS protection including application layer (layer 7) attack detection, 24/7 access to AWS DDoS Response Team (DRT), cost protection for scaling during attacks, and advanced metrics. Shield Standard provides automatic layer 3/4 protection at no extra cost.",
@@ -186,10 +186,10 @@
                 id: 2,
                 question: "Which AWS resources can be protected by AWS Shield Advanced?",
                 options: [
-                    "Only EC2 instances and S3 buckets",
+                    "EC2 instances, RDS databases, and S3 buckets with public access enabled",
                     "CloudFront, Route 53, Global Accelerator, ALB, ELB, and Elastic IPs",
-                    "Only resources in a VPC",
-                    "Only API Gateway endpoints"
+                    "API Gateway endpoints, Lambda functions, and AppSync GraphQL APIs",
+                    "Network Load Balancers, NAT Gateways, and Transit Gateway attachments"
                 ],
                 correct: 1,
                 explanation: "Shield Advanced can protect Amazon CloudFront distributions, Amazon Route 53 hosted zones, AWS Global Accelerator accelerators, Application Load Balancers, Classic Load Balancers (ELB), and Elastic IP addresses attached to EC2 instances or Network Load Balancers.",
@@ -225,10 +225,10 @@
                 id: 5,
                 question: "What is 'cost protection' in AWS Shield Advanced?",
                 options: [
-                    "A discount on AWS services during an attack",
-                    "Credits for scaling charges incurred during a DDoS attack",
-                    "Insurance against data breach costs",
-                    "Free WAF rules during an attack"
+                    "Automatic budget alerts when DDoS-related spending exceeds configured thresholds",
+                    "Service credits for scaling charges like EC2 and data transfer during DDoS attacks",
+                    "Reserved capacity pricing for resources that are frequently targeted by attacks",
+                    "Waived data transfer fees for traffic analyzed by Shield's detection systems"
                 ],
                 correct: 1,
                 explanation: "Cost protection provides service credits if your AWS bill increases due to scaling during a DDoS attack. This covers charges from services like EC2, CloudFront data transfer, and Route 53 queries. You must request credits within 15 days of the billing period.",
@@ -290,10 +290,10 @@
                 id: 10,
                 question: "What is health-based detection in AWS Shield Advanced?",
                 options: [
-                    "Monitoring the health of Shield service itself",
-                    "Using Route 53 health checks to improve DDoS detection accuracy",
-                    "Checking the health of WAF rules",
-                    "Monitoring CPU health of protected EC2 instances"
+                    "Monitoring application response times through CloudWatch to detect degraded performance",
+                    "Using Route 53 health checks to improve DDoS detection accuracy during attacks",
+                    "Analyzing AWS Health events to correlate infrastructure issues with attack patterns",
+                    "Checking target group health through ALB to automatically adjust protection rules"
                 ],
                 correct: 1,
                 explanation: "Health-based detection uses Route 53 health checks associated with protected resources to improve detection accuracy. Shield Advanced monitors the health status and correlates it with traffic patterns. When health degrades during increased traffic, detection sensitivity increases.",
@@ -476,48 +476,11 @@
         }
 
         function renderQuestion() {
-            const q = shuffledQuestions[currentQuestion];
-            const container = document.getElementById('questionsContainer');
-            const letters = ['A', 'B', 'C', 'D'];
-            const userAnswer = userAnswers[currentQuestion];
-            let optionsHtml = q.options.map((opt, idx) => {
-                let classes = 'option';
-                if (currentMode === 'learn' && userAnswer !== null) {
-                    classes += ' disabled';
-                    if (idx === q.correct) classes += ' correct';
-                    else if (idx === userAnswer) classes += ' incorrect';
-                } else if (userAnswer === idx) {
-                    classes += ' selected';
-                }
-                return `<div class="${classes}" onclick="selectOption(${idx})">
-                    <span class="option-marker">${letters[idx]}</span>
-                    <span class="option-text">${opt}</span>
-                </div>`;
-            }).join('');
-            let explanationHtml = '';
-            if (currentMode === 'learn') {
-                explanationHtml = `<div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation">
-                    <div class="explanation-title">📖 Explanation</div>
-                    <div class="answer-header">Correct Answer: ${letters[q.correct]}</div>
-                    <p class="explanation-text">${q.explanation}</p>
-                    <a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a>
-                </div>`;
-            }
-            container.innerHTML = `<div class="question-card">
-                <div class="question-header">
-                    <span class="question-number">Question ${currentQuestion + 1}</span>
-                    <span class="question-domain">Shield & DDoS</span>
-                </div>
-                <p class="question-text">${q.question}</p>
-                <div class="options">${optionsHtml}</div>
-                ${currentMode === 'learn' && userAnswer === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}
-                ${explanationHtml}
-            </div>`;
-            document.getElementById('currentQ').textContent = currentQuestion + 1;
-            document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            const nextBtn = document.getElementById('nextBtn');
-            nextBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
+            const q = shuffledQuestions[currentQuestion], container = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion];
+            let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join('');
+            let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : '';
+            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Shield & DDoS</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`;
+            document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
         }
 
         function selectOption(idx) {

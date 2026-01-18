@@ -142,327 +142,327 @@
         const questions = [
             {
                 id: 1,
-                question: "What is the correct order of IAM policy evaluation when determining access?",
+                question: "A user has an identity-based policy that allows s3:*, but an SCP denies s3:DeleteObject. A bucket policy also allows s3:* for the user. Can the user delete objects from the bucket?",
                 options: [
-                    "Identity-based → Resource-based → SCPs → Permissions Boundary",
-                    "Explicit Deny → SCPs → Resource-based → Identity-based → Permissions Boundary → Implicit Deny",
-                    "SCPs → Identity-based → Resource-based → Session Policy",
-                    "Resource-based → Identity-based → SCPs → Explicit Deny"
+                    "Yes, because the bucket policy's explicit allow overrides the SCP deny for resource-based access",
+                    "No, because explicit denies in SCPs take precedence over all other policy types",
+                    "Yes, because identity-based and resource-based policies both allow, creating an effective allow",
+                    "No, because resource-based policies cannot override identity-based policy denials"
                 ],
                 correct: 1,
-                explanation: "IAM policy evaluation follows: 1) Explicit Deny (always wins), 2) Organization SCPs (must allow), 3) Resource-based policies (may allow), 4) Identity-based policies (may allow), 5) Permissions Boundaries (must allow), 6) Session policies (must allow), 7) Implicit Deny. An explicit deny at any step results in access denied.",
+                explanation: "An explicit deny ALWAYS wins, regardless of which policy type contains it. SCPs are evaluated early in the policy evaluation logic, and a deny in an SCP cannot be overridden by any other policy type - identity-based, resource-based, or otherwise.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html"
             },
             {
                 id: 2,
-                question: "Which IAM policy type can GRANT permissions on its own without requiring identity-based policies?",
+                question: "An S3 bucket in Account B has a bucket policy that allows s3:GetObject for an IAM role in Account A. The role in Account A has NO identity-based policies. Can the role access objects in the bucket?",
                 options: [
-                    "Permissions Boundary",
-                    "Service Control Policy (SCP)",
-                    "Resource-based Policy",
-                    "Session Policy"
+                    "No, because cross-account access always requires both identity-based and resource-based policies to allow",
+                    "No, because the role has no identity-based policies so it has no permissions at all",
+                    "Yes, because resource-based policies can grant cross-account access independently without identity-based policies",
+                    "Yes, but only if the bucket and role are in the same AWS Organization"
                 ],
                 correct: 2,
-                explanation: "Resource-based policies can grant permissions independently. Unlike SCPs and Permissions Boundaries (which only restrict), resource-based policies attached to resources like S3 buckets or KMS keys can directly grant access to principals, even cross-account, without requiring identity-based policies.",
+                explanation: "Resource-based policies can grant permissions independently, even cross-account. Unlike SCPs and Permissions Boundaries (which only restrict), resource-based policies on S3 buckets, KMS keys, etc. can directly grant access to external principals without requiring identity-based policies.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
             },
             {
                 id: 3,
-                question: "What is the primary purpose of an IAM Permissions Boundary?",
+                question: "A DevOps team creates IAM roles for developers. The security team wants to ensure these roles cannot have more permissions than the DevOps team role itself. What should be implemented?",
                 options: [
-                    "To grant maximum permissions to a user",
-                    "To set the maximum permissions that identity-based policies can grant",
-                    "To replace Service Control Policies",
-                    "To define default permissions for new users"
+                    "An SCP at the organization level that restricts the DevOps team's iam:CreateRole permissions",
+                    "A permissions boundary that the DevOps team must attach to all roles they create",
+                    "A trust policy on the DevOps role that limits which roles it can create",
+                    "An IAM policy on the DevOps role that denies creating roles with AdministratorAccess"
                 ],
                 correct: 1,
-                explanation: "A Permissions Boundary sets the maximum permissions that identity-based policies can grant to a user or role. It doesn't grant permissions itself but limits what permissions can be effective. Both the boundary AND identity-based policy must allow an action for it to be permitted.",
+                explanation: "A Permissions Boundary sets the maximum permissions that identity-based policies can grant. By requiring DevOps to attach a boundary to created roles, you ensure those roles cannot exceed the boundary's permissions, preventing privilege escalation.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
             },
             {
                 id: 4,
-                question: "Which element in an IAM policy specifies WHO can perform actions?",
+                question: "A bucket policy needs to allow access from any IAM principal in Account 123456789012. Which Principal element should be used?",
                 options: [
-                    "Action",
-                    "Resource",
-                    "Principal",
-                    "Effect"
+                    "'Principal': { 'AWS': 'arn:aws:iam::123456789012:root' } to reference the account",
+                    "'Principal': { 'AWS': '123456789012' } using the account ID directly",
+                    "'Principal': { 'Account': '123456789012' } using the Account key",
+                    "Both A and B are valid; they are equivalent ways to specify the account as principal"
                 ],
-                correct: 2,
-                explanation: "The Principal element specifies the user, account, service, or other entity that is allowed or denied access. It's required in resource-based policies but is implicit in identity-based policies (the principal is whoever the policy is attached to).",
+                correct: 3,
+                explanation: "The Principal element specifies who can access a resource. Both 'arn:aws:iam::123456789012:root' and '123456789012' are valid ways to specify an AWS account as principal. They are functionally equivalent and allow any authenticated principal from that account.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html"
             },
             {
                 id: 5,
-                question: "What does the policy condition 'aws:PrincipalOrgID' check?",
+                question: "A company wants their S3 bucket to only be accessible by principals from within their AWS Organization (o-xxxxxxxxxx). Which condition should they use?",
                 options: [
-                    "The IAM user's unique identifier",
-                    "Whether the principal belongs to a specific AWS Organization",
-                    "The organization unit path of the principal",
-                    "The account ID of the principal"
+                    "'aws:PrincipalAccount': 'o-xxxxxxxxxx' to verify the principal's account is in the organization",
+                    "'aws:PrincipalOrgID': 'o-xxxxxxxxxx' to verify the principal belongs to the organization",
+                    "'aws:SourceOrgID': 'o-xxxxxxxxxx' to verify the request source organization",
+                    "'aws:RequestOrgID': 'o-xxxxxxxxxx' to verify the organization making the request"
                 ],
                 correct: 1,
-                explanation: "aws:PrincipalOrgID is a global condition key that checks if the principal making the request belongs to a specific AWS Organization. It's commonly used in resource-based policies to allow access only from accounts within your organization.",
+                explanation: "aws:PrincipalOrgID checks if the principal making the request belongs to a specific AWS Organization. It's commonly used in resource-based policies to restrict access to only principals within your organization, simplifying cross-account access management.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-principalorgid"
             },
             {
                 id: 6,
-                question: "Which statement about IAM groups is TRUE?",
+                question: "An architect wants to use an IAM group as a principal in an S3 bucket policy to grant access to all group members. Is this possible?",
                 options: [
-                    "Groups can be nested within other groups",
-                    "Groups can be referenced as principals in resource-based policies",
-                    "Groups can only contain IAM users, not roles",
-                    "Groups can have their own access keys"
+                    "Yes, specify the group ARN in the Principal element like other IAM entities",
+                    "Yes, but only if the group has fewer than 100 members due to policy size limits",
+                    "No, groups cannot be specified as principals; you must list individual users or use roles",
+                    "No, but you can specify the group's path instead of ARN as a workaround"
                 ],
                 correct: 2,
-                explanation: "IAM groups can only contain IAM users, not roles or other groups. Groups cannot be nested, cannot be referenced in resource-based policy principals (you must specify users or roles), and groups don't have credentials - only users do.",
+                explanation: "IAM groups CANNOT be referenced as principals in resource-based policies. Groups can only contain IAM users (not roles), cannot be nested, and don't have credentials. For resource policies, you must specify individual users, roles, or entire accounts.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html"
             },
             {
                 id: 7,
-                question: "What is the 'NotAction' element used for in IAM policies?",
+                question: "A security team wants to allow all AWS actions EXCEPT IAM actions. Which policy construct should they use?",
                 options: [
-                    "To explicitly deny specific actions",
-                    "To match all actions EXCEPT the specified ones",
-                    "To create a blocklist of prohibited actions",
-                    "To negate the effect of previous actions"
+                    "'Effect': 'Deny' with 'Action': 'iam:*' to block IAM while allowing everything else",
+                    "'Effect': 'Allow' with 'NotAction': 'iam:*' to allow everything except IAM actions",
+                    "'Effect': 'Allow' with 'Action': '*' and a separate 'NotAction': 'iam:*' statement",
+                    "'Effect': 'Deny' with 'NotAction': 'iam:*' to deny everything except IAM actions"
                 ],
                 correct: 1,
-                explanation: "NotAction matches all actions EXCEPT those specified. It's commonly used with Allow to grant access to everything except certain actions, or with Deny to deny everything except certain actions. It's not a deny - it's an inverse match for the Action element.",
+                explanation: "NotAction with Allow matches all actions EXCEPT those specified, effectively allowing everything except IAM. Note that using Deny with NotAction would deny everything except IAM - the opposite of what's wanted.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_notaction.html"
             },
             {
                 id: 8,
-                question: "What happens when an IAM user has no policies attached?",
+                question: "A new IAM user is created but no policies are attached. The user tries to list S3 buckets. What happens?",
                 options: [
-                    "They have full access to all resources",
-                    "They can only access read-only resources",
-                    "They have no permissions (implicit deny)",
-                    "They inherit permissions from the account root"
+                    "The action succeeds because users have read-only access by default",
+                    "The action is denied because of the implicit deny; no permissions are granted by default",
+                    "The action succeeds but only returns buckets with public access enabled",
+                    "The action prompts for MFA verification before granting read access"
                 ],
-                correct: 2,
-                explanation: "By default, IAM users have no permissions. This is the implicit deny - unless a policy explicitly allows an action, it's denied. Users must have permissions granted through identity-based policies, be added to groups with policies, or assume roles to gain permissions.",
+                correct: 1,
+                explanation: "By default, IAM users have NO permissions. This is the implicit deny - unless a policy explicitly allows an action, it's denied. The user must have permissions granted through identity-based policies, group membership, or role assumption.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
             },
             {
                 id: 9,
-                question: "What is IAM Access Analyzer used for?",
+                question: "A security team needs to identify S3 buckets that are accessible by principals outside their AWS Organization. Which tool should they use?",
                 options: [
-                    "To analyze CloudTrail logs for suspicious activity",
-                    "To identify resources shared with external entities outside your zone of trust",
-                    "To calculate the cost of IAM operations",
-                    "To automatically remediate policy violations"
+                    "Amazon Macie to scan bucket policies for external access patterns",
+                    "IAM Access Analyzer to identify resources shared outside the zone of trust",
+                    "AWS Config with the s3-bucket-public-read-prohibited rule",
+                    "Amazon GuardDuty to detect unauthorized cross-account access attempts"
                 ],
                 correct: 1,
-                explanation: "IAM Access Analyzer helps identify resources (like S3 buckets, IAM roles, KMS keys) that are shared with external entities outside your zone of trust (account or organization). It generates findings for resources that grant access to external principals.",
+                explanation: "IAM Access Analyzer identifies resources (S3 buckets, IAM roles, KMS keys, etc.) that are shared with external entities outside your zone of trust (account or organization). It continuously monitors and generates findings for resources with external access.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
             },
             {
                 id: 10,
-                question: "Which condition key restricts API calls to a specific source IP address or range?",
+                question: "A company wants to restrict IAM operations to only be allowed from their corporate IP range. Which condition key should be used?",
                 options: [
-                    "aws:SourceArn",
-                    "aws:SourceIp",
-                    "aws:CallerIp",
-                    "aws:RequestIp"
+                    "'aws:SourceArn' with the corporate network identifier as the ARN",
+                    "'aws:SourceIp' with the corporate CIDR range, but note it won't work for service calls",
+                    "'aws:VpcSourceIp' with the corporate VPC CIDR range for internal network restriction",
+                    "'aws:CallerIdentity' with IP address validation in the condition"
                 ],
                 correct: 1,
-                explanation: "aws:SourceIp is the condition key used to restrict API calls based on the source IP address or CIDR range. Note that this condition doesn't work for calls made through AWS services on your behalf (like CloudFormation or Elastic Beanstalk).",
+                explanation: "aws:SourceIp restricts API calls based on source IP address or CIDR range. Important caveat: this condition doesn't work for calls made through AWS services on your behalf (like CloudFormation creating resources), as those originate from AWS IPs.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-sourceip"
             },
             {
                 id: 11,
-                question: "What is the purpose of the 'aws:RequestTag' condition key?",
+                question: "A policy needs to ensure that EC2 instances can only be launched if they have an 'Environment' tag with value 'Production' or 'Staging'. Which condition key should be used?",
                 options: [
-                    "To check existing tags on a resource",
-                    "To control what tags can be applied during resource creation or tagging",
-                    "To filter resources by tag in list operations",
-                    "To automatically tag resources"
+                    "'aws:ResourceTag/Environment' to check the Environment tag value on the instance",
+                    "'aws:RequestTag/Environment' to validate the tag during the RunInstances call",
+                    "'ec2:TagKeys' to ensure the Environment key is present in the request",
+                    "'ec2:ResourceTag/Environment' with StringEquals for the allowed values"
                 ],
                 correct: 1,
-                explanation: "aws:RequestTag controls what tags can be applied during resource creation or tagging operations. It lets you restrict which tag key-value pairs can be used when creating or tagging resources. Use aws:ResourceTag to check existing tags on a resource.",
+                explanation: "aws:RequestTag controls tags being APPLIED during resource creation. It validates tags in the RunInstances request. Use aws:ResourceTag to check EXISTING tags on resources. For creation-time enforcement, RequestTag is appropriate.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_tags.html"
             },
             {
                 id: 12,
-                question: "Which IAM best practice helps prevent privilege escalation?",
+                question: "A delegated admin can create IAM roles for their team. How can you prevent them from creating a role with AdministratorAccess?",
                 options: [
-                    "Granting full AdministratorAccess to all developers",
-                    "Using permission boundaries to limit delegated administration",
-                    "Sharing IAM user credentials across team members",
-                    "Disabling CloudTrail logging"
+                    "Use an SCP to deny iam:CreateRole for roles with AdministratorAccess attached",
+                    "Require them to attach a permissions boundary to any role they create, limiting maximum permissions",
+                    "Remove iam:AttachRolePolicy from their permissions so they can only create roles, not attach policies",
+                    "Create a Config rule that deletes roles with AdministratorAccess as soon as they're created"
                 ],
                 correct: 1,
-                explanation: "Permissions boundaries help prevent privilege escalation by setting maximum permissions for users/roles created by delegated administrators. Even if an admin can create IAM entities, the boundary limits what permissions those entities can have, preventing them from creating more privileged principals.",
+                explanation: "Permissions boundaries prevent privilege escalation by setting maximum permissions for created roles. Even if someone can create roles and attach policies, the boundary limits effective permissions. You can require boundary attachment via IAM policy conditions.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
             },
             {
                 id: 13,
-                question: "What does the 'iam:PassRole' permission control?",
+                question: "A developer can create EC2 instances but receives 'not authorized to perform iam:PassRole' when trying to launch an instance with an IAM role. What's missing?",
                 options: [
-                    "The ability to assume an IAM role",
-                    "The ability to pass a role to an AWS service to act on your behalf",
-                    "The ability to create new IAM roles",
-                    "The ability to modify role trust policies"
+                    "The developer needs sts:AssumeRole permission to use the role with EC2",
+                    "The developer needs iam:PassRole permission to pass the role to the EC2 service",
+                    "The EC2 service needs to be added to the role's trust policy as a principal",
+                    "The developer needs iam:CreateServiceLinkedRole to link the role to EC2"
                 ],
                 correct: 1,
-                explanation: "iam:PassRole controls who can pass an IAM role to an AWS service (like EC2 or Lambda) so the service can assume that role. Without this permission, users can't configure services with roles, even if they can create the resources themselves.",
+                explanation: "iam:PassRole controls who can pass an IAM role to an AWS service. The developer needs explicit iam:PassRole permission (typically scoped to specific role ARNs) to configure EC2 instances with IAM roles. This is a common delegation control.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html"
             },
             {
                 id: 14,
-                question: "Which policy type would you use to allow a Lambda function in Account A to access an S3 bucket in Account B?",
+                question: "A Lambda function in Account A needs to access a DynamoDB table in Account B. Which approach is MOST straightforward?",
                 options: [
-                    "SCP in the Organization",
-                    "Resource-based policy (bucket policy) on the S3 bucket",
-                    "Permissions boundary on the Lambda role",
-                    "Session policy on the Lambda function"
+                    "Create an SCP in the Organization that allows cross-account DynamoDB access between the accounts",
+                    "Add a resource-based policy to the DynamoDB table allowing the Lambda role from Account A",
+                    "Create a role in Account B that Account A's Lambda can assume, with permissions to the DynamoDB table",
+                    "Configure VPC peering between accounts and use VPC endpoint policies for cross-account access"
                 ],
-                correct: 1,
-                explanation: "For cross-account access, you typically use a resource-based policy on the target resource (S3 bucket policy in Account B) that explicitly allows the Lambda role from Account A. Alternatively, Account B can create a role that Account A's Lambda can assume.",
+                correct: 2,
+                explanation: "DynamoDB doesn't support resource-based policies. For cross-account access, the standard approach is creating a role in Account B with DynamoDB permissions, then configuring the Lambda to assume that role. This works for services without resource policies.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-cross-account-resource-access.html"
             },
             {
                 id: 15,
-                question: "What is the maximum size of an IAM managed policy?",
+                question: "A security architect is designing policies for a complex application. What is the maximum size for an IAM managed policy?",
                 options: [
-                    "2 KB",
-                    "6 KB",
-                    "10 KB",
-                    "20 KB"
+                    "2,048 characters, matching the inline policy limit for efficiency",
+                    "5,120 characters, the same limit as Service Control Policies",
+                    "6,144 characters (approximately 6 KB) including all whitespace",
+                    "10,240 characters, doubled from inline policies for managed use cases"
                 ],
-                correct: 1,
-                explanation: "IAM managed policies have a maximum size of 6,144 characters (approximately 6 KB). This includes all whitespace. Inline policies have a smaller limit. If you need more permissions, use multiple policies or consider restructuring your policies to be more efficient.",
+                correct: 2,
+                explanation: "IAM managed policies have a maximum size of 6,144 characters (approximately 6 KB). This includes all whitespace. Inline policies have a smaller limit (2,048). SCPs have 5,120. If you exceed limits, split into multiple policies or optimize the policy structure.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html"
             },
             {
                 id: 16,
-                question: "What does the condition key 'aws:MultiFactorAuthPresent' check?",
+                question: "A policy denies actions unless 'aws:MultiFactorAuthPresent' is true. An IAM user authenticates with MFA and gets console access, then generates access keys from the console. Can they make API calls with those keys?",
                 options: [
-                    "Whether the AWS account has MFA enabled",
-                    "Whether the API request was authenticated using MFA",
-                    "Whether the IAM user has an MFA device configured",
-                    "Whether MFA is required for the account"
+                    "Yes, because MFA was used to access the console where the keys were created",
+                    "No, because long-term access keys don't have aws:MultiFactorAuthPresent in requests",
+                    "Yes, but only within the same session that was used to create the keys",
+                    "No, because access keys cannot be created when MFA policies are in effect"
                 ],
                 correct: 1,
-                explanation: "aws:MultiFactorAuthPresent checks whether the current API request was authenticated using MFA. It's true if MFA was used for the current session. Note: this key is NOT present (not false, but missing) for long-term credentials like access keys.",
+                explanation: "aws:MultiFactorAuthPresent checks the CURRENT request's authentication. Long-term access keys don't carry MFA context - the condition key is NOT PRESENT (not false, but missing). The user would need to use GetSessionToken with MFA to get temporary credentials that satisfy this condition.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_configure-api-require.html"
             },
             {
                 id: 17,
-                question: "Which of the following is a valid IAM principal format?",
+                question: "A bucket policy specifies 'Principal': { 'AWS': 'arn:aws:iam::123456789012:group/Developers' }. What is the effect?",
                 options: [
-                    "arn:aws:iam::123456789012:group/Admins",
-                    "arn:aws:iam::123456789012:role/EC2Role",
-                    "arn:aws:iam::123456789012:policy/MyPolicy",
-                    "arn:aws:iam::123456789012:mfa/AdminUser"
+                    "All members of the Developers group can access the bucket as intended",
+                    "The policy is invalid because groups cannot be principals; it will cause access denied errors",
+                    "Only the group creator can access the bucket, not the group members",
+                    "The policy grants access to a role named 'group/Developers' if one exists"
                 ],
                 correct: 1,
-                explanation: "IAM roles (arn:aws:iam::account:role/role-name) are valid principals. Groups CANNOT be principals in policies. Policies and MFA devices are not principals. Valid principals include AWS accounts, IAM users, IAM roles, federated users, and AWS services.",
+                explanation: "IAM groups CANNOT be specified as principals in policies. Group ARNs in Principal elements are invalid. You must specify individual users, roles, or account roots. Policies with invalid principals may cause unexpected access denied errors.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html"
             },
             {
                 id: 18,
-                question: "What is 'policy generation' in IAM Access Analyzer?",
+                question: "A security team wants to create a least-privilege policy for a production Lambda function that has been running for 90 days. Which tool can help?",
                 options: [
-                    "Automatically creating new IAM policies based on templates",
-                    "Generating least-privilege policies based on CloudTrail activity",
-                    "Creating policy reports for compliance",
-                    "Generating random test policies"
+                    "IAM Policy Simulator to test what permissions the Lambda currently uses",
+                    "IAM Access Analyzer policy generation to analyze CloudTrail and create a policy based on actual usage",
+                    "AWS Trusted Advisor to recommend permission reductions based on best practices",
+                    "CloudWatch Logs Insights to query Lambda execution logs for API calls made"
                 ],
                 correct: 1,
-                explanation: "IAM Access Analyzer policy generation analyzes CloudTrail logs to generate least-privilege IAM policies. It identifies the actions, resources, and conditions actually used during a specified time period and creates a policy that only grants those permissions.",
+                explanation: "IAM Access Analyzer policy generation analyzes CloudTrail logs to identify actions, resources, and conditions actually used. It then generates a least-privilege policy based on that observed activity, perfect for reducing overly permissive policies.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-generation.html"
             },
             {
                 id: 19,
-                question: "What does the 'Sid' element in an IAM policy statement represent?",
+                question: "A complex IAM policy has multiple statements. How can you make the policy easier to understand when troubleshooting?",
                 options: [
-                    "Security Identifier (required for all policies)",
-                    "Statement ID (optional identifier for the statement)",
-                    "Service ID (identifies the AWS service)",
-                    "Session ID (identifies the user session)"
+                    "Add 'Version' elements to each statement to track policy versions",
+                    "Add 'Sid' (Statement ID) elements with descriptive identifiers for each statement",
+                    "Add 'Comment' elements to each statement explaining its purpose",
+                    "Add 'Description' fields to document what each statement accomplishes"
                 ],
                 correct: 1,
-                explanation: "Sid (Statement ID) is an optional identifier for a policy statement. It's used to differentiate between statements and can be any string. Some services require Sids (like SQS, SNS), but it's generally optional in IAM policies.",
+                explanation: "Sid (Statement ID) is an optional identifier you can add to each policy statement. Use descriptive names like 'AllowS3ReadAccess' or 'DenyUnencryptedUploads'. This helps identify which statement affects access during troubleshooting. Note: Comment and Description aren't valid policy elements.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_sid.html"
             },
             {
                 id: 20,
-                question: "Which AWS service should you use to require MFA for specific API actions?",
+                question: "A company wants to require MFA for API calls to delete S3 objects, but the MFA must have been used within the last 5 minutes. Which condition should they use?",
                 options: [
-                    "AWS Config",
-                    "IAM policy with aws:MultiFactorAuthAge condition",
-                    "AWS CloudTrail",
-                    "Amazon GuardDuty"
+                    "'aws:MultiFactorAuthPresent': 'true' with 'aws:TokenIssueTime' for recency check",
+                    "'aws:MultiFactorAuthAge' with NumericLessThan 300 seconds to require recent MFA",
+                    "'aws:MultiFactorAuthTimestamp' with DateEquals for current-day validation",
+                    "'aws:SessionDuration' with NumericLessThan 300 to limit session length"
                 ],
                 correct: 1,
-                explanation: "You can use IAM policies with MFA conditions like aws:MultiFactorAuthPresent or aws:MultiFactorAuthAge to require MFA for specific actions. MultiFactorAuthAge checks how many seconds since MFA authentication, allowing you to require recent MFA for sensitive operations.",
+                explanation: "aws:MultiFactorAuthAge checks how many seconds have passed since MFA authentication. Using NumericLessThan with 300 requires the MFA to have been used within the last 5 minutes. This is useful for requiring fresh MFA for sensitive operations.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_configure-api-require.html"
             },
             {
                 id: 21,
-                question: "What is a service-linked role?",
+                question: "AWS creates a role named 'AWSServiceRoleForECS' in your account when you use ECS. You want to modify its permissions. Can you?",
                 options: [
-                    "A role you create to link two AWS services",
-                    "A predefined role that an AWS service creates to perform actions on your behalf",
-                    "A role that links on-premises services to AWS",
-                    "A role that can only be used by a single service instance"
+                    "Yes, modify the attached policies like any other role you own",
+                    "No, service-linked roles have AWS-managed permissions that cannot be modified",
+                    "Yes, but only by contacting AWS Support to request permission changes",
+                    "No, but you can create a custom role with the same trust policy and different permissions"
                 ],
                 correct: 1,
-                explanation: "Service-linked roles are predefined IAM roles that AWS services create in your account. They include all permissions the service requires to call other AWS services on your behalf. You can't modify their permissions, but you can delete them when no longer needed.",
+                explanation: "Service-linked roles are predefined IAM roles that AWS services create. They include all permissions the service requires and CANNOT be modified. You can view their policies and delete them when no longer needed, but you cannot change their permissions.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html"
             },
             {
                 id: 22,
-                question: "What is the effect of 'aws:SecureTransport': 'false' condition in a Deny statement?",
+                question: "A security policy requires that all S3 API calls must be made over HTTPS. Which bucket policy condition enforces this?",
                 options: [
-                    "Denies all HTTPS requests",
-                    "Denies requests that are not made over SSL/TLS",
-                    "Denies requests from insecure networks",
-                    "Denies requests without encryption at rest"
+                    "'aws:SecureTransport': 'true' in an Allow statement to permit only HTTPS requests",
+                    "'aws:SecureTransport': 'false' in a Deny statement to block HTTP requests",
+                    "'s3:x-amz-server-side-encryption': 'aws:kms' to require encrypted connections",
+                    "'aws:EncryptionContext': 'true' in a Condition to require transport encryption"
                 ],
                 correct: 1,
-                explanation: "Using 'aws:SecureTransport': 'false' in a Deny statement denies requests made over HTTP (not HTTPS). This enforces encryption in transit by blocking unencrypted connections. The condition is commonly used in S3 bucket policies to require HTTPS.",
+                explanation: "Use 'aws:SecureTransport': 'false' in a DENY statement to block HTTP requests. This denies when SecureTransport is false (HTTP), effectively requiring HTTPS. Using 'true' in Allow doesn't prevent HTTP since explicit denies are needed to block actions.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-securetransport"
             },
             {
                 id: 23,
-                question: "What is the 'trust policy' of an IAM role?",
+                question: "A role's trust policy allows 'Principal': {'Service': 'lambda.amazonaws.com'}. A Lambda function tries to assume a different role using this role's credentials. Can it?",
                 options: [
-                    "A policy that defines what actions the role can perform",
-                    "A resource-based policy that defines who can assume the role",
-                    "A policy that trusts external identity providers",
-                    "A policy attached to resources the role can access"
+                    "Yes, because Lambda is trusted by the role's trust policy",
+                    "No, the trust policy only allows Lambda service to assume the role, not principals using the role",
+                    "Yes, but only if the target role also trusts lambda.amazonaws.com",
+                    "No, because Lambda functions cannot call sts:AssumeRole"
                 ],
                 correct: 1,
-                explanation: "A trust policy (also called assume role policy) is a resource-based policy attached to a role that defines which principals (users, roles, services, or accounts) can assume the role using sts:AssumeRole. It's separate from the permissions policy that defines what the role can do.",
+                explanation: "A trust policy defines who can ASSUME the role, not what the role can do after assumption. The Lambda service can assume this role to run functions. For the Lambda to assume another role, that OTHER role's trust policy must allow the Lambda's role as principal.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html"
             },
             {
                 id: 24,
-                question: "Which condition key helps prevent the confused deputy problem in cross-service access?",
+                question: "An SNS topic receives messages from S3 bucket notifications. How do you ensure the SNS topic only accepts messages from YOUR S3 bucket, not an attacker's?",
                 options: [
-                    "aws:PrincipalOrgID",
-                    "aws:SourceArn or aws:SourceAccount",
-                    "aws:CalledVia",
-                    "aws:RequestedRegion"
+                    "Use 'aws:PrincipalOrgID' to verify S3 is in your organization",
+                    "Use 'aws:SourceArn' or 'aws:SourceAccount' to verify which bucket triggered the notification",
+                    "Use 'aws:CalledVia' to verify the call chain includes s3.amazonaws.com",
+                    "Use 'aws:PrincipalServiceName' to verify the calling service is S3"
                 ],
                 correct: 1,
-                explanation: "aws:SourceArn and aws:SourceAccount help prevent the confused deputy problem by verifying which resource or account triggered the service-to-service call. This ensures a service only acts on your behalf when called from your specific resources, not an attacker's.",
+                explanation: "aws:SourceArn and aws:SourceAccount prevent the confused deputy problem by verifying WHICH specific resource triggered the service-to-service call. This ensures SNS only accepts notifications from your bucket ARN, not an attacker's bucket configured to notify your topic.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html"
             },
             {
                 id: 25,
-                question: "What is the maximum number of managed policies that can be attached to an IAM role?",
+                question: "An IAM role has 10 managed policies attached. The team needs to add another set of permissions. What are their options?",
                 options: [
-                    "5",
-                    "10",
-                    "20",
-                    "50"
+                    "Request a service limit increase to attach more than 10 managed policies",
+                    "Consolidate existing policies to make room, or add an inline policy which has a separate limit",
+                    "Create a second role with the additional permissions and switch between roles as needed",
+                    "All of the above are valid options for adding more permissions to the role"
                 ],
-                correct: 1,
-                explanation: "By default, you can attach up to 10 managed policies to an IAM user, role, or group. This quota can be increased through a service limit increase request. Additionally, you can use inline policies, which don't count toward this limit but have their own size limits.",
+                correct: 3,
+                explanation: "The default limit is 10 managed policies per role. Options include: requesting a quota increase, consolidating existing policies, using inline policies (separate limit), or creating additional roles. All approaches are valid depending on your use case.",
                 docLink: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html"
             }
         ];

@@ -144,10 +144,10 @@
                 id: 1,
                 question: "Which AWS service is the primary event bus for triggering automated security responses?",
                 options: [
-                    "Amazon SQS",
-                    "Amazon EventBridge",
-                    "Amazon SNS",
-                    "AWS Step Functions"
+                    "Amazon SQS which buffers messages for asynchronous processing by security Lambda functions",
+                    "Amazon EventBridge which routes events from AWS services to automation targets based on rules",
+                    "Amazon SNS which broadcasts security alerts to multiple subscriber Lambda functions",
+                    "AWS Step Functions which orchestrates security workflows triggered by CloudWatch alarms"
                 ],
                 correct: 1,
                 explanation: "Amazon EventBridge (formerly CloudWatch Events) is the primary event bus for building event-driven architectures. It receives events from AWS services, SaaS applications, and custom sources, allowing you to create rules that trigger automated responses to security events.",
@@ -157,10 +157,10 @@
                 id: 2,
                 question: "How can Security Hub findings trigger automated remediation?",
                 options: [
-                    "Security Hub cannot trigger automation",
-                    "Through EventBridge rules that match Security Hub finding events",
-                    "Only through manual actions in the console",
-                    "By directly calling Lambda functions"
+                    "Security Hub invokes Lambda functions directly using the integrated function URL feature",
+                    "Through EventBridge rules that match Security Hub finding events and invoke targets",
+                    "Via SNS subscriptions that Security Hub creates for each enabled security standard",
+                    "Using Security Hub's built-in automation framework that executes SSM documents"
                 ],
                 correct: 1,
                 explanation: "Security Hub automatically sends findings to EventBridge. You can create EventBridge rules that match specific finding patterns (by severity, product, resource type, etc.) and trigger targets like Lambda functions, Step Functions, or SNS topics for automated remediation.",
@@ -170,10 +170,10 @@
                 id: 3,
                 question: "What are Security Hub 'custom actions' used for?",
                 options: [
-                    "Creating custom security controls",
-                    "Sending selected findings to EventBridge for manual-triggered automation",
-                    "Modifying finding severity",
-                    "Creating custom dashboards"
+                    "Defining custom security controls that extend the built-in compliance standards",
+                    "Sending selected findings to EventBridge for analyst-triggered automation workflows",
+                    "Modifying finding severity levels to prioritize remediation efforts appropriately",
+                    "Creating custom dashboard widgets that visualize findings by resource type"
                 ],
                 correct: 1,
                 explanation: "Security Hub custom actions allow you to manually send selected findings to EventBridge. Unlike automatic rules, custom actions let analysts choose which findings to process, enabling human-in-the-loop automation workflows.",
@@ -183,10 +183,10 @@
                 id: 4,
                 question: "Which AWS service is best for orchestrating complex, multi-step remediation workflows?",
                 options: [
-                    "AWS Lambda alone",
-                    "AWS Step Functions",
-                    "Amazon SQS",
-                    "AWS Config"
+                    "AWS Lambda with chained function invocations using asynchronous destinations",
+                    "AWS Step Functions with visual workflows supporting error handling and approvals",
+                    "Amazon SQS with message routing to different Lambda functions based on content",
+                    "AWS Config with remediation actions linked to multiple SSM Automation runbooks"
                 ],
                 correct: 1,
                 explanation: "AWS Step Functions is ideal for orchestrating complex, multi-step remediation workflows. It can coordinate Lambda functions, wait for human approval, handle errors, and maintain state across long-running processes. It's particularly useful for incident response runbooks.",
@@ -196,10 +196,10 @@
                 id: 5,
                 question: "What is an AWS Systems Manager Automation runbook?",
                 options: [
-                    "A logging configuration file",
+                    "A CloudWatch Log Insights query template for analyzing security-related log data",
                     "A document that defines automated operational tasks like remediation actions",
-                    "A network configuration template",
-                    "A security policy document"
+                    "An IAM policy template that grants permissions required for security automation",
+                    "A Step Functions state machine definition exported for reuse across accounts"
                 ],
                 correct: 1,
                 explanation: "Systems Manager Automation runbooks (documents) define automated operational tasks. They can include steps for remediation actions like patching instances, modifying security groups, rotating credentials, and more. AWS provides pre-built runbooks and you can create custom ones.",
@@ -209,10 +209,10 @@
                 id: 6,
                 question: "How can you automatically remediate non-compliant AWS Config rules?",
                 options: [
-                    "AWS Config cannot trigger remediation",
-                    "Using AWS Config remediation actions with Systems Manager Automation runbooks",
-                    "Only through manual intervention",
-                    "By restarting the affected resources"
+                    "Configure EventBridge rules to trigger Lambda functions when Config evaluations fail",
+                    "Use AWS Config remediation actions with Systems Manager Automation runbooks",
+                    "Enable Security Hub auto-remediation which integrates with Config rule violations",
+                    "Create CloudWatch alarms on Config compliance metrics that invoke SSM Run Command"
                 ],
                 correct: 1,
                 explanation: "AWS Config supports automatic remediation through integration with Systems Manager Automation. When a resource becomes non-compliant, Config can automatically execute a remediation action defined by a Systems Manager runbook to bring it back into compliance.",
@@ -222,10 +222,10 @@
                 id: 7,
                 question: "What targets can an EventBridge rule invoke for security automation?",
                 options: [
-                    "Only Lambda functions",
-                    "Lambda, Step Functions, SNS, SQS, Kinesis, EC2 actions, and more",
-                    "Only SNS topics",
-                    "Only AWS Support tickets"
+                    "Lambda functions and SNS topics are the only supported targets for security events",
+                    "Lambda, Step Functions, SNS, SQS, Kinesis, EC2 actions, SSM, and cross-account targets",
+                    "Lambda functions with optional SNS fan-out for parallel remediation execution",
+                    "Step Functions and Lambda only, with other services requiring intermediate invocation"
                 ],
                 correct: 1,
                 explanation: "EventBridge rules can invoke many targets: Lambda functions, Step Functions state machines, SNS topics, SQS queues, Kinesis streams, ECS tasks, EC2 actions (terminate, stop, reboot), Systems Manager Run Command, and even cross-account targets.",
@@ -235,10 +235,10 @@
                 id: 8,
                 question: "What is the 'Automated Security Response on AWS' solution?",
                 options: [
-                    "A commercial AWS service",
-                    "An AWS Solutions Implementation that automates Security Hub finding remediation",
-                    "A third-party security tool",
-                    "A training course"
+                    "A managed AWS service that provides real-time threat response with AI-powered playbooks",
+                    "An AWS Solutions Implementation that provides pre-built Security Hub remediation playbooks",
+                    "A Security Hub feature that automatically remediates critical and high severity findings",
+                    "An AWS Partner Network offering that integrates third-party SOAR capabilities with AWS"
                 ],
                 correct: 1,
                 explanation: "Automated Security Response on AWS is an AWS Solutions Implementation that provides pre-built playbooks for remediating Security Hub findings. It uses Step Functions, Lambda, and Systems Manager to automate responses to common security issues across multiple compliance frameworks.",
@@ -248,10 +248,10 @@
                 id: 9,
                 question: "Which Lambda permission model is recommended for security automation functions?",
                 options: [
-                    "Full administrative access",
-                    "Least privilege IAM roles with only required permissions",
-                    "No IAM role needed",
-                    "Using root account credentials"
+                    "PowerUser access with explicit deny statements for sensitive actions like IAM changes",
+                    "Least privilege IAM roles granting only the specific permissions required for each action",
+                    "SecurityAudit managed policy combined with custom inline policies for remediation",
+                    "Cross-account assume role permissions with MFA requirement for elevated actions"
                 ],
                 correct: 1,
                 explanation: "Security automation Lambda functions should use least privilege IAM roles. Grant only the specific permissions needed for the remediation actions, and consider using resource-based conditions to limit which resources the function can modify.",
@@ -261,10 +261,10 @@
                 id: 10,
                 question: "How can you test security automation without affecting production resources?",
                 options: [
-                    "Testing isn't possible for security automation",
-                    "Use separate test accounts, dry-run modes, and staged rollouts",
-                    "Test directly in production",
-                    "Only use manual testing"
+                    "Enable Step Functions simulation mode which validates workflow logic without executing",
+                    "Use separate test accounts, dry-run modes in runbooks, and staged rollout strategies",
+                    "Configure Lambda test events with production data copies and validate expected outcomes",
+                    "Run automation during maintenance windows when production impact is acceptable"
                 ],
                 correct: 1,
                 explanation: "Test security automation using: separate test/sandbox AWS accounts, dry-run or simulation modes in runbooks, staged rollouts starting with low-risk resources, comprehensive logging, and game day exercises. Never test untested automation in production.",
@@ -274,10 +274,10 @@
                 id: 11,
                 question: "What is AWS Systems Manager Incident Manager used for?",
                 options: [
-                    "Managing IAM users",
-                    "Automating incident response with runbooks, escalation, and collaboration",
-                    "Monitoring EC2 performance",
-                    "Creating CloudFormation stacks"
+                    "Aggregating security findings from multiple AWS services into a unified dashboard",
+                    "Automating incident response with runbooks, escalation policies, and collaboration tools",
+                    "Monitoring application health metrics and triggering auto-scaling based on incidents",
+                    "Managing security group rules and network ACLs during active security incidents"
                 ],
                 correct: 1,
                 explanation: "Systems Manager Incident Manager helps prepare for and respond to incidents. It provides response plans with predefined runbooks, automatic escalation, and collaboration tools. It integrates with CloudWatch alarms and EventBridge to automatically create incidents.",
@@ -287,10 +287,10 @@
                 id: 12,
                 question: "How can GuardDuty findings trigger automated containment?",
                 options: [
-                    "GuardDuty automatically contains threats",
+                    "GuardDuty's integrated response framework executes containment actions automatically",
                     "Through EventBridge rules that invoke Lambda functions to implement containment",
-                    "GuardDuty cannot trigger automation",
-                    "Only through AWS Support intervention"
+                    "Via Security Hub's auto-remediation feature which subscribes to GuardDuty findings",
+                    "Using GuardDuty's native integration with Systems Manager Run Command for isolation"
                 ],
                 correct: 1,
                 explanation: "GuardDuty publishes findings to EventBridge. You can create rules that match high-severity findings and trigger Lambda functions that implement containment actions like isolating EC2 instances, revoking IAM credentials, or blocking IP addresses in WAF.",
@@ -300,10 +300,10 @@
                 id: 13,
                 question: "What should be included in an automated remediation workflow for credential compromise?",
                 options: [
-                    "Only password reset",
-                    "Deactivate credentials, review recent activity, notify security team, and assess blast radius",
-                    "Delete the entire IAM user",
-                    "Wait for the user to report the issue"
+                    "Immediately delete the IAM user and all associated resources to prevent further access",
+                    "Deactivate credentials, review recent CloudTrail activity, notify security, assess blast radius",
+                    "Rotate the credentials to new values and notify the user to update their applications",
+                    "Block the IP addresses associated with the credential usage via Security Groups"
                 ],
                 correct: 1,
                 explanation: "Automated credential compromise remediation should: deactivate/rotate compromised credentials, capture and review recent CloudTrail activity, notify the security team, assess the blast radius of potential unauthorized access, and document actions for post-incident review.",
@@ -313,10 +313,10 @@
                 id: 14,
                 question: "What is the benefit of using Step Functions over Lambda alone for remediation?",
                 options: [
-                    "Step Functions is faster",
-                    "Step Functions provides state management, error handling, and workflow visibility",
-                    "Lambda cannot be used for remediation",
-                    "Step Functions is less expensive"
+                    "Step Functions executes faster due to parallel state execution capabilities",
+                    "Step Functions provides state management, error handling, and detailed workflow visibility",
+                    "Lambda functions have a 15-minute timeout while Step Functions can run indefinitely",
+                    "Step Functions costs less because it charges per state transition not execution duration"
                 ],
                 correct: 1,
                 explanation: "Step Functions provides: visual workflow representation, built-in error handling and retry logic, state management across multiple steps, support for human approval steps (using Callback patterns), long-running process support, and detailed execution history for auditing.",
@@ -326,10 +326,10 @@
                 id: 15,
                 question: "How can you implement a human approval step in automated remediation?",
                 options: [
-                    "Automated remediation cannot include human approval",
-                    "Use Step Functions with a Task state that waits for a callback from SNS/email",
-                    "Only through console access",
-                    "By stopping the Lambda function"
+                    "Configure IAM policies that require MFA for Lambda functions performing remediation",
+                    "Use Step Functions with a Task state that pauses and waits for a callback token",
+                    "Create SNS subscriptions requiring confirmation before Lambda invocation proceeds",
+                    "Implement a Lambda function that polls DynamoDB for manual approval records"
                 ],
                 correct: 1,
                 explanation: "Step Functions supports callback patterns where a Task state pauses execution and waits for an external signal (callback). You can send approval requests via SNS/email and resume the workflow when approved, enabling human-in-the-loop automation.",
@@ -339,10 +339,10 @@
                 id: 16,
                 question: "What is an EventBridge 'event pattern'?",
                 options: [
-                    "A visual representation of event flow",
-                    "A JSON structure that defines which events trigger a rule",
-                    "A schedule expression",
-                    "A logging format"
+                    "A CloudWatch dashboard widget configuration that displays event flow metrics",
+                    "A JSON structure that defines which events match a rule and trigger its targets",
+                    "A schedule expression like cron or rate that triggers rules at specified intervals",
+                    "A log format specification that EventBridge uses when delivering events to targets"
                 ],
                 correct: 1,
                 explanation: "An EventBridge event pattern is a JSON structure that defines which events match a rule. For security automation, you can match on source (aws.securityhub), detail-type, severity, finding types, resource IDs, and other attributes to precisely target specific security events.",
@@ -352,10 +352,10 @@
                 id: 17,
                 question: "Which service provides pre-built automation runbooks for common remediation tasks?",
                 options: [
-                    "Amazon S3",
-                    "AWS Systems Manager (AWS-managed documents)",
-                    "Amazon CloudWatch",
-                    "AWS Lambda"
+                    "AWS Security Hub with embedded remediation playbooks for each compliance control",
+                    "AWS Systems Manager with AWS-managed Automation documents for common tasks",
+                    "Amazon EventBridge with built-in target templates for security event responses",
+                    "AWS Lambda with pre-deployed functions in the Serverless Application Repository"
                 ],
                 correct: 1,
                 explanation: "AWS Systems Manager provides AWS-managed Automation documents (runbooks) for common operational tasks including security remediation. Examples include AWS-DisablePublicAccessForSecurityGroup, AWS-RevokeUnusedIAMUserCredentials, and many others.",
@@ -365,10 +365,10 @@
                 id: 18,
                 question: "How should you log and monitor automated remediation actions?",
                 options: [
-                    "Logging isn't necessary for automation",
-                    "Use CloudWatch Logs, CloudTrail, and custom metrics to track all actions",
-                    "Only log failures",
-                    "Use console access logs only"
+                    "Enable X-Ray tracing on Lambda functions to capture remediation execution traces",
+                    "Use CloudWatch Logs, CloudTrail, and custom metrics to track all remediation actions",
+                    "Configure Step Functions to send execution notifications to an SNS topic for alerting",
+                    "Store remediation records in DynamoDB with TTL for compliance retention requirements"
                 ],
                 correct: 1,
                 explanation: "Comprehensive logging is essential: use CloudWatch Logs for Lambda and Step Functions execution, CloudTrail for API calls made by automation, custom CloudWatch metrics for success/failure rates, and SNS notifications for significant events. This enables auditing and troubleshooting.",
@@ -378,10 +378,10 @@
                 id: 19,
                 question: "What is the purpose of 'input transformation' in EventBridge rules?",
                 options: [
-                    "To encrypt event data",
-                    "To modify or extract specific parts of an event before passing to the target",
-                    "To validate events",
-                    "To store events in S3"
+                    "Encrypting sensitive event data before delivery to targets using KMS keys",
+                    "Modifying or extracting specific parts of an event before passing to the target",
+                    "Validating event schema compliance before triggering rule targets to prevent errors",
+                    "Storing transformed events in S3 for replay and debugging purposes"
                 ],
                 correct: 1,
                 explanation: "Input transformation allows you to modify or extract specific parts of an event before passing it to the target. You can use input path to select fields and input template to format the data for the target, making it easier for Lambda or other targets to process.",
@@ -391,10 +391,10 @@
                 id: 20,
                 question: "What is the recommended approach for handling remediation failures?",
                 options: [
-                    "Ignore failures and continue",
-                    "Implement retry logic, dead-letter queues, and alerting for failed remediations",
-                    "Manually retry all failures",
-                    "Disable automation if failures occur"
+                    "Configure CloudWatch alarms to page on-call engineers for manual intervention",
+                    "Implement retry logic, dead-letter queues, alerting, and runbooks for failed actions",
+                    "Use Step Functions error handlers that automatically rollback partial remediations",
+                    "Log failures to S3 for batch processing during the next maintenance window"
                 ],
                 correct: 1,
                 explanation: "Handle failures with: exponential backoff retry logic in Step Functions, dead-letter queues (DLQ) for Lambda to capture failed events, CloudWatch alarms for failure rates, SNS notifications for failed critical remediations, and runbooks for manual intervention when automation fails.",
@@ -408,7 +408,7 @@
         function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
         function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
         function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
-        function renderQuestion() { const q = shuffledQuestions[currentQuestion], c = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ua = userAnswers[currentQuestion]; let opts = q.options.map((o,i) => { let cls = 'option'; if (currentMode === 'learn' && ua !== null) { cls += ' disabled'; if (i === q.correct) cls += ' correct'; else if (i === ua) cls += ' incorrect'; } else if (ua === i) cls += ' selected'; return `<div class="${cls}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${ua !== null ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; c.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Automation</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && ua === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], c = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ua = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o,i) => { let cls = 'option'; if (currentMode === 'learn' && revealed) { cls += ' disabled'; if (i === q.correct) cls += ' correct'; else if (i === ua && ua !== q.correct) cls += ' incorrect'; } else if (ua === i) cls += ' selected'; return `<div class="${cls}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; c.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Automation</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
         function selectOption(i) { if (currentMode === 'learn' && answersRevealed[currentQuestion]) return; userAnswers[currentQuestion] = i; renderQuestion(); }
         function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; answersRevealed[currentQuestion] = true; renderQuestion(); }
         function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }

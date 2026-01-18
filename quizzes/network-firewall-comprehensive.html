@@ -173,10 +173,10 @@
                 id: 1,
                 question: "What is AWS Network Firewall?",
                 options: [
-                    "A host-based firewall installed on EC2 instances",
-                    "A managed network firewall service for VPC that provides deep packet inspection",
-                    "A WAF alternative for web application protection",
-                    "A DNS-based filtering service"
+                    "An enhanced version of Security Groups with deep packet inspection for EC2 instances",
+                    "A managed network firewall service for VPC that provides stateful inspection and IPS/IDS",
+                    "A layer 7 web application firewall that integrates with ALB and CloudFront distributions",
+                    "A DNS firewall that filters Route 53 Resolver queries based on domain reputation lists"
                 ],
                 correct: 1,
                 explanation: "AWS Network Firewall is a managed, stateful network firewall and intrusion detection/prevention service for VPCs. It provides deep packet inspection, domain filtering, and can detect and prevent malicious traffic. It operates at layers 3-7 of the OSI model.",
@@ -186,10 +186,10 @@
                 id: 2,
                 question: "What are the two types of rule engines in AWS Network Firewall?",
                 options: [
-                    "Input and Output engines",
-                    "Stateless and Stateful engines",
-                    "Fast and Slow engines",
-                    "Primary and Secondary engines"
+                    "Ingress and Egress engines that evaluate traffic directionally at VPC boundaries",
+                    "Stateless and Stateful engines that process packets differently based on connection context",
+                    "Layer 3 and Layer 7 engines that specialize in network vs application layer inspection",
+                    "Standard and Suricata engines that use different rule syntax for matching"
                 ],
                 correct: 1,
                 explanation: "Network Firewall uses two rule engines: the stateless engine inspects each packet in isolation (similar to NACLs), while the stateful engine inspects packets in the context of their traffic flow (similar to Security Groups). Traffic passes through stateless first, then can be forwarded to stateful.",
@@ -212,10 +212,10 @@
                 id: 4,
                 question: "How does traffic flow through a Network Firewall?",
                 options: [
-                    "Stateful rules first, then stateless rules",
-                    "All rules evaluated simultaneously",
-                    "Stateless rules first, then forwarded traffic goes to stateful rules",
-                    "Random order based on rule priority"
+                    "Stateful rules are evaluated first for connection tracking, then stateless rules apply actions",
+                    "All rules from both engines are evaluated together and the most specific match wins",
+                    "Stateless rules evaluate first, then matching traffic can be forwarded to stateful engine",
+                    "Traffic is load balanced across both engines and the first matching rule from either applies"
                 ],
                 correct: 2,
                 explanation: "Traffic first goes through the stateless rules engine. Based on the rule action (pass, drop, or forward to stateful), matching traffic either continues to its destination, is dropped, or is forwarded to the stateful rules engine for deeper inspection.",
@@ -225,10 +225,10 @@
                 id: 5,
                 question: "What is a firewall policy in AWS Network Firewall?",
                 options: [
-                    "An IAM policy for firewall access",
+                    "A resource-based policy attached to the firewall endpoint to control which VPCs can route to it",
                     "A container that defines stateless and stateful rule groups and their order of evaluation",
-                    "A VPC route table configuration",
-                    "A CloudWatch alarm configuration"
+                    "A set of VPC route table entries that direct traffic through the firewall endpoints",
+                    "A logging configuration that specifies which traffic events are sent to CloudWatch or S3"
                 ],
                 correct: 1,
                 explanation: "A firewall policy defines the monitoring and protection behavior for a firewall. It contains references to stateless and stateful rule groups, defines rule group priorities, and specifies default actions for packets that don't match any rules.",
@@ -251,10 +251,10 @@
                 id: 7,
                 question: "What is domain filtering in AWS Network Firewall used for?",
                 options: [
-                    "Filtering DNS queries",
-                    "Allowing or blocking traffic based on domain names in HTTP/TLS requests",
-                    "Filtering email domains",
-                    "Managing Route 53 hosted zones"
+                    "Filtering Route 53 Resolver DNS queries using Route 53 Resolver DNS Firewall integration",
+                    "Allowing or blocking traffic based on domain names extracted from SNI or HTTP Host headers",
+                    "Filtering outbound SMTP traffic by checking recipient email domains against deny lists",
+                    "Creating URL path-based rules that match specific API endpoints for microservices"
                 ],
                 correct: 1,
                 explanation: "Domain filtering allows you to create allow or deny lists of domain names. The firewall inspects the Server Name Indication (SNI) in TLS handshakes or Host headers in HTTP requests to match against domain lists. This enables outbound filtering without proxy.",
@@ -264,10 +264,10 @@
                 id: 8,
                 question: "What happens to traffic that matches a stateless rule with the 'forward to stateful rules' action?",
                 options: [
-                    "The traffic is dropped",
-                    "The traffic is allowed to pass",
-                    "The traffic is sent to the stateful rules engine for further inspection",
-                    "The traffic is logged and dropped"
+                    "The traffic is dropped immediately and logged with the stateless rule ID for auditing",
+                    "The traffic bypasses stateful rules and is passed directly to its destination",
+                    "The traffic is sent to the stateful rules engine for deeper context-aware inspection",
+                    "The traffic is held in a buffer until stateful rules are evaluated in parallel"
                 ],
                 correct: 2,
                 explanation: "When a stateless rule matches with 'forward to stateful rules' action, the packet is sent to the stateful rules engine for deeper, context-aware inspection. This allows you to use stateless rules for simple filtering and stateful rules for complex protocol analysis.",
@@ -290,10 +290,10 @@
                 id: 10,
                 question: "What is the purpose of stateful rule groups with 'strict order' evaluation?",
                 options: [
-                    "To randomize rule evaluation",
-                    "To evaluate rules in the order you specify, with explicit pass/drop actions",
-                    "To improve performance by skipping rules",
-                    "To automatically order rules by complexity"
+                    "To group related rules together for easier management without affecting evaluation order",
+                    "To evaluate rules in explicit priority order with deterministic pass/drop actions",
+                    "To optimize rule processing by evaluating the most frequently matched rules first",
+                    "To enable parallel evaluation of rule groups for improved throughput and latency"
                 ],
                 correct: 1,
                 explanation: "Strict order evaluation processes stateful rules in the exact priority order you define. Rules are evaluated until a match is found, and the matching rule's action (pass, drop, alert, reject) is applied. This gives you precise control over rule evaluation logic.",
@@ -316,10 +316,10 @@
                 id: 12,
                 question: "What is asymmetric routing and why is it a concern for Network Firewall?",
                 options: [
-                    "When traffic speeds differ between paths",
-                    "When traffic takes different paths for outbound vs inbound, breaking stateful inspection",
-                    "When packets are encrypted asymmetrically",
-                    "When firewall rules are applied unevenly"
+                    "When firewall endpoints in different AZs receive uneven traffic loads causing inspection delays",
+                    "When traffic takes different network paths for requests vs responses, breaking stateful tracking",
+                    "When TLS inspection fails because request and response use different encryption algorithms",
+                    "When rule priorities differ between stateless and stateful engines causing inconsistent enforcement"
                 ],
                 correct: 1,
                 explanation: "Asymmetric routing occurs when traffic takes different network paths for outbound requests vs inbound responses. This breaks stateful inspection because the firewall can't match response traffic to the original request. Proper routing configuration is essential to avoid this.",
@@ -342,10 +342,10 @@
                 id: 14,
                 question: "How can AWS Firewall Manager help with Network Firewall?",
                 options: [
-                    "It replaces Network Firewall",
-                    "It centrally deploys and manages Network Firewall policies across accounts",
-                    "It provides additional rule engines",
-                    "It reduces Network Firewall costs"
+                    "It provides a unified dashboard combining Network Firewall with WAF and Shield metrics",
+                    "It centrally deploys and manages Network Firewall policies across Organization accounts",
+                    "It adds machine learning capabilities to Network Firewall for automated threat detection",
+                    "It aggregates Network Firewall logs from multiple accounts into a single data lake"
                 ],
                 correct: 1,
                 explanation: "AWS Firewall Manager allows you to centrally configure and manage Network Firewall policies across multiple accounts in AWS Organizations. You can define policies that automatically deploy firewall configurations to new VPCs as they're created.",
@@ -394,10 +394,10 @@
                 id: 18,
                 question: "What is TLS inspection in AWS Network Firewall?",
                 options: [
-                    "Blocking all TLS traffic",
-                    "Decrypting and inspecting encrypted HTTPS traffic",
-                    "Validating TLS certificates",
-                    "Upgrading TLS versions"
+                    "Inspecting the SNI field in TLS handshakes without decrypting the connection payload",
+                    "Decrypting TLS traffic, inspecting the plaintext content, and re-encrypting before forwarding",
+                    "Validating that TLS certificates presented by servers are trusted by a configured CA",
+                    "Blocking connections that use deprecated TLS versions like TLS 1.0 or TLS 1.1"
                 ],
                 correct: 1,
                 explanation: "TLS inspection (SSL inspection) allows Network Firewall to decrypt TLS/SSL traffic, inspect the contents using stateful rules, and then re-encrypt it. This enables deep packet inspection of encrypted traffic to detect threats hidden in HTTPS connections.",
@@ -420,10 +420,10 @@
                 id: 20,
                 question: "What is the relationship between Network Firewall and Amazon GuardDuty?",
                 options: [
-                    "They are the same service",
-                    "GuardDuty findings can inform Network Firewall rules for threat blocking",
-                    "Network Firewall replaces GuardDuty",
-                    "GuardDuty manages Network Firewall policies"
+                    "Network Firewall logs are analyzed by GuardDuty to generate threat findings",
+                    "GuardDuty threat findings can drive automated updates to Network Firewall blocking rules",
+                    "GuardDuty manages Network Firewall rule groups through integrated policy configuration",
+                    "Network Firewall provides the VPC flow data that GuardDuty uses for anomaly detection"
                 ],
                 correct: 1,
                 explanation: "GuardDuty and Network Firewall work together: GuardDuty detects threats and generates findings, which can be used to inform Network Firewall rules. You can automate blocking of malicious IPs identified by GuardDuty by updating Network Firewall rules via Lambda or EventBridge.",
@@ -502,48 +502,11 @@
         }
 
         function renderQuestion() {
-            const q = shuffledQuestions[currentQuestion];
-            const container = document.getElementById('questionsContainer');
-            const letters = ['A', 'B', 'C', 'D'];
-            const userAnswer = userAnswers[currentQuestion];
-            let optionsHtml = q.options.map((opt, idx) => {
-                let classes = 'option';
-                if (currentMode === 'learn' && userAnswer !== null) {
-                    classes += ' disabled';
-                    if (idx === q.correct) classes += ' correct';
-                    else if (idx === userAnswer) classes += ' incorrect';
-                } else if (userAnswer === idx) {
-                    classes += ' selected';
-                }
-                return `<div class="${classes}" onclick="selectOption(${idx})">
-                    <span class="option-marker">${letters[idx]}</span>
-                    <span class="option-text">${opt}</span>
-                </div>`;
-            }).join('');
-            let explanationHtml = '';
-            if (currentMode === 'learn') {
-                explanationHtml = `<div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation">
-                    <div class="explanation-title">📖 Explanation</div>
-                    <div class="answer-header">Correct Answer: ${letters[q.correct]}</div>
-                    <p class="explanation-text">${q.explanation}</p>
-                    <a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a>
-                </div>`;
-            }
-            container.innerHTML = `<div class="question-card">
-                <div class="question-header">
-                    <span class="question-number">Question ${currentQuestion + 1}</span>
-                    <span class="question-domain">Network Firewall</span>
-                </div>
-                <p class="question-text">${q.question}</p>
-                <div class="options">${optionsHtml}</div>
-                ${currentMode === 'learn' && userAnswer === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}
-                ${explanationHtml}
-            </div>`;
-            document.getElementById('currentQ').textContent = currentQuestion + 1;
-            document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            const nextBtn = document.getElementById('nextBtn');
-            nextBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
+            const q = shuffledQuestions[currentQuestion], container = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion];
+            let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join('');
+            let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : '';
+            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Network Firewall</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`;
+            document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
         }
 
         function selectOption(idx) {

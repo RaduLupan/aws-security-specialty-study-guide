@@ -144,10 +144,10 @@
                 id: 1,
                 question: "What is the primary security-related use of Amazon CloudWatch for the AWS Security Specialty exam?",
                 options: [
-                    "Blocking malicious traffic",
+                    "Detecting threats and generating security findings using machine learning analysis of traffic",
                     "Monitoring, alerting, and detecting security anomalies through logs, metrics, and alarms",
-                    "Encrypting data at rest",
-                    "Managing IAM policies"
+                    "Aggregating findings from multiple security services into a unified security dashboard",
+                    "Investigating security incidents by correlating events across a behavior graph"
                 ],
                 correct: 1,
                 explanation: "CloudWatch is essential for security monitoring, alerting, and detection. It collects logs and metrics from AWS resources, allows you to set alarms for security thresholds, and integrates with other services to enable automated responses to security events.",
@@ -157,10 +157,10 @@
                 id: 2,
                 question: "What is a CloudWatch metric filter used for in security monitoring?",
                 options: [
-                    "Blocking specific log entries",
-                    "Extracting metric data from log events to create alarms",
-                    "Encrypting log data",
-                    "Deleting old log entries"
+                    "Streaming log data to Lambda functions for real-time security event processing",
+                    "Extracting metric data from log events to count patterns and create alarms",
+                    "Querying log groups interactively to search for specific security-related entries",
+                    "Defining data protection policies that mask sensitive information in logs"
                 ],
                 correct: 1,
                 explanation: "Metric filters extract metric data from log events based on patterns you define. For security, you can create metric filters to count specific events like failed login attempts, unauthorized API calls, or security group changes, then set alarms on these metrics.",
@@ -196,10 +196,10 @@
                 id: 5,
                 question: "What is CloudWatch Logs Insights used for?",
                 options: [
-                    "Creating visual dashboards",
-                    "Interactively searching and analyzing log data using a query language",
-                    "Sending notifications when logs exceed a threshold",
-                    "Encrypting log data"
+                    "Creating real-time metric filters that count pattern matches in log streams",
+                    "Interactively searching and analyzing log data using a purpose-built query language",
+                    "Streaming logs to external SIEM systems via subscription filters and Kinesis",
+                    "Detecting anomalies in log patterns using machine learning models"
                 ],
                 correct: 1,
                 explanation: "CloudWatch Logs Insights enables you to interactively search and analyze log data using a purpose-built query language. It's useful for security investigations, allowing you to quickly query across multiple log groups to find specific events or patterns.",
@@ -209,10 +209,10 @@
                 id: 6,
                 question: "How can CloudWatch Alarms trigger automated security responses?",
                 options: [
-                    "By directly modifying security groups",
+                    "By sending findings to Security Hub which executes automated remediation playbooks",
                     "Through integration with Amazon SNS, Lambda, or EC2 Auto Scaling actions",
-                    "By automatically blocking IP addresses",
-                    "By updating IAM policies"
+                    "By invoking Step Functions workflows directly from the alarm action configuration",
+                    "By triggering EventBridge rules that are subscribed to CloudWatch Alarm state changes"
                 ],
                 correct: 1,
                 explanation: "CloudWatch Alarms can trigger automated responses through SNS notifications (which can invoke Lambda functions), EC2 actions, or Auto Scaling policies. For security, you can use Lambda functions to automatically remediate issues or alert security teams.",
@@ -261,10 +261,10 @@
                 id: 10,
                 question: "What is the CloudWatch agent used for?",
                 options: [
-                    "Blocking malicious traffic on EC2",
-                    "Collecting metrics and logs from EC2 instances and on-premises servers",
-                    "Managing CloudWatch alarms",
-                    "Creating CloudWatch dashboards"
+                    "Forwarding VPC Flow Logs and CloudTrail events to CloudWatch Logs automatically",
+                    "Collecting system-level metrics and application logs from EC2 and on-premises servers",
+                    "Processing and transforming log data before it is stored in CloudWatch log groups",
+                    "Executing Lambda functions locally on EC2 instances for real-time log analysis"
                 ],
                 correct: 1,
                 explanation: "The CloudWatch agent collects system-level metrics (CPU, memory, disk) and application logs from EC2 instances and on-premises servers. It provides more detailed metrics than the default CloudWatch monitoring and enables log collection from custom applications.",
@@ -274,10 +274,10 @@
                 id: 11,
                 question: "How can you send CloudWatch Logs to external systems for analysis?",
                 options: [
-                    "Using S3 export only",
-                    "Using subscription filters to stream logs to Lambda, Kinesis, or Firehose",
-                    "CloudWatch Logs cannot be exported",
-                    "Only through manual download"
+                    "Configure S3 export tasks that batch and export logs on a scheduled interval",
+                    "Use subscription filters to stream logs in real-time to Lambda, Kinesis, or Firehose",
+                    "Create EventBridge rules that capture log events and forward them to targets",
+                    "Enable cross-account log sharing using CloudWatch Logs resource policies"
                 ],
                 correct: 1,
                 explanation: "Subscription filters allow you to stream CloudWatch Logs in real-time to destinations like Lambda, Kinesis Data Streams, or Kinesis Data Firehose. This enables integration with SIEM systems, custom analytics, or other external security tools.",
@@ -313,10 +313,10 @@
                 id: 14,
                 question: "What is cross-account log data sharing in CloudWatch?",
                 options: [
-                    "Copying logs between accounts manually",
-                    "Using subscription filters to share logs from one account to destinations in another",
-                    "Merging log groups from different accounts",
-                    "Cross-account sharing is not supported"
+                    "Creating CloudWatch Logs Insights queries that span multiple AWS accounts",
+                    "Using subscription filters to stream logs from one account to destinations in another",
+                    "Sharing CloudWatch dashboards with users in other AWS accounts via IAM roles",
+                    "Replicating log groups to S3 buckets in a centralized logging account"
                 ],
                 correct: 1,
                 explanation: "Cross-account log data sharing allows you to use subscription filters to stream logs from one AWS account to destinations (Lambda, Kinesis) in another account. This enables centralized security log analysis in a dedicated security account.",
@@ -339,10 +339,10 @@
                 id: 16,
                 question: "How can you encrypt CloudWatch Logs data at rest?",
                 options: [
-                    "Encryption is not available for CloudWatch Logs",
-                    "Using AWS KMS customer managed keys (CMK) associated with log groups",
-                    "Only with S3 default encryption",
-                    "Encryption is automatic and cannot be configured"
+                    "Configure server-side encryption on the underlying S3 bucket where logs are stored",
+                    "Associate an AWS KMS customer managed key (CMK) with the CloudWatch log group",
+                    "Enable encryption at the subscription filter level before logs reach their destination",
+                    "Use CloudWatch Logs data protection policies which encrypt sensitive data patterns"
                 ],
                 correct: 1,
                 explanation: "You can encrypt CloudWatch Logs data at rest using AWS KMS customer managed keys. You associate a KMS key with a log group, and all log data stored in that group is encrypted. This provides additional control over who can decrypt the logs.",
@@ -352,10 +352,10 @@
                 id: 17,
                 question: "What is the recommended approach for monitoring root account activity using CloudWatch?",
                 options: [
-                    "Root account activity cannot be monitored",
+                    "Enable GuardDuty which automatically monitors and alerts on root account API usage",
                     "Create a metric filter on CloudTrail logs for root user activity and set an alarm",
-                    "Use CloudWatch RUM",
-                    "Monitor the AWS console login page"
+                    "Configure Security Hub to generate findings when root account credentials are used",
+                    "Use EventBridge rules to detect IAM:CreateUser calls from the root account"
                 ],
                 correct: 1,
                 explanation: "Best practice is to send CloudTrail logs to CloudWatch Logs, create a metric filter to detect root account activity (filtering for userIdentity.type = Root), and set a CloudWatch alarm to notify security teams when the root account is used.",
@@ -365,10 +365,10 @@
                 id: 18,
                 question: "What is a CloudWatch dashboard?",
                 options: [
-                    "A pre-built security assessment report",
-                    "A customizable display of metrics, logs, and alarms for monitoring",
-                    "An automated remediation tool",
-                    "A log aggregation service"
+                    "A Contributor Insights report showing top-N contributors to metric patterns",
+                    "A customizable display of metrics, logs, and alarms for centralized monitoring",
+                    "A Logs Insights query interface for interactive log exploration and analysis",
+                    "An Anomaly Detection visualization showing metric deviations from baseline"
                 ],
                 correct: 1,
                 explanation: "CloudWatch dashboards are customizable home pages in the CloudWatch console that you can use to monitor resources in a single view. You can create security-focused dashboards showing key metrics, alarm states, and log insights across multiple accounts and Regions.",
@@ -468,29 +468,11 @@
         }
 
         function renderQuestion() {
-            const q = shuffledQuestions[currentQuestion];
-            const container = document.getElementById('questionsContainer');
-            const letters = ['A', 'B', 'C', 'D'];
-            const userAnswer = userAnswers[currentQuestion];
-            let optionsHtml = q.options.map((opt, idx) => {
-                let classes = 'option';
-                if (currentMode === 'learn' && userAnswer !== null) {
-                    classes += ' disabled';
-                    if (idx === q.correct) classes += ' correct';
-                    else if (idx === userAnswer) classes += ' incorrect';
-                } else if (userAnswer === idx) classes += ' selected';
-                return `<div class="${classes}" onclick="selectOption(${idx})"><span class="option-marker">${letters[idx]}</span><span class="option-text">${opt}</span></div>`;
-            }).join('');
-            let explanationHtml = '';
-            if (currentMode === 'learn') {
-                explanationHtml = `<div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>`;
-            }
-            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">CloudWatch</span></div><p class="question-text">${q.question}</p><div class="options">${optionsHtml}</div>${currentMode === 'learn' && userAnswer === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${explanationHtml}</div>`;
-            document.getElementById('currentQ').textContent = currentQuestion + 1;
-            document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            const nextBtn = document.getElementById('nextBtn');
-            nextBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
+            const q = shuffledQuestions[currentQuestion], container = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion];
+            let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join('');
+            let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : '';
+            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">CloudWatch</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`;
+            document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
         }
 
         function selectOption(idx) {

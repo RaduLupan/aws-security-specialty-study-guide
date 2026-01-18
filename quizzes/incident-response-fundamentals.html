@@ -157,10 +157,10 @@
                 id: 2,
                 question: "What is 'destination containment' in AWS incident response?",
                 options: [
-                    "Blocking all traffic to a geographic region",
+                    "Blocking traffic at the source using AWS WAF rules and IP deny lists",
                     "Applying filtering or routing to prevent access to a targeted host or resource",
-                    "Moving data to a backup location",
-                    "Encrypting destination resources"
+                    "Revoking IAM credentials associated with the compromised destination resource",
+                    "Creating forensic snapshots of the destination system before isolation"
                 ],
                 correct: 1,
                 explanation: "Destination containment is applying filtering or routing within an environment to prevent access to a targeted host or resource. Examples include applying Network ACLs to block traffic, using isolation VPCs, detaching resources from Auto Scaling groups, and deregistering from load balancers.",
@@ -183,10 +183,10 @@
                 id: 4,
                 question: "What is the first action you should take when you suspect an EC2 instance is compromised?",
                 options: [
-                    "Immediately terminate the instance",
-                    "Capture metadata and isolate the instance while preserving evidence",
-                    "Reboot the instance to clear the threat",
-                    "Change the root password"
+                    "Immediately terminate the instance to stop the attacker and prevent lateral movement",
+                    "Capture metadata and isolate the instance while preserving forensic evidence",
+                    "Analyze CloudTrail logs to understand the scope before taking containment actions",
+                    "Rotate the IAM role credentials attached to the instance to prevent API abuse"
                 ],
                 correct: 1,
                 explanation: "When responding to a potentially compromised EC2 instance, first capture metadata (instance ID, security groups, IAM role, etc.) and then isolate the instance while preserving evidence. This typically involves changing security groups to restrict traffic, taking EBS snapshots, and capturing memory if needed.",
@@ -196,10 +196,10 @@
                 id: 5,
                 question: "What is the purpose of an 'isolation VPC' in incident response?",
                 options: [
-                    "To store backup data securely",
-                    "To contain compromised resources while allowing legitimate traffic like AV/EDR tools",
-                    "To separate production from development environments",
-                    "To isolate new deployments before production"
+                    "A VPC with no internet gateway used to completely air-gap compromised instances",
+                    "A pre-configured VPC to contain compromised resources while allowing legitimate AV/EDR traffic",
+                    "A forensics VPC where EBS snapshots are restored for offline analysis",
+                    "A staging VPC where instances are scanned before returning to production"
                 ],
                 correct: 1,
                 explanation: "An isolation VPC is a pre-configured VPC that provides effective containment of potentially compromised resources while still allowing legitimate traffic (like antivirus or EDR solutions that need internet access). Resources are moved to this isolation VPC during active security events.",
@@ -209,10 +209,10 @@
                 id: 6,
                 question: "How should you capture forensic evidence from an EC2 instance's EBS volume?",
                 options: [
-                    "Download files directly from the instance",
-                    "Create an EBS snapshot before any changes are made",
-                    "Copy files to S3 using the AWS CLI",
-                    "Export the instance to VMware"
+                    "Use SSM Run Command to archive log files and upload them to an S3 bucket",
+                    "Create an EBS snapshot immediately to preserve the complete disk state for analysis",
+                    "Stop the instance and copy the volume to a forensics account using EBS copy",
+                    "Create an AMI of the instance which captures both disk and memory state"
                 ],
                 correct: 1,
                 explanation: "Create EBS snapshots immediately to preserve the disk state for forensic analysis. Snapshots capture the entire volume at a point in time. You can then create new volumes from these snapshots in an isolated forensics environment for investigation without affecting the original evidence.",
@@ -222,10 +222,10 @@
                 id: 7,
                 question: "What is 'source containment' in AWS incident response?",
                 options: [
-                    "Blocking the source of an attack from reaching AWS resources",
-                    "Preventing source code from being modified",
-                    "Isolating the source code repository",
-                    "Encrypting source data"
+                    "Blocking the source of an attack from reaching AWS resources via IP blocks or credential revocation",
+                    "Isolating the compromised destination resource from the rest of the network",
+                    "Preserving the original evidence source before any forensic analysis begins",
+                    "Identifying the origin of malicious traffic using VPC Flow Logs and CloudTrail"
                 ],
                 correct: 0,
                 explanation: "Source containment focuses on blocking the source of an attack from reaching AWS resources. This can include blocking IP addresses using security groups, NACLs, or AWS WAF; disabling compromised IAM credentials; or blocking specific users or roles that may be compromised.",
@@ -248,10 +248,10 @@
                 id: 9,
                 question: "What should be included in an incident response preparation plan?",
                 options: [
-                    "Only technical runbooks",
-                    "Contact lists, escalation procedures, runbooks, and access to required tools",
-                    "Only AWS account credentials",
-                    "Only network diagrams"
+                    "Technical runbooks focused on automated remediation using Lambda and Step Functions",
+                    "Contact lists, escalation procedures, runbooks, pre-provisioned access, and required tools",
+                    "AWS account inventory with IAM policies and security group configurations documented",
+                    "Network architecture diagrams showing VPC peering and Transit Gateway connections"
                 ],
                 correct: 1,
                 explanation: "Preparation should include: contact lists and escalation procedures, incident response runbooks, pre-provisioned access and tools, documented account and resource inventory, established relationships with AWS Support (if applicable), and regular testing through tabletop exercises and game days.",
@@ -261,10 +261,10 @@
                 id: 10,
                 question: "How can you quickly isolate a potentially compromised EC2 instance from the network?",
                 options: [
-                    "Terminate the instance immediately",
-                    "Replace its security group with one that denies all inbound and outbound traffic",
-                    "Disable the VPC",
-                    "Remove the instance's IAM role"
+                    "Terminate the instance to immediately stop all network activity and prevent further damage",
+                    "Replace its security groups with a quarantine group that denies all inbound and outbound traffic",
+                    "Modify the NACL associated with the subnet to block all traffic to the instance IP",
+                    "Detach the IAM role to prevent the instance from making any AWS API calls"
                 ],
                 correct: 1,
                 explanation: "The fastest way to network-isolate an EC2 instance is to replace its security groups with a 'quarantine' security group that has no inbound or outbound rules (denies all traffic by default). This preserves the instance for forensics while preventing further network communication.",
@@ -274,10 +274,10 @@
                 id: 11,
                 question: "What is the purpose of 'containment action preferences' in AWS Security Incident Response?",
                 options: [
-                    "To define backup retention policies",
-                    "To pre-authorize rapid response measures like isolating hosts and rotating credentials",
-                    "To configure log retention",
-                    "To set alerting thresholds"
+                    "Configuration settings that define which AWS services are in scope for incident monitoring",
+                    "Pre-authorized rapid response measures like isolating hosts and rotating credentials",
+                    "Policies that specify which team members can access incident case information",
+                    "Thresholds that trigger automatic escalation when security metrics exceed limits"
                 ],
                 correct: 1,
                 explanation: "Containment action preferences allow you to pre-authorize rapid response measures that the AWS Security Incident Response team can take during an active security event. This includes isolating compromised hosts, rotating credentials, and other containment actions to speed up response time.",
@@ -287,10 +287,10 @@
                 id: 12,
                 question: "What is 'triage' in the context of incident response?",
                 options: [
-                    "The final report after an incident",
-                    "The initial assessment and prioritization of a security event",
-                    "The cleanup of compromised resources",
-                    "The process of training responders"
+                    "The comprehensive post-incident report documenting root cause and lessons learned",
+                    "The initial assessment and prioritization of a security event to determine response",
+                    "The process of removing malware and closing vulnerabilities during eradication",
+                    "The validation step confirming systems are clean before returning to production"
                 ],
                 correct: 1,
                 explanation: "Triage is the initial assessment and prioritization of a security event to determine the appropriate response and next steps. It involves quickly evaluating the severity, scope, and potential impact of an incident to allocate resources appropriately.",
@@ -300,10 +300,10 @@
                 id: 13,
                 question: "What volatile data should be captured from a potentially compromised EC2 instance before isolation?",
                 options: [
-                    "Only the instance ID",
+                    "Instance metadata including security groups, IAM role, and network interface details",
                     "Memory contents, running processes, network connections, and logged-in users",
-                    "Only EBS volume data",
-                    "Only CloudTrail logs"
+                    "EBS volume snapshots capturing the complete disk state for forensic analysis",
+                    "CloudTrail logs and VPC Flow Logs related to the instance's recent API activity"
                 ],
                 correct: 1,
                 explanation: "Volatile data (data lost when the instance is stopped) includes memory contents, running processes, network connections, logged-in users, and open files. This data should be captured before isolation or shutdown using memory acquisition tools if forensic analysis of runtime state is required.",
@@ -313,10 +313,10 @@
                 id: 14,
                 question: "How should Network ACLs be configured for destination containment?",
                 options: [
-                    "Remove all rules from the NACL",
-                    "Add explicit deny rules at the top of the NACL to block traffic to/from the targeted resource",
-                    "Delete the NACL entirely",
-                    "Only modify outbound rules"
+                    "Replace the existing NACL with a new one containing no rules for complete subnet isolation",
+                    "Add explicit deny rules at the beginning of the NACL to block traffic to/from the target",
+                    "Modify the default NACL rules to change from ALLOW to DENY for affected IP ranges",
+                    "Associate a quarantine NACL that allows only management traffic from specific admin IPs"
                 ],
                 correct: 1,
                 explanation: "Network ACL rules are processed in top-down order. For destination containment, add explicit deny rules at the beginning of the NACL (lowest rule numbers) to block unauthorized traffic to/from the targeted resource. Alternatively, create a new NACL with only deny rules and associate it with the subnet.",
@@ -326,10 +326,10 @@
                 id: 15,
                 question: "What is 'eradication' in the incident response lifecycle?",
                 options: [
-                    "Deleting all logs related to an incident",
-                    "Removing the root cause and any artifacts of the compromise",
-                    "Terminating all EC2 instances",
-                    "Disabling the affected AWS account"
+                    "Isolating compromised resources from the network to prevent lateral movement",
+                    "Removing the root cause and any artifacts or persistence mechanisms of the compromise",
+                    "Restoring systems to normal operation after verifying they are clean",
+                    "Documenting the incident timeline and creating a lessons learned report"
                 ],
                 correct: 1,
                 explanation: "Eradication involves removing the root cause of the incident and any artifacts left by the attacker. This includes removing malware, closing vulnerabilities that were exploited, removing unauthorized access, and ensuring the attacker no longer has persistence mechanisms.",
@@ -352,10 +352,10 @@
                 id: 17,
                 question: "What should be documented during post-incident activity?",
                 options: [
-                    "Only the timeline of events",
-                    "Lessons learned, root cause analysis, and improvements to prevent recurrence",
-                    "Only the names of responders",
-                    "Only the cost of the incident"
+                    "A detailed timeline of events with timestamps for each containment action taken",
+                    "Lessons learned, root cause analysis, and specific improvements to prevent recurrence",
+                    "Names and roles of all responders along with their individual actions during the incident",
+                    "Financial impact assessment including remediation costs and business disruption estimates"
                 ],
                 correct: 1,
                 explanation: "Post-incident activity should document: timeline of events, actions taken, root cause analysis, lessons learned, and recommended improvements. This information feeds back into the preparation phase to improve future incident response capabilities.",
@@ -365,10 +365,10 @@
                 id: 18,
                 question: "Why should you detach compromised EC2 instances from Auto Scaling groups during containment?",
                 options: [
-                    "To reduce costs",
+                    "To stop the instance from receiving traffic through the load balancer immediately",
                     "To prevent the Auto Scaling group from terminating the instance and destroying evidence",
-                    "To improve performance",
-                    "Auto Scaling groups don't affect incident response"
+                    "To allow the security team to modify the instance without triggering scaling policies",
+                    "To reduce the blast radius by preventing the compromise from spreading to new instances"
                 ],
                 correct: 1,
                 explanation: "You should detach compromised instances from Auto Scaling groups to prevent the group from terminating the instance (destroying forensic evidence) or launching replacement instances that might also be compromised. This also prevents the affected instance from serving traffic.",
@@ -378,10 +378,10 @@
                 id: 19,
                 question: "What is 'Responder Generated Intelligence' in AWS Security Incident Response?",
                 options: [
-                    "AI-generated threat reports",
+                    "Automated threat reports generated by GuardDuty using machine learning analysis",
                     "Indicators of compromise, TTPs, and patterns observed during AWS investigations",
-                    "Automated log analysis",
-                    "Machine learning model outputs"
+                    "Log analysis insights produced by Amazon Detective's behavioral graph",
+                    "Security findings aggregated and prioritized by Security Hub's scoring algorithm"
                 ],
                 correct: 1,
                 explanation: "Responder Generated Intelligence includes indicators of compromise (IOCs), tactics, techniques, and procedures (TTPs), and associated patterns observed by AWS during investigations. This intelligence helps identify and respond to evolving security threats.",
@@ -391,10 +391,10 @@
                 id: 20,
                 question: "What is the recommended approach for handling compromised IAM credentials?",
                 options: [
-                    "Wait and monitor for suspicious activity",
-                    "Immediately deactivate/delete the credentials and review recent actions",
-                    "Change only the password",
-                    "Create a new user with the same permissions"
+                    "Monitor CloudTrail logs closely to understand attacker behavior before taking action",
+                    "Immediately deactivate the credentials and review CloudTrail for recent unauthorized actions",
+                    "Rotate the credentials to new values while keeping the existing ones temporarily active",
+                    "Apply a restrictive IAM policy to the user that limits permissions to read-only access"
                 ],
                 correct: 1,
                 explanation: "When IAM credentials are compromised, immediately deactivate or delete the affected credentials (access keys, passwords). Then review CloudTrail logs to understand what actions were taken with those credentials, and assess the blast radius of the compromise.",
@@ -404,10 +404,10 @@
                 id: 21,
                 question: "What is the purpose of 'game days' in incident response preparation?",
                 options: [
-                    "Team building activities",
-                    "Simulated security incidents to practice and improve response procedures",
-                    "Annual security training",
-                    "Penetration testing"
+                    "Tabletop exercises where teams discuss hypothetical scenarios without hands-on action",
+                    "Simulated security incidents to practice response procedures in a realistic environment",
+                    "Annual security awareness training required for compliance with industry regulations",
+                    "Authorized penetration testing engagements to identify vulnerabilities before attackers"
                 ],
                 correct: 1,
                 explanation: "Game days are simulated security incidents that help teams practice their incident response procedures in a controlled environment. They help identify gaps in runbooks, test communication channels, and ensure responders are familiar with tools and processes before a real incident occurs.",
@@ -417,10 +417,10 @@
                 id: 22,
                 question: "How should you preserve evidence chain of custody in AWS?",
                 options: [
-                    "Evidence preservation isn't important in the cloud",
-                    "Document who accessed what, when, and maintain integrity of snapshots/logs in separate accounts",
-                    "Store everything in the same account",
-                    "Only use CloudTrail"
+                    "Store EBS snapshots and logs in the same account with versioning enabled for rollback",
+                    "Document all access to evidence and store forensic artifacts in separate restricted accounts",
+                    "Use CloudTrail to automatically track all API calls made during the investigation",
+                    "Enable S3 Object Lock on all buckets to prevent modification of stored evidence"
                 ],
                 correct: 1,
                 explanation: "Maintain chain of custody by: documenting all access to evidence (who, when, what), storing forensic artifacts (snapshots, logs) in a separate, restricted account, using write-once storage for logs, enabling MFA delete, and using cryptographic hashes to verify integrity.",
@@ -430,10 +430,10 @@
                 id: 23,
                 question: "What is the difference between shutting down and stopping an EC2 instance for forensics?",
                 options: [
-                    "There is no difference",
-                    "Shutdown preserves volatile data; stopping loses volatile data but preserves EBS volumes",
-                    "Shutdown costs more",
-                    "Stopping is faster"
+                    "Both preserve all data identically since EBS volumes persist through either action",
+                    "Stopping loses volatile data like memory but preserves EBS volumes for disk forensics",
+                    "Shutdown triggers a clean OS shutdown preserving more filesystem state than stopping",
+                    "Stopping is preferred because it allows the instance to be restarted for live analysis"
                 ],
                 correct: 1,
                 explanation: "Stopping an EC2 instance (normal stop) loses volatile data (memory, running processes) but preserves EBS volumes. For forensics, if you need volatile data, you must capture it before stopping. Stopping is often preferred to preserve disk evidence while preventing further network activity.",
@@ -443,10 +443,10 @@
                 id: 24,
                 question: "What should you review in CloudTrail when investigating a security incident?",
                 options: [
-                    "Only failed API calls",
-                    "API calls related to the incident, including source IPs, user agents, and affected resources",
-                    "Only management events",
-                    "Only events from the last hour"
+                    "Failed API calls which indicate blocked attacker activity and permission errors",
+                    "All relevant API calls including source IPs, user agents, timestamps, and affected resources",
+                    "Management events only since data events are too voluminous for incident investigation",
+                    "Events from the detection time window to limit the scope of investigation"
                 ],
                 correct: 1,
                 explanation: "During investigation, review all relevant CloudTrail events including: API calls by the suspected compromised identity, source IP addresses, user agents, affected resources, timestamps, and both successful and failed attempts. This helps establish the timeline and scope of the incident.",
@@ -456,10 +456,10 @@
                 id: 25,
                 question: "What is the role of AWS Support during a security incident?",
                 options: [
-                    "AWS Support has no role in security incidents",
-                    "Business or Enterprise Support can provide guidance and, with appropriate plans, direct assistance",
-                    "AWS Support automatically remediates all security issues",
-                    "AWS Support only handles billing issues"
+                    "AWS Support is only available for infrastructure issues, not customer security incidents",
+                    "Business or Enterprise Support provides guidance with Enterprise including TAM and expert access",
+                    "AWS Support proactively monitors and automatically remediates security threats in your account",
+                    "AWS Support provides incident response only through the separately purchased Security Hub service"
                 ],
                 correct: 1,
                 explanation: "AWS Business and Enterprise Support customers can receive guidance during security incidents. Enterprise Support includes access to a Technical Account Manager (TAM) and, with the AWS Security Incident Response service, 24/7 access to security experts for active incident support.",
@@ -473,7 +473,7 @@
         function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
         function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
         function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
-        function renderQuestion() { const q = shuffledQuestions[currentQuestion], c = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ua = userAnswers[currentQuestion]; let opts = q.options.map((o,i) => { let cls = 'option'; if (currentMode === 'learn' && ua !== null) { cls += ' disabled'; if (i === q.correct) cls += ' correct'; else if (i === ua) cls += ' incorrect'; } else if (ua === i) cls += ' selected'; return `<div class="${cls}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${ua !== null ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; c.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Incident Response</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && ua === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], c = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ua = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o,i) => { let cls = 'option'; if (currentMode === 'learn' && revealed) { cls += ' disabled'; if (i === q.correct) cls += ' correct'; else if (i === ua && ua !== q.correct) cls += ' incorrect'; } else if (ua === i) cls += ' selected'; return `<div class="${cls}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; c.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Incident Response</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
         function selectOption(i) { if (currentMode === 'learn' && answersRevealed[currentQuestion]) return; userAnswers[currentQuestion] = i; renderQuestion(); }
         function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; answersRevealed[currentQuestion] = true; renderQuestion(); }
         function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }

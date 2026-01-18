@@ -145,10 +145,10 @@
                 id: 1,
                 question: "What is the primary purpose of Amazon Detective?",
                 options: [
-                    "To automatically remediate security threats",
+                    "To continuously monitor for threats and generate security findings automatically",
                     "To analyze, investigate, and identify the root cause of security findings",
-                    "To block malicious network traffic in real-time",
-                    "To encrypt sensitive data across AWS services"
+                    "To aggregate security findings from multiple services into a single dashboard",
+                    "To execute automated remediation playbooks in response to security events"
                 ],
                 correct: 1,
                 explanation: "Amazon Detective helps you analyze, investigate, and quickly identify the root cause of security findings or suspicious activities. It automatically collects log data from your AWS resources and uses machine learning, statistical analysis, and graph theory to generate visualizations for efficient security investigations.",
@@ -197,10 +197,10 @@
                 id: 5,
                 question: "What are 'finding groups' in Amazon Detective?",
                 options: [
-                    "Categories of security controls",
-                    "Collections of related findings that may indicate a security incident",
-                    "Groups of IAM users with similar permissions",
-                    "Clusters of EC2 instances with security issues"
+                    "Organizational units in the behavior graph that separate findings by AWS account",
+                    "Collections of related findings that may represent a multi-stage security incident",
+                    "Filters that categorize GuardDuty findings by severity and type for prioritization",
+                    "Saved search queries that group findings matching specific investigation criteria"
                 ],
                 correct: 1,
                 explanation: "Detective finding groups let you examine multiple activities as they relate to a potential security event. If a threat actor attempts to compromise your AWS environment, they typically perform a sequence of actions that generate multiple security findings. Finding groups help you analyze these related activities together.",
@@ -210,10 +210,10 @@
                 id: 6,
                 question: "What is 'Detective Investigation' used for?",
                 options: [
-                    "Automatically blocking suspicious IP addresses",
+                    "Generating automated remediation actions based on finding severity levels",
                     "Investigating IAM users and roles using indicators of compromise (IOC)",
-                    "Scanning code repositories for vulnerabilities",
-                    "Monitoring network bandwidth usage"
+                    "Creating visual timelines of API calls made during a specific time period",
+                    "Correlating VPC Flow Logs with CloudTrail events for network analysis"
                 ],
                 correct: 1,
                 explanation: "Detective Investigation allows you to investigate IAM users and IAM roles using indicators of compromise (IOC). It uses machine learning and threat intelligence to surface the most critical, suspicious issues, helping you determine if a resource is involved in a security incident.",
@@ -469,29 +469,11 @@
         }
 
         function renderQuestion() {
-            const q = shuffledQuestions[currentQuestion];
-            const container = document.getElementById('questionsContainer');
-            const letters = ['A', 'B', 'C', 'D'];
-            const userAnswer = userAnswers[currentQuestion];
-            let optionsHtml = q.options.map((opt, idx) => {
-                let classes = 'option';
-                if (currentMode === 'learn' && userAnswer !== null) {
-                    classes += ' disabled';
-                    if (idx === q.correct) classes += ' correct';
-                    else if (idx === userAnswer) classes += ' incorrect';
-                } else if (userAnswer === idx) classes += ' selected';
-                return `<div class="${classes}" onclick="selectOption(${idx})"><span class="option-marker">${letters[idx]}</span><span class="option-text">${opt}</span></div>`;
-            }).join('');
-            let explanationHtml = '';
-            if (currentMode === 'learn') {
-                explanationHtml = `<div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>`;
-            }
-            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Detective</span></div><p class="question-text">${q.question}</p><div class="options">${optionsHtml}</div>${currentMode === 'learn' && userAnswer === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${explanationHtml}</div>`;
-            document.getElementById('currentQ').textContent = currentQuestion + 1;
-            document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            const nextBtn = document.getElementById('nextBtn');
-            nextBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
+            const q = shuffledQuestions[currentQuestion], container = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion];
+            let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join('');
+            let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : '';
+            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Detective</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`;
+            document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
         }
 
         function selectOption(idx) {

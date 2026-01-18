@@ -534,29 +534,11 @@
         }
 
         function renderQuestion() {
-            const q = shuffledQuestions[currentQuestion];
-            const container = document.getElementById('questionsContainer');
-            const letters = ['A', 'B', 'C', 'D'];
-            const userAnswer = userAnswers[currentQuestion];
-            let optionsHtml = q.options.map((opt, idx) => {
-                let classes = 'option';
-                if (currentMode === 'learn' && userAnswer !== null) {
-                    classes += ' disabled';
-                    if (idx === q.correct) classes += ' correct';
-                    else if (idx === userAnswer) classes += ' incorrect';
-                } else if (userAnswer === idx) classes += ' selected';
-                return `<div class="${classes}" onclick="selectOption(${idx})"><span class="option-marker">${letters[idx]}</span><span class="option-text">${opt}</span></div>`;
-            }).join('');
-            let explanationHtml = '';
-            if (currentMode === 'learn') {
-                explanationHtml = `<div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>`;
-            }
-            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">CloudTrail</span></div><p class="question-text">${q.question}</p><div class="options">${optionsHtml}</div>${currentMode === 'learn' && userAnswer === null ? '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${explanationHtml}</div>`;
-            document.getElementById('currentQ').textContent = currentQuestion + 1;
-            document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
-            document.getElementById('prevBtn').disabled = currentQuestion === 0;
-            const nextBtn = document.getElementById('nextBtn');
-            nextBtn.textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
+            const q = shuffledQuestions[currentQuestion], container = document.getElementById('questionsContainer'), letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion];
+            let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join('');
+            let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : '';
+            container.innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">CloudTrail</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`;
+            document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →';
         }
 
         function selectOption(idx) {

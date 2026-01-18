@@ -1011,13 +1011,14 @@
             
             const letters = ['A', 'B', 'C', 'D'];
             const userAnswer = userAnswers[currentQuestion];
+            const revealed = answersRevealed[currentQuestion];
             
             let optionsHtml = q.options.map((opt, idx) => {
                 let classes = 'option';
-                if (currentMode === 'learn' && userAnswer !== null) {
+                if (currentMode === 'learn' && revealed) {
                     classes += ' disabled';
                     if (idx === q.correct) classes += ' correct';
-                    else if (idx === userAnswer) classes += ' incorrect';
+                    else if (idx === userAnswer && userAnswer !== q.correct) classes += ' incorrect';
                 } else if (userAnswer === idx) {
                     classes += ' selected';
                 }
@@ -1033,7 +1034,7 @@
             let explanationHtml = '';
             if (currentMode === 'learn') {
                 explanationHtml = `
-                    <div class="explanation ${userAnswer !== null ? 'show' : ''}" id="explanation">
+                    <div class="explanation ${revealed ? 'show' : ''}" id="explanation">
                         <div class="explanation-title">📖 Explanation</div>
                         <div class="answer-header">Correct Answer: ${letters[q.correct]}</div>
                         <p class="explanation-text">${q.explanation}</p>
@@ -1052,7 +1053,7 @@
                     </div>
                     <p class="question-text">${q.question}</p>
                     <div class="options">${optionsHtml}</div>
-                    ${currentMode === 'learn' && userAnswer === null ? 
+                    ${currentMode === 'learn' && !revealed ? 
                         '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}
                     ${explanationHtml}
                 </div>
@@ -1086,6 +1087,7 @@
             if (userAnswers[currentQuestion] === null) {
                 userAnswers[currentQuestion] = -1; // Mark as revealed but not answered
             }
+            answersRevealed[currentQuestion] = true;
             renderQuestion();
         }
 
