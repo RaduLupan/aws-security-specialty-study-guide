@@ -173,10 +173,10 @@
                 id: 1,
                 question: "What is the main difference between AWS Shield Standard and Shield Advanced?",
                 options: [
-                    "Shield Standard protects against layer 3/4 attacks while Advanced adds layer 7 detection only",
+                    "Shield Standard protects against layer 3/4 attacks while Advanced adds layer 7 detection only, but both services use the same underlying detection algorithms and mitigation techniques at AWS edge locations",
                     "Shield Advanced provides layer 7 DDoS protection, 24/7 DRT access, and cost protection",
-                    "Shield Standard uses machine learning while Advanced relies on rule-based detection",
-                    "Shield Advanced requires WAF integration while Standard works independently"
+                    "Shield Standard uses machine learning algorithms to detect attack patterns while Advanced relies on rule-based detection systems that require manual configuration and tuning by security teams",
+                    "Shield Advanced requires mandatory WAF integration and cannot function independently, while Standard works as a standalone service without any additional AWS service dependencies or configuration requirements"
                 ],
                 correct: 1,
                 explanation: "Shield Advanced provides enhanced DDoS protection including application layer (layer 7) attack detection, 24/7 access to AWS DDoS Response Team (DRT), cost protection for scaling during attacks, and advanced metrics. Shield Standard provides automatic layer 3/4 protection at no extra cost.",
@@ -186,10 +186,10 @@
                 id: 2,
                 question: "Which AWS resources can be protected by AWS Shield Advanced?",
                 options: [
-                    "EC2 instances, RDS databases, and S3 buckets with public access enabled",
+                    "EC2 instances with public IP addresses, RDS databases configured for public access, and S3 buckets that have public read or write permissions enabled through bucket policies or ACLs",
                     "CloudFront, Route 53, Global Accelerator, ALB, ELB, and Elastic IPs",
-                    "API Gateway endpoints, Lambda functions, and AppSync GraphQL APIs",
-                    "Network Load Balancers, NAT Gateways, and Transit Gateway attachments"
+                    "API Gateway REST and HTTP APIs, Lambda functions with public function URLs or API Gateway integrations, and AppSync GraphQL APIs that are accessible over the internet",
+                    "Network Load Balancers with internet-facing listeners, NAT Gateways in public subnets, and Transit Gateway attachments that route traffic to internet gateways or virtual private gateways"
                 ],
                 correct: 1,
                 explanation: "Shield Advanced can protect Amazon CloudFront distributions, Amazon Route 53 hosted zones, AWS Global Accelerator accelerators, Application Load Balancers, Classic Load Balancers (ELB), and Elastic IP addresses attached to EC2 instances or Network Load Balancers.",
@@ -199,10 +199,10 @@
                 id: 3,
                 question: "What is the AWS DDoS Response Team (DRT)?",
                 options: [
-                    "An automated response system that blocks DDoS attacks",
+                    "An automated response system that uses machine learning algorithms to automatically detect, analyze, and block DDoS attacks in real-time without requiring any human intervention or manual configuration",
                     "A team of AWS security experts available 24/7 to help during DDoS attacks",
-                    "A third-party security service provider",
-                    "A monitoring dashboard for DDoS metrics"
+                    "A third-party security service provider that AWS contracts with to provide specialized DDoS mitigation services and incident response capabilities for enterprise customers",
+                    "A monitoring dashboard and analytics tool that provides real-time DDoS attack metrics, historical attack data visualization, and automated alerting capabilities for security teams"
                 ],
                 correct: 1,
                 explanation: "The AWS DDoS Response Team (DRT) is a group of AWS security experts available to Shield Advanced customers 24/7. They can help during active DDoS attacks by analyzing patterns, creating custom mitigations, and providing technical support. They require prior authorization to access your resources.",
@@ -212,10 +212,10 @@
                 id: 4,
                 question: "What is the monthly cost for AWS Shield Advanced subscription?",
                 options: [
-                    "Free for all AWS customers",
-                    "$1,000 per month",
+                    "Free for all AWS customers as part of the standard AWS service offering, with no additional charges for DDoS protection capabilities regardless of traffic volume or attack frequency",
+                    "$1,000 per month base subscription fee, with additional per-GB charges for data transfer and attack mitigation services that scale based on the volume of protected traffic",
                     "$3,000 per month plus data transfer fees",
-                    "$5,000 per month with no additional fees"
+                    "$5,000 per month with no additional fees for data transfer, attack mitigation, or any other services, providing unlimited protection coverage across all AWS accounts in your organization"
                 ],
                 correct: 2,
                 explanation: "AWS Shield Advanced has a monthly subscription fee of $3,000, plus additional fees for data transfer out (DTO) from protected resources. The subscription is per AWS Organization, covering all accounts. Shield Standard is free and automatic for all AWS customers.",
@@ -225,10 +225,10 @@
                 id: 5,
                 question: "What is 'cost protection' in AWS Shield Advanced?",
                 options: [
-                    "Automatic budget alerts when DDoS-related spending exceeds configured thresholds",
+                    "Automatic budget alerts and spending notifications that are triggered when DDoS-related AWS service charges exceed pre-configured spending thresholds or budget limits that you define in AWS Budgets",
                     "Service credits for scaling charges like EC2 and data transfer during DDoS attacks",
-                    "Reserved capacity pricing for resources that are frequently targeted by attacks",
-                    "Waived data transfer fees for traffic analyzed by Shield's detection systems"
+                    "Reserved capacity pricing discounts and cost optimization features that automatically apply to AWS resources that are frequently targeted by DDoS attacks, reducing your overall infrastructure costs",
+                    "Waived data transfer fees and automatic cost reductions for all network traffic that is analyzed, filtered, or processed by Shield's DDoS detection and mitigation systems at AWS edge locations"
                 ],
                 correct: 1,
                 explanation: "Cost protection provides service credits if your AWS bill increases due to scaling during a DDoS attack. This covers charges from services like EC2, CloudFront data transfer, and Route 53 queries. You must request credits within 15 days of the billing period.",
@@ -238,10 +238,10 @@
                 id: 6,
                 question: "Which layer of the OSI model do network volumetric DDoS attacks target?",
                 options: [
-                    "Layer 1 (Physical)",
+                    "Layer 1 (Physical), where attacks target the physical network infrastructure including cables, switches, and network interface cards to disrupt connectivity at the hardware level",
                     "Layer 3 (Network)",
-                    "Layer 7 (Application)",
-                    "Layer 5 (Session)"
+                    "Layer 7 (Application), where attacks send high volumes of HTTP/HTTPS requests to overwhelm application servers, databases, and application logic processing capabilities",
+                    "Layer 5 (Session), where attacks exploit session management mechanisms and connection state tracking to exhaust server resources allocated for maintaining active user sessions"
                 ],
                 correct: 1,
                 explanation: "Network volumetric attacks target Layer 3 (Network layer) of the OSI model. They attempt to saturate network bandwidth with large amounts of traffic. Examples include UDP floods and ICMP floods. Shield Standard automatically protects against these attacks.",
@@ -251,10 +251,10 @@
                 id: 7,
                 question: "What is a TCP SYN flood attack?",
                 options: [
-                    "An application layer attack targeting HTTP endpoints",
+                    "An application layer attack targeting HTTP endpoints by sending massive volumes of legitimate-looking HTTP GET and POST requests to overwhelm web servers, application logic, and backend database connections",
                     "A network protocol attack that exhausts connection state resources",
-                    "A DNS amplification attack",
-                    "A brute force login attempt"
+                    "A DNS amplification attack that exploits open DNS resolvers to generate large volumes of DNS response traffic directed at a target, using small DNS queries to trigger much larger responses",
+                    "A brute force login attempt that systematically tries different username and password combinations against authentication endpoints to gain unauthorized access to user accounts"
                 ],
                 correct: 1,
                 explanation: "A TCP SYN flood is a Layer 4 (Transport layer) protocol attack. It exploits the TCP handshake by sending many SYN packets without completing the handshake, exhausting server resources allocated for tracking connection states. Shield protects against this attack type.",
@@ -264,10 +264,10 @@
                 id: 8,
                 question: "How does AWS Shield detect DDoS attacks on CloudFront and Route 53?",
                 options: [
-                    "Using VPC Flow Logs analysis",
+                    "Using VPC Flow Logs analysis that processes network traffic logs from VPCs, subnets, and network interfaces to identify attack patterns through post-processing and batch analysis of historical traffic data",
                     "Through continuous network flow monitoring at AWS edge locations",
-                    "By analyzing CloudWatch metrics only",
-                    "Through customer-provided threat intelligence"
+                    "By analyzing CloudWatch metrics only, including request rates, error rates, and latency metrics that are collected and aggregated over time to detect anomalies and attack signatures",
+                    "Through customer-provided threat intelligence feeds, IP reputation lists, and custom attack signatures that are manually configured and uploaded by security teams through the Shield console"
                 ],
                 correct: 1,
                 explanation: "For CloudFront and Route 53, Shield uses continuous network flow monitoring at AWS edge locations. Traffic is inspected inline, and mitigations are applied automatically and immediately when attack patterns are detected, without routing changes.",
@@ -277,10 +277,10 @@
                 id: 9,
                 question: "What is automatic application layer DDoS mitigation in Shield Advanced?",
                 options: [
-                    "Automatic scaling of EC2 instances during attacks",
+                    "Automatic scaling of EC2 instances, Auto Scaling groups, and ECS services during attacks to increase capacity and handle increased traffic volumes without manual intervention or pre-configured scaling policies",
                     "Automatic creation of WAF rules to counter layer 7 DDoS attacks",
-                    "Automatic DNS failover during attacks",
-                    "Automatic CDN cache invalidation"
+                    "Automatic DNS failover during attacks that switches traffic from primary to secondary Route 53 health-checked endpoints or CloudFront origins when attack-related health degradation is detected",
+                    "Automatic CDN cache invalidation that clears cached content from CloudFront edge locations to ensure fresh content delivery and prevent serving stale or potentially compromised cached responses during attacks"
                 ],
                 correct: 1,
                 explanation: "Automatic application layer DDoS mitigation allows Shield Advanced to automatically create, evaluate, and deploy AWS WAF rules to mitigate layer 7 attacks. When enabled, Shield Advanced identifies attack patterns and creates custom WAF rules to block malicious traffic.",
@@ -290,10 +290,10 @@
                 id: 10,
                 question: "What is health-based detection in AWS Shield Advanced?",
                 options: [
-                    "Monitoring application response times through CloudWatch to detect degraded performance",
+                    "Monitoring application response times, error rates, and latency metrics through CloudWatch to detect performance degradation and automatically trigger DDoS mitigation responses when thresholds are exceeded",
                     "Using Route 53 health checks to improve DDoS detection accuracy during attacks",
-                    "Analyzing AWS Health events to correlate infrastructure issues with attack patterns",
-                    "Checking target group health through ALB to automatically adjust protection rules"
+                    "Analyzing AWS Health events, service health dashboards, and infrastructure status updates to correlate known infrastructure issues, service disruptions, and maintenance windows with detected attack patterns",
+                    "Checking target group health status through Application Load Balancer health checks to automatically adjust Shield protection rules, sensitivity thresholds, and mitigation strategies based on backend resource availability"
                 ],
                 correct: 1,
                 explanation: "Health-based detection uses Route 53 health checks associated with protected resources to improve detection accuracy. Shield Advanced monitors the health status and correlates it with traffic patterns. When health degrades during increased traffic, detection sensitivity increases.",
@@ -303,10 +303,10 @@
                 id: 11,
                 question: "Which AWS service is included at no additional cost with Shield Advanced?",
                 options: [
-                    "Amazon GuardDuty",
+                    "Amazon GuardDuty, including threat detection capabilities, security findings, and threat intelligence feeds that help identify malicious activity and unauthorized access attempts across your AWS accounts",
                     "AWS WAF",
-                    "AWS Inspector",
-                    "Amazon Macie"
+                    "AWS Inspector, including automated security assessments, vulnerability scanning, and compliance checks that evaluate your EC2 instances, container images, and Lambda functions for security best practices",
+                    "Amazon Macie, including sensitive data discovery, data classification, and automated alerts for data security and privacy compliance violations across your S3 buckets and data storage resources"
                 ],
                 correct: 1,
                 explanation: "AWS WAF is included at no additional cost for resources protected by Shield Advanced. This includes WAF web ACLs, rules, and rule groups (excluding Bot Control and Fraud Control). You only pay for Shield Advanced subscription and data transfer.",
@@ -316,10 +316,10 @@
                 id: 12,
                 question: "How can you view DDoS attack information in Shield Advanced?",
                 options: [
-                    "Only through AWS Support tickets",
+                    "Only through AWS Support tickets that must be opened manually, with attack details and mitigation recommendations provided by support engineers after reviewing your account's security logs and traffic patterns",
                     "Through the Shield console, CloudWatch metrics, and AWS Shield network security director",
-                    "Only through AWS CLI",
-                    "Only through third-party monitoring tools"
+                    "Only through AWS CLI commands and API calls that require programmatic access, with no graphical user interface or console-based visibility into attack events and mitigation activities",
+                    "Only through third-party monitoring tools and security information and event management (SIEM) platforms that integrate with AWS CloudWatch Logs and CloudTrail to aggregate and analyze attack data"
                 ],
                 correct: 1,
                 explanation: "Shield Advanced provides visibility through multiple channels: the Shield console for attack summaries and history, CloudWatch metrics for real-time monitoring, and AWS Shield network security director for security posture evaluation and resource discovery.",
@@ -329,10 +329,10 @@
                 id: 13,
                 question: "What is the Shield network security director?",
                 options: [
-                    "An IAM role for Shield management",
+                    "An IAM role and permission set that provides administrative access to Shield management functions, allowing security teams to configure protection settings, manage DRT access, and modify Shield Advanced policies across AWS accounts",
                     "A tool to discover resources and evaluate security configurations for DDoS protection",
-                    "A VPN service for secure connections",
-                    "A load balancer for Shield-protected resources"
+                    "A VPN service and secure network connection solution that encrypts traffic between your on-premises infrastructure and AWS resources, providing additional security layers for Shield-protected applications",
+                    "A load balancer and traffic distribution service specifically designed for Shield-protected resources, with built-in DDoS mitigation capabilities and automatic failover to healthy endpoints during attacks"
                 ],
                 correct: 1,
                 explanation: "AWS Shield network security director helps you discover AWS resources, evaluate their security configurations, and identify gaps in DDoS protection. It provides recommendations for improving protection and helps manage Shield Advanced across your organization.",
@@ -342,10 +342,10 @@
                 id: 14,
                 question: "What is a common characteristic of application layer (Layer 7) DDoS attacks?",
                 options: [
-                    "They generate massive amounts of network bandwidth",
+                    "They generate massive amounts of network bandwidth and consume large volumes of network capacity by flooding target systems with high-volume traffic streams that saturate available network links and infrastructure resources",
                     "They send valid requests that appear legitimate but overwhelm the application",
-                    "They exploit TCP protocol vulnerabilities",
-                    "They target physical infrastructure"
+                    "They exploit TCP protocol vulnerabilities and connection state management weaknesses to exhaust server resources, memory, and processing capabilities through protocol-level manipulation and resource exhaustion techniques",
+                    "They target physical infrastructure components including network switches, routers, cables, and hardware devices to cause physical damage or disruption to the underlying network connectivity and data transmission capabilities"
                 ],
                 correct: 1,
                 explanation: "Layer 7 attacks use valid, seemingly legitimate requests to overwhelm application resources. Examples include HTTP floods targeting login pages or search functions. These attacks are harder to detect because each request appears normal individually.",
@@ -355,10 +355,10 @@
                 id: 15,
                 question: "How does AWS Firewall Manager help with Shield Advanced?",
                 options: [
-                    "It replaces Shield Advanced protection",
+                    "It replaces Shield Advanced protection by providing an alternative DDoS mitigation service with different detection algorithms, pricing models, and protection capabilities that operate independently of Shield services",
                     "It enables centralized management of Shield Advanced across AWS Organizations",
-                    "It provides additional DDoS detection",
-                    "It manages Shield Standard only"
+                    "It provides additional DDoS detection capabilities and enhanced attack pattern recognition algorithms that complement Shield Advanced's existing detection mechanisms with supplementary monitoring and analysis features",
+                    "It manages Shield Standard only, providing centralized configuration and policy management for the free Shield Standard service without requiring or supporting Shield Advanced subscription features"
                 ],
                 correct: 1,
                 explanation: "AWS Firewall Manager allows you to centrally manage Shield Advanced protections across all accounts in your AWS Organization. You can create Shield Advanced policies to automatically protect new resources as they're created and ensure consistent protection.",
@@ -368,10 +368,10 @@
                 id: 16,
                 question: "What authorization does the DRT need to help during an attack?",
                 options: [
-                    "No authorization is needed",
+                    "No authorization is needed, as the DRT has automatic access to all AWS accounts and resources through AWS's internal security infrastructure and service-level permissions that enable immediate response capabilities",
                     "Authorization to access and modify your WAF rules and Shield configurations",
-                    "Root account credentials",
-                    "VPN access to your on-premises network"
+                    "Root account credentials and full administrative access to your AWS account, including the ability to modify IAM policies, create and delete resources, and access all service configurations without restrictions",
+                    "VPN access to your on-premises network infrastructure, allowing the DRT to connect directly to your private data centers and internal network resources to coordinate mitigation efforts across hybrid cloud environments"
                 ],
                 correct: 1,
                 explanation: "You must grant the DRT access through an IAM role that allows them to access your WAF and Shield configurations. This is typically done using the service-linked role. The DRT uses this access to analyze attacks and create custom mitigation rules on your behalf.",
@@ -381,10 +381,10 @@
                 id: 17,
                 question: "Which DDoS mitigation technique does Shield use for CloudFront distributions?",
                 options: [
-                    "Blackholing all traffic",
+                    "Blackholing all traffic by completely blocking and dropping all incoming requests to CloudFront distributions during detected attacks, preventing any traffic from reaching origin servers regardless of whether it is legitimate or malicious",
                     "Inline traffic inspection with automatic mitigation at edge locations",
-                    "Manual traffic filtering by support staff",
-                    "DNS-based traffic redirection"
+                    "Manual traffic filtering by support staff who analyze attack patterns, review traffic logs, and create custom filtering rules through AWS Support tickets and direct intervention during active DDoS incidents",
+                    "DNS-based traffic redirection that automatically changes DNS records and routes traffic away from attacked CloudFront distributions to alternative endpoints or backup infrastructure during detected attack events"
                 ],
                 correct: 1,
                 explanation: "For CloudFront, Shield provides inline traffic inspection at AWS edge locations. Attack traffic is filtered automatically before it reaches your origin. This continuous monitoring and mitigation happens without any delay or routing changes needed.",
@@ -394,10 +394,10 @@
                 id: 18,
                 question: "What best practice improves DDoS resilience for web applications?",
                 options: [
-                    "Hosting everything on a single large EC2 instance",
+                    "Hosting everything on a single large EC2 instance with maximum CPU, memory, and network capacity to handle all traffic on a single server, eliminating the complexity of distributed architectures and load balancing",
                     "Using CloudFront with WAF and Shield Advanced, and scaling resources",
-                    "Disabling all caching",
-                    "Using only private IP addresses"
+                    "Disabling all caching mechanisms including CloudFront caching, application-level caching, and database query caching to ensure all requests are processed in real-time without serving potentially stale or cached content",
+                    "Using only private IP addresses and VPC endpoints for all resources, eliminating public internet exposure and requiring all traffic to route through VPN connections or AWS Direct Connect for enhanced network security isolation"
                 ],
                 correct: 1,
                 explanation: "Best practices include using CloudFront to absorb DDoS traffic at edge locations, implementing WAF for application layer protection, enabling Shield Advanced for enhanced detection and response, using Auto Scaling to handle traffic spikes, and architecting for horizontal scalability.",
@@ -486,7 +486,7 @@
         function selectOption(idx) {
             if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
             userAnswers[currentQuestion] = idx;
-            if (currentMode === 'exam') renderQuestion();
+            renderQuestion(); // Always re-render to show selection in both modes
         }
 
         function revealAnswer() {
