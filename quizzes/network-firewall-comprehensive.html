@@ -512,7 +512,7 @@
         function selectOption(idx) {
             if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
             userAnswers[currentQuestion] = idx;
-            if (currentMode === 'exam') renderQuestion();
+            renderQuestion(); // Always re-render to show selection in both modes
         }
 
         function revealAnswer() {
