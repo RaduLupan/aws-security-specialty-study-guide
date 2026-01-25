@@ -602,9 +602,9 @@
                 question: "What is the primary purpose of AWS Security Hub?",
                 options: [
                     "To provide a centralized view of security alerts and compliance status across AWS accounts",
-                    "To detect and block network intrusions in real-time",
-                    "To manage IAM users and their permissions",
-                    "To encrypt data at rest and in transit"
+                    "To detect and block network intrusions in real-time using advanced threat intelligence",
+                    "To manage IAM users, groups, roles, and their permissions across AWS accounts",
+                    "To encrypt data at rest and in transit using AWS Key Management Service"
                 ],
                 correct: 0,
                 explanation: "AWS Security Hub provides a comprehensive view of your security state in AWS. It aggregates, organizes, and prioritizes security findings from multiple AWS services (like GuardDuty, Inspector, and Macie) and third-party products into a single pane of glass. It also runs continuous security checks against best practices and standards.",
@@ -627,10 +627,10 @@
                 id: 3,
                 question: "Which of the following security standards is developed by AWS and focuses on security best practices regardless of sector or size?",
                 options: [
-                    "CIS AWS Foundations Benchmark",
-                    "PCI DSS",
+                    "CIS AWS Foundations Benchmark, developed by the Center for Internet Security",
+                    "PCI DSS, the Payment Card Industry Data Security Standard",
                     "AWS Foundational Security Best Practices (FSBP)",
-                    "NIST SP 800-53"
+                    "NIST SP 800-53, a comprehensive security control framework"
                 ],
                 correct: 2,
                 explanation: "AWS Foundational Security Best Practices (FSBP) is developed by AWS and industry professionals. It provides a set of controls that detect when your AWS accounts and resources deviate from security best practices, along with prescriptive guidance about how to improve and maintain your security posture. It applies to organizations of any sector or size.",
@@ -653,10 +653,10 @@
                 id: 5,
                 question: "In Security Hub cross-Region aggregation, which types of data are replicated from linked Regions to the home Region?",
                 options: [
-                    "Findings only",
-                    "Findings and insights",
+                    "Findings only, without any additional metadata",
+                    "Findings and insights, including managed and custom insights",
                     "Findings, resources, and trends",
-                    "Findings, resources, trends, and automation rules"
+                    "Findings, resources, trends, and automation rules from all linked Regions"
                 ],
                 correct: 2,
                 explanation: "When cross-Region aggregation is enabled, Security Hub replicates findings, resources, and trends from linked Regions to the home Region. This allows you to manage all security data from a single Region. Automation rules are NOT replicated; they must be created in each Region, though rules in the home Region apply to all linked Regions.",
@@ -692,10 +692,10 @@
                 id: 8,
                 question: "What happens to existing findings when a Region becomes a linked Region in cross-Region aggregation?",
                 options: [
-                    "They are immediately replicated to the home Region",
+                    "They are immediately replicated to the home Region upon linking",
                     "They are only replicated if there is an update to the finding",
-                    "They are automatically deleted from the linked Region",
-                    "They are archived in both Regions"
+                    "They are automatically deleted from the linked Region to prevent duplication",
+                    "They are archived in both Regions and marked as historical data"
                 ],
                 correct: 1,
                 explanation: "Any findings that existed in a Region at the time it becomes a linked Region will NOT be replicated to the home Region unless there is an update to the finding. Once a Region is linked, there will be a difference in findings between the home Region and linked Region until findings are updated or age out. New findings are replicated immediately.",
@@ -705,10 +705,10 @@
                 id: 9,
                 question: "In Security Hub, what is a 'consolidated control finding'?",
                 options: [
-                    "A finding that combines multiple related security issues into one alert",
+                    "A finding that combines multiple related security issues into one comprehensive alert",
                     "A single finding generated per control regardless of how many standards it applies to",
-                    "A summary finding that aggregates all findings for an account",
-                    "A finding that consolidates results from multiple AWS Regions"
+                    "A summary finding that aggregates all findings for an account across all standards",
+                    "A finding that consolidates results from multiple AWS Regions into a single view"
                 ],
                 correct: 1,
                 explanation: "When consolidated control findings is enabled, Security Hub generates a single finding for each control, even if that control applies to multiple enabled standards. Without this feature, if a control applies to two standards, you would receive two separate findings. Consolidated findings reduce noise and simplify finding management.",
@@ -731,10 +731,10 @@
                 id: 11,
                 question: "When using Security Hub with AWS Organizations, which account can designate the delegated administrator?",
                 options: [
-                    "Any account with SecurityHubFullAccess policy",
+                    "Any account with SecurityHubFullAccess policy attached to its IAM users or roles",
                     "Only the organization management account",
-                    "Any account in the organization",
-                    "Only accounts with administrator IAM role"
+                    "Any account in the organization that has been granted appropriate permissions",
+                    "Only accounts with administrator IAM role that have been explicitly authorized"
                 ],
                 correct: 1,
                 explanation: "Only the organization management account can designate a delegated administrator for Security Hub. Once designated, the delegated administrator can enable Security Hub for member accounts, manage central configuration, and view findings from all member accounts across the organization.",
@@ -744,10 +744,10 @@
                 id: 12,
                 question: "What happens to automation rules created in linked Regions after cross-Region aggregation is enabled?",
                 options: [
-                    "They are automatically migrated to the home Region",
-                    "They continue to apply independently in each Region",
+                    "They are automatically migrated to the home Region and continue functioning",
+                    "They continue to apply independently in each Region as before",
                     "They will no longer apply once an aggregator is created",
-                    "They are merged with rules in the home Region"
+                    "They are merged with rules in the home Region to create combined rules"
                 ],
                 correct: 2,
                 explanation: "Rules previously created in linked Regions will no longer apply once a cross-Region aggregator is created. After enabling aggregation, automation rules can only be created in the home Region, and they apply to all linked Regions. Rules defined in linked Regions will resume applying only if the aggregator is deleted or the Region is unlinked.",
@@ -770,10 +770,10 @@
                 id: 14,
                 question: "Which action can Security Hub automation rules perform on findings?",
                 options: [
-                    "Automatically remediate the underlying security issue",
-                    "Delete findings from the Security Hub database",
+                    "Automatically remediate the underlying security issue without manual intervention",
+                    "Delete findings from the Security Hub database permanently",
                     "Suppress findings and change their severity",
-                    "Send findings directly to AWS Support"
+                    "Send findings directly to AWS Support for immediate escalation"
                 ],
                 correct: 2,
                 explanation: "Security Hub automation rules can perform actions like suppressing findings, changing their severity, adding notes, and updating workflow status. They cannot automatically remediate issues or delete findings. For automated remediation, you would integrate with Amazon EventBridge and trigger Lambda functions or other remediation workflows.",
@@ -809,10 +809,10 @@
                 id: 17,
                 question: "How does Security Hub calculate security scores?",
                 options: [
-                    "Based on the number of findings per account",
+                    "Based on the number of findings per account, weighted by severity level",
                     "Based on the ratio of passed controls to total enabled controls",
-                    "Based on the severity of failed findings only",
-                    "Based on the number of active GuardDuty findings"
+                    "Based on the severity of failed findings only, ignoring passed controls",
+                    "Based on the number of active GuardDuty findings across all enabled standards"
                 ],
                 correct: 1,
                 explanation: "Security Hub calculates security scores based on the ratio of passed controls to total enabled controls. The score represents the percentage of controls that are passing. Controls that have a status of NOT_AVAILABLE are not counted in the score calculation. Higher scores indicate better compliance with the enabled security standards.",
@@ -822,10 +822,10 @@
                 id: 18,
                 question: "Which of the following is a valid use case for Security Hub custom actions?",
                 options: [
-                    "Automatically enable new security standards",
+                    "Automatically enable new security standards across all accounts in an organization",
                     "Send specific findings to Amazon EventBridge for automated response",
-                    "Create new IAM policies based on findings",
-                    "Directly invoke AWS Lambda functions from findings"
+                    "Create new IAM policies based on findings to automatically remediate issues",
+                    "Directly invoke AWS Lambda functions from findings without intermediate services"
                 ],
                 correct: 1,
                 explanation: "Custom actions in Security Hub allow you to send selected findings to Amazon EventBridge. From there, you can define EventBridge rules to trigger automated responses like invoking Lambda functions, sending SNS notifications, or creating tickets. Custom actions do not directly invoke Lambda; they work through EventBridge integration.",
@@ -835,10 +835,10 @@
                 id: 19,
                 question: "What is a Security Hub 'insight'?",
                 options: [
-                    "A machine learning-based threat detection feature",
+                    "A machine learning-based threat detection feature that identifies advanced persistent threats",
                     "A collection of related findings grouped by a filter and grouping criteria",
-                    "A recommendation for improving your security posture",
-                    "A real-time dashboard showing current security status"
+                    "A recommendation for improving your security posture based on industry best practices",
+                    "A real-time dashboard showing current security status across all AWS accounts"
                 ],
                 correct: 1,
                 explanation: "A Security Hub insight is a collection of related findings that are grouped by a filter and a grouping attribute. Insights help identify common security issues that may require attention. Security Hub provides managed (predefined) insights, and you can also create custom insights based on your specific needs.",
@@ -861,10 +861,10 @@
                 id: 21,
                 question: "When you enable Security Hub for the first time, which security standard is automatically enabled by default?",
                 options: [
-                    "All available standards",
+                    "All available standards, including FSBP, CIS, PCI DSS, and NIST frameworks",
                     "AWS Foundational Security Best Practices and CIS AWS Foundations Benchmark",
-                    "Only PCI DSS",
-                    "No standards are enabled by default"
+                    "Only PCI DSS, which is required for payment card processing environments",
+                    "No standards are enabled by default, requiring manual selection and configuration"
                 ],
                 correct: 1,
                 explanation: "When you enable Security Hub for the first time, AWS Foundational Security Best Practices (FSBP) and CIS AWS Foundations Benchmark are automatically enabled by default. You can disable these or enable additional standards based on your compliance requirements.",
@@ -874,10 +874,10 @@
                 id: 22,
                 question: "What is 'central configuration' in Security Hub?",
                 options: [
-                    "A feature to centralize all findings in one Region",
+                    "A feature to centralize all findings in one Region for simplified management",
                     "A way to configure Security Hub settings across multiple accounts and Regions from the delegated administrator",
-                    "A method to combine multiple security standards into one",
-                    "A tool for centralizing AWS Config rules"
+                    "A method to combine multiple security standards into one unified framework",
+                    "A tool for centralizing AWS Config rules across all accounts in an organization"
                 ],
                 correct: 1,
                 explanation: "Central configuration allows the delegated administrator to configure Security Hub settings (standards, controls) across multiple AWS accounts and Regions from a single location using configuration policies. This simplifies managing Security Hub at scale across an entire AWS Organization.",
@@ -900,10 +900,10 @@
                 id: 24,
                 question: "A company wants to receive Security Hub findings from third-party security tools. What is required for this integration?",
                 options: [
-                    "The third-party tool must be installed in the same VPC",
+                    "The third-party tool must be installed in the same VPC as Security Hub",
                     "The third-party product must send findings in ASFF format to Security Hub",
-                    "An AWS Direct Connect connection to the third-party provider",
-                    "A custom Lambda function to translate findings"
+                    "An AWS Direct Connect connection to the third-party provider's infrastructure",
+                    "A custom Lambda function to translate findings from proprietary formats"
                 ],
                 correct: 1,
                 explanation: "For third-party products to integrate with Security Hub, they must send findings in AWS Security Finding Format (ASFF). AWS maintains a list of verified third-party partner integrations that have been validated to work with Security Hub. Partners map their findings to ASFF before sending them to Security Hub.",
@@ -1077,10 +1077,7 @@
             if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
             
             userAnswers[currentQuestion] = idx;
-            
-            if (currentMode === 'exam') {
-                renderQuestion();
-            }
+            renderQuestion();
         }
 
         function revealAnswer() {
