@@ -345,8 +345,8 @@
                     "AWS Systems Manager"
                 ],
                 correct: 1,
-                explanation: "AWS provides an Automated Forensics Orchestrator solution for Amazon EC2 that automates the collection of disk and memory forensic artifacts. It uses Step Functions to orchestrate the forensic acquisition process, reducing manual effort during incident response.",
-                docLink: "https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/automate-incident-response-and-forensics.html"
+                explanation: "Automated Forensics Orchestrator for Amazon EC2 and EKS is an AWS Solution that provides a self-service framework for SOC teams to capture and examine data from EC2 instances and attached volumes for forensic analysis. It orchestrates key forensics processes including isolation of affected instances, capture of memory and disk images to secure storage, and initiation of automated investigation tools.",
+                docLink: "https://docs.aws.amazon.com/solutions/latest/automated-forensics-orchestrator-for-amazon-ec2/welcome.html"
             },
             {
                 id: 17,
@@ -428,15 +428,15 @@
             },
             {
                 id: 23,
-                question: "What is the difference between shutting down and stopping an EC2 instance for forensics?",
+                question: "What happens when you stop an EC2 instance for forensics?",
                 options: [
                     "Both preserve all data identically since EBS volumes persist through either action",
                     "Stopping loses volatile data like memory but preserves EBS volumes for disk forensics",
-                    "Shutdown triggers a clean OS shutdown preserving more filesystem state than stopping",
+                    "Stopping triggers a clean OS shutdown preserving more filesystem state than terminating",
                     "Stopping is preferred because it allows the instance to be restarted for live analysis"
                 ],
                 correct: 1,
-                explanation: "Stopping an EC2 instance (normal stop) loses volatile data (memory, running processes) but preserves EBS volumes. For forensics, if you need volatile data, you must capture it before stopping. Stopping is often preferred to preserve disk evidence while preventing further network activity.",
+                explanation: "Stopping an EC2 instance (normal stop) loses volatile data (memory, running processes) but preserves EBS volumes. For forensics, if you need volatile data, you must capture it before stopping. Stopping is often preferred to preserve disk evidence while preventing further network activity. Note: In AWS EC2, 'stopping' is the standard action; 'shutting down' typically refers to the OS-level shutdown command which results in the instance stopping.",
                 docLink: "https://docs.aws.amazon.com/security-ir/latest/userguide/destination-containment.html"
             },
             {
