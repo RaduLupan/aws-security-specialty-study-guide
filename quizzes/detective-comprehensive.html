@@ -145,10 +145,10 @@
                 id: 1,
                 question: "What is the primary purpose of Amazon Detective?",
                 options: [
-                    "To continuously monitor for threats and generate security findings automatically",
+                    "To continuously monitor AWS resources and automatically generate security findings",
                     "To analyze, investigate, and identify the root cause of security findings",
-                    "To aggregate security findings from multiple services into a single dashboard",
-                    "To execute automated remediation playbooks in response to security events"
+                    "To aggregate and centralize security findings from multiple AWS services",
+                    "To execute automated remediation playbooks for detected security events"
                 ],
                 correct: 1,
                 explanation: "Amazon Detective helps you analyze, investigate, and quickly identify the root cause of security findings or suspicious activities. It automatically collects log data from your AWS resources and uses machine learning, statistical analysis, and graph theory to generate visualizations for efficient security investigations.",
@@ -158,10 +158,10 @@
                 id: 2,
                 question: "What is a 'behavior graph' in Amazon Detective?",
                 options: [
-                    "A visualization of network traffic patterns",
-                    "A linked set of data from AWS resources that Detective uses for analysis",
-                    "A diagram showing user behavior over time",
-                    "A flowchart of security incident response procedures"
+                    "A visualization showing network traffic patterns across VPC endpoints",
+                    "A linked dataset from AWS resources that Detective uses for analysis",
+                    "A time-series diagram displaying user behavior and API activity",
+                    "A workflow diagram for security incident response procedures"
                 ],
                 correct: 1,
                 explanation: "A behavior graph is a linked set of extracted and analyzed data from AWS resources. Detective populates the behavior graph using source data from enabled data sources and uses it to analyze user activity and correlate security findings. Each administrator account has one behavior graph per Region.",
@@ -210,10 +210,10 @@
                 id: 6,
                 question: "What is 'Detective Investigation' used for?",
                 options: [
-                    "Generating automated remediation actions based on finding severity levels",
+                    "Generating automated remediation actions for findings based on severity",
                     "Investigating IAM users and roles using indicators of compromise (IOC)",
-                    "Creating visual timelines of API calls made during a specific time period",
-                    "Correlating VPC Flow Logs with CloudTrail events for network analysis"
+                    "Creating visual timelines of API calls made during investigation periods",
+                    "Correlating VPC Flow Logs with CloudTrail for comprehensive analysis"
                 ],
                 correct: 1,
                 explanation: "Detective Investigation allows you to investigate IAM users and IAM roles using indicators of compromise (IOC). It uses machine learning and threat intelligence to surface the most critical, suspicious issues, helping you determine if a resource is involved in a security incident.",
@@ -236,10 +236,10 @@
                 id: 8,
                 question: "Which data sources does Amazon Detective integrate with from Amazon Security Lake?",
                 options: [
-                    "Only VPC Flow Logs",
+                    "Only VPC Flow Logs for network traffic analysis",
                     "CloudTrail management events, VPC Flow Logs, and EKS Audit Logs",
-                    "Only CloudTrail data events",
-                    "S3 access logs and Lambda invocation logs"
+                    "Only CloudTrail data events for resource access tracking",
+                    "S3 access logs, Lambda invocation logs, and RDS audit logs"
                 ],
                 correct: 1,
                 explanation: "Detective integrates with Amazon Security Lake to collect logs from: AWS CloudTrail management events (version 1.0+), Amazon VPC Flow Logs (version 1.0+), and Amazon EKS Audit Logs (version 2.0). This integration allows you to query raw logs directly in Detective.",
@@ -288,10 +288,10 @@
                 id: 12,
                 question: "How does Amazon Detective help investigate VPC network activity?",
                 options: [
-                    "By blocking suspicious traffic automatically",
-                    "By examining VPC flow volume and network interactions of EC2 instances",
-                    "By modifying security group rules",
-                    "By encrypting network traffic"
+                    "By automatically blocking suspicious network traffic in real-time",
+                    "By analyzing VPC flow volume and network interactions of instances",
+                    "By modifying security group rules to prevent future attacks",
+                    "By encrypting network traffic between VPC endpoints automatically"
                 ],
                 correct: 1,
                 explanation: "Detective automatically collects VPC flow logs, aggregates them by EC2 instance, and presents visual summaries and analytics about network flows. You can examine the activity details of VPC network flows for EC2 instances and Kubernetes pods, including interactions with IP addresses during a selected time range.",
@@ -301,10 +301,10 @@
                 id: 13,
                 question: "What is the relationship between Amazon Detective and AWS Organizations?",
                 options: [
-                    "Detective cannot be used with Organizations",
-                    "A Detective administrator can enable organization accounts as member accounts",
-                    "Organizations automatically creates Detective behavior graphs",
-                    "Detective replaces Organizations for security management"
+                    "Detective cannot be used with AWS Organizations accounts",
+                    "Detective administrators can enable organization accounts as members",
+                    "Organizations automatically creates Detective behavior graphs by default",
+                    "Detective replaces Organizations for centralized security management"
                 ],
                 correct: 1,
                 explanation: "The Detective administrator account can enable any organization account as a member account in the organization behavior graph. Organization accounts don't receive invitations - they can be enabled directly. The administrator can also invite accounts outside the organization.",
@@ -314,10 +314,10 @@
                 id: 14,
                 question: "What type of analysis does Detective perform to help identify the root cause of security issues?",
                 options: [
-                    "Only signature-based malware scanning",
-                    "Behavioral analysis using historical baselines",
-                    "Only real-time packet inspection",
-                    "Static code analysis"
+                    "Only signature-based malware scanning for known threats",
+                    "Behavioral analysis using historical baselines and patterns",
+                    "Only real-time packet inspection for network intrusions",
+                    "Static code analysis for application vulnerabilities"
                 ],
                 correct: 1,
                 explanation: "Detective performs behavioral analysis using historical baselines. It analyzes resource behaviors over time, visualizes interactions, and identifies patterns that deviate from normal activity. This helps security teams understand the scope and nature of potential security incidents.",
@@ -340,10 +340,10 @@
                 id: 16,
                 question: "How does Detective pricing work?",
                 options: [
-                    "Flat monthly fee per account",
+                    "Flat monthly fee per account regardless of usage",
                     "Based on the volume of data ingested into behavior graphs",
-                    "Per finding analyzed",
-                    "Free with AWS Premium Support"
+                    "Per finding analyzed and correlated in investigations",
+                    "Free service included with AWS Premium Support plans"
                 ],
                 correct: 1,
                 explanation: "Amazon Detective pricing is based on the volume of data ingested into behavior graphs from enabled data sources. You pay for the amount of log data that Detective analyzes, including data from CloudTrail, VPC Flow Logs, GuardDuty findings, and EKS audit logs.",
@@ -392,10 +392,10 @@
                 id: 20,
                 question: "What visualization does Detective provide for finding groups?",
                 options: [
-                    "Pie charts showing finding categories",
-                    "Interactive visualization showing entities and findings involved in a security incident",
-                    "Bar graphs of finding counts over time",
-                    "Heat maps of geographic locations"
+                    "Pie charts showing the distribution of finding categories",
+                    "Interactive visualization showing entities and findings in incidents",
+                    "Bar graphs displaying finding counts over selected time periods",
+                    "Heat maps displaying geographic locations of security events"
                 ],
                 correct: 1,
                 explanation: "Detective provides an interactive visualization of each finding group to help you investigate security issues faster and more thoroughly. The Finding Group Visualization panel displays the findings and entities involved in a finding group, making it easier to understand connections and root causes.",
@@ -479,7 +479,7 @@
         function selectOption(idx) {
             if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
             userAnswers[currentQuestion] = idx;
-            if (currentMode === 'exam') renderQuestion();
+            renderQuestion();
         }
 
         function revealAnswer() {
