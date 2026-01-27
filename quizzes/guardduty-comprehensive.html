@@ -99,27 +99,30 @@
             </div>
         </header>
         <div class="mode-selector" id="modeSelector">
-            <button class="mode-btn" onclick="setMode('learn')">📚 Learn Mode</button>
-            <button class="mode-btn" onclick="setMode('exam')">⏱️ Exam Mode</button>
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
         </div>
 
-        <div class="timer-container" id="timerContainer">
-            <div class="timer-label">⏱️ Time Remaining</div>
-            <div class="timer-display" id="timerDisplay">62:30</div>
-            <div class="timer-per-question">2.5 minutes per question</div>
-        </div>
-
-        <div class="progress-container">
-            <div class="progress-header">
-                <span class="progress-label">Quiz Progress</span>
-                <span class="progress-stats"><span id="answered">0</span> / 25 answered</span>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">25</span></span>
+                    <span class="timer" id="timer">62:30</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
             </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
             </div>
         </div>
 
-        <div id="questions">
+        <div id="questions" style="display: none;">
             <!-- Question 1 -->
             <div class="question-card" data-question="1" data-answer="C">
                 <div class="question-header">
@@ -1171,13 +1174,6 @@
             </div>
         </div>
 
-        <div class="submit-container" id="submitContainer">
-            <button class="btn-submit" id="submitBtn" onclick="submitExam()">Submit Quiz</button>
-            <p class="unanswered-warning" id="unansweredWarning">
-                ⚠️ You have <span id="unansweredCount">0</span> unanswered questions
-            </p>
-        </div>
-
         <div class="results-card" id="resultsCard">
             <div class="results-score"><span id="finalScore">0</span>%</div>
             <div class="results-label">Quiz Complete!</div>
@@ -1208,33 +1204,39 @@
     </div>
 
     <script>
-        let answeredQuestions = new Set();
-        let correctAnswers = 0;
-        const totalQuestions = 25;
-        let currentMode = 'learn', answersRevealed = [];
-        let selectedAnswers = {}; // Track selections in exam mode
-        
-        // Timer variables
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let shuffledQuestions = [];
         let timerInterval = null;
         let timeRemaining = 0;
-        const MINUTES_PER_QUESTION = 2.5;
-
-        // Timer functions
-        function startTimer() {
-            timeRemaining = totalQuestions * MINUTES_PER_QUESTION * 60; // Convert to seconds
-            updateTimerDisplay();
+        let currentMode = 'learn';
+        let answersRevealed = [];
+        
+        // Extract questions from HTML
+        const questions = [];
+        document.querySelectorAll('[data-question]').forEach(card => {
+            const qNum = parseInt(card.dataset.question);
+            const correctAnswer = card.dataset.answer;
+            const questionText = card.querySelector('.question-text').textContent.trim();
+            const options = Array.from(card.querySelectorAll('.option-text')).map(opt => opt.textContent.trim());
+            const explanation = card.querySelector('.explanation')?.textContent.trim() || '';
+            const docLink = card.querySelector('.doc-link')?.href || '';
+            const docLinkText = card.querySelector('.doc-link')?.textContent.trim() || '';
             
-            timerInterval = setInterval(() => {
-                timeRemaining--;
-                updateTimerDisplay();
-                
-                if (timeRemaining <= 0) {
-                    stopTimer();
-                    alert('⏰ Time is up! Your quiz will be submitted automatically.');
-                    submitExam();
-                }
-            }, 1000);
-        }
+            const correctIndex = ['A', 'B', 'C', 'D'].indexOf(correctAnswer);
+            
+            questions.push({
+                question: questionText,
+                options: options,
+                correct: correctIndex,
+                explanation: explanation,
+                docLink: docLink,
+                docLinkText: docLinkText
+            });
+        });
+        
+        const totalQuestions = questions.length;
+
 
         function stopTimer() {
             if (timerInterval) {
@@ -1243,21 +1245,29 @@
             }
         }
 
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                if (timeRemaining <= 0) {
+                    stopTimer();
+                    alert('⏰ Time is up! Your quiz will be submitted automatically.');
+                    showResults();
+                }
+            }, 1000);
+        }
+
         function updateTimerDisplay() {
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60;
-            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const timerEl = document.getElementById('timer');
+            timerEl.textContent = formatTime(timeRemaining);
             
-            const timerEl = document.getElementById('timerDisplay');
-            timerEl.textContent = display;
-            
-            // Warning states
-            const totalTime = totalQuestions * MINUTES_PER_QUESTION * 60;
+            const totalTime = shuffledQuestions.length * 150;
             const percentRemaining = (timeRemaining / totalTime) * 100;
             
-            timerEl.classList.remove('warning', 'critical');
+            timerEl.classList.remove('warning', 'danger');
             if (percentRemaining <= 10) {
-                timerEl.classList.add('critical');
+                timerEl.classList.add('danger');
             } else if (percentRemaining <= 25) {
                 timerEl.classList.add('warning');
             }
@@ -1353,179 +1363,31 @@
             });
         }
 
-        function setMode(mode) {
-            currentMode = mode;
-            
-            // Stop any existing timer
-            stopTimer();
-            
-            // Update UI
-            document.getElementById('learnModeBtn').classList.toggle('active', mode === 'learn');
-            document.getElementById('examModeBtn').classList.toggle('active', mode === 'exam');
-            document.body.classList.toggle('exam-mode', mode === 'exam');
-            
-            // Update description
-            const desc = document.getElementById('modeDescription');
-            if (mode === 'learn') {
-                desc.textContent = 'Reveal answers one at a time as you go';
-            } else {
-                desc.textContent = 'Answer all questions, then submit to see your score';
-            }
-            
-            // Reset quiz when switching modes
-            restartQuiz();
-            
-            // Start timer in exam mode
-            if (mode === 'exam') {
-                startTimer();
-            }
-        }
 
-        function updateExamProgress() {
-            // Count how many questions have a selection
-            let answered = 0;
-            for (let i = 1; i <= totalQuestions; i++) {
-                const selected = document.querySelector(`input[name="q${i}"]:checked`);
-                if (selected) answered++;
-            }
-            
-            document.getElementById('answered').textContent = answered;
-            document.getElementById('progressFill').style.width = `${(answered / totalQuestions) * 100}%`;
-            
-            // Update unanswered warning
-            const unanswered = totalQuestions - answered;
-            document.getElementById('unansweredCount').textContent = unanswered;
-            document.getElementById('unansweredWarning').classList.toggle('visible', unanswered > 0);
-        }
-
-        function submitExam() {
-            // Stop the timer
-            stopTimer();
-            
-            // Count answered
-            let answered = 0;
-            for (let i = 1; i <= totalQuestions; i++) {
-                const selected = document.querySelector(`input[name="q${i}"]:checked`);
-                if (selected) answered++;
-            }
-            
-            // If not all answered, confirm (skip if auto-submitted due to time)
-            if (answered < totalQuestions && timeRemaining > 0) {
-                if (!confirm(`You have ${totalQuestions - answered} unanswered questions. Submit anyway?`)) {
-                    // Restart timer if they cancel
-                    startTimer();
-                    return;
-                }
-            }
-            
-            // Grade all questions
-            correctAnswers = 0;
-            answeredQuestions.clear();
-            
-            for (let i = 1; i <= totalQuestions; i++) {
-                const card = document.querySelector(`[data-question="${i}"]`);
-                const correctAnswer = card.dataset.answer;
-                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
-                const answerSection = document.getElementById(`answer${i}`);
-                
-                // Disable inputs
-                card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true);
-                
-                if (selectedOption) {
-                    answeredQuestions.add(i);
-                    const selectedValue = selectedOption.value;
-                    const selectedLabel = selectedOption.closest('.option');
-                    
-                    if (selectedValue === correctAnswer) {
-                        selectedLabel.classList.add('correct');
-                        correctAnswers++;
-                    } else {
-                        selectedLabel.classList.add('incorrect');
-                        card.querySelector(`input[value="${correctAnswer}"]`).closest('.option').classList.add('correct');
-                    }
-                } else {
-                    // Mark correct answer even if not answered
-                    card.querySelector(`input[value="${correctAnswer}"]`).closest('.option').classList.add('correct');
-                }
-                
-                // Show answer section
-                answerSection.classList.add('visible');
-            }
-            
-            // Hide submit button
-            document.getElementById('submitContainer').classList.add('hidden');
-            
-            // Show results
-            showResults();
-        }
-
-        function revealAnswer(questionNum) {
-            const card = document.querySelector(`[data-question="${questionNum}"]`);
-            const correctAnswer = card.dataset.answer;
-            const selectedOption = card.querySelector(`input[name="q${questionNum}"]:checked`);
-            const answerSection = document.getElementById(`answer${questionNum}`);
-            const btn = card.querySelector('.btn-reveal');
-
-            if (!selectedOption) {
-                // Flash the options to indicate selection needed
-                card.querySelectorAll('.option').forEach(opt => {
-                    opt.style.animation = 'shake 0.3s ease';
-                    setTimeout(() => opt.style.animation = '', 300);
-                });
-                return;
-            }
-
-            // Disable further changes
-            card.querySelectorAll('input[type="radio"]').forEach(input => input.disabled = true);
-            btn.disabled = true;
-            btn.textContent = 'Answer Revealed';
-
-            const selectedValue = selectedOption.value;
-            const selectedLabel = selectedOption.closest('.option');
-
-            // Mark correct/incorrect
-            if (selectedValue === correctAnswer) {
-                selectedLabel.classList.add('correct');
-                if (!answeredQuestions.has(questionNum)) {
-                    correctAnswers++;
-                }
-            } else {
-                selectedLabel.classList.add('incorrect');
-                // Highlight the correct answer
-                card.querySelector(`input[value="${correctAnswer}"]`).closest('.option').classList.add('correct');
-            }
-
-            // Track answered questions
-            if (!answeredQuestions.has(questionNum)) {
-                answeredQuestions.add(questionNum);
-                updateProgress();
-            }
-
-            // Show answer section
-            answerSection.classList.add('visible');
-
-            // Check if quiz is complete
-            if (answeredQuestions.size === totalQuestions) {
-                showResults();
-            }
-        }
-
-        function updateProgress() {
-            const progress = (answeredQuestions.size / totalQuestions) * 100;
-            document.getElementById('progressFill').style.width = `${progress}%`;
-            document.getElementById('answered').textContent = answeredQuestions.size;
-        }
 
         function showResults() {
-            const resultsCard = document.getElementById('resultsCard');
-            const score = Math.round((correctAnswers / totalQuestions) * 100);
+            if (timerInterval) clearInterval(timerInterval);
+            
+            let correct = 0;
+            let answered = 0;
+            
+            for (let i = 0; i < shuffledQuestions.length; i++) {
+                if (userAnswers[i] !== null && userAnswers[i] !== -1) {
+                    answered++;
+                    if (userAnswers[i] === shuffledQuestions[i].correct) {
+                        correct++;
+                    }
+                }
+            }
+            
+            const score = Math.round((correct / shuffledQuestions.length) * 100);
             const passed = score >= 80;
             
             document.getElementById('finalScore').textContent = score;
-            document.getElementById('correctCount').textContent = correctAnswers;
-            document.getElementById('incorrectCount').textContent = totalQuestions - correctAnswers;
+            document.getElementById('finalScore').className = `results-score ${passed ? 'pass' : 'fail'}`;
+            document.getElementById('correctCount').textContent = correct;
+            document.getElementById('incorrectCount').textContent = shuffledQuestions.length - correct;
             
-            // Set pass/fail badge
             const badge = document.getElementById('passFailBadge');
             const icon = document.getElementById('passFailIcon');
             const text = document.getElementById('passFailText');
@@ -1540,93 +1402,122 @@
                 text.textContent = 'NOT PASSED';
             }
             
-            resultsCard.classList.add('visible');
-            resultsCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('resultsCard').classList.add('show');
+            document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        function restartQuiz() {
-            // Stop any existing timer
-            stopTimer();
+
+        function renderQuestion() {
+            if (shuffledQuestions.length === 0) return;
             
-            answeredQuestions.clear();
-            correctAnswers = 0;
-
-            // Reset all questions
-            document.querySelectorAll('.question-card').forEach(card => {
-                card.querySelectorAll('input[type="radio"]').forEach(input => {
-                    input.disabled = false;
-                    input.checked = false;
-                });
-                card.querySelectorAll('.option').forEach(opt => {
-                    opt.classList.remove('selected', 'correct', 'incorrect');
-                });
-                const btn = card.querySelector('.btn-reveal');
-                btn.disabled = false;
-                btn.textContent = 'Show Answer';
-            });
-
-            // Hide answer sections
-            document.querySelectorAll('.answer-section').forEach(section => {
-                section.classList.remove('visible');
-            });
-
-            // Hide results
-            document.getElementById('resultsCard').classList.remove('visible');
-
-            // Reset submit container (show it again in exam mode)
-            document.getElementById('submitContainer').classList.remove('hidden');
-            document.getElementById('unansweredWarning').classList.remove('visible');
-
-            // Shuffle questions and options for fresh experience
-            shuffleQuiz();
+            const q = shuffledQuestions[currentQuestion];
+            const container = document.getElementById('questionsContainer');
             
-            // Re-attach click handlers after shuffle
-            attachOptionHandlers();
-
-            // Reset progress
-            updateProgress();
+            const letters = ['A', 'B', 'C', 'D'];
+            const userAnswer = userAnswers[currentQuestion];
+            const revealed = answersRevealed[currentQuestion];
             
-            // Handle exam mode specifics
-            if (currentMode === 'exam') {
-                updateExamProgress();
-                startTimer();
+            let optionsHtml = q.options.map((opt, idx) => {
+                let classes = 'option';
+                if (currentMode === 'learn' && revealed) {
+                    classes += ' disabled';
+                    if (idx === q.correct) classes += ' correct';
+                    else if (idx === userAnswer && userAnswer !== q.correct) classes += ' incorrect';
+                } else if (userAnswer === idx) {
+                    classes += ' selected';
+                }
+                
+                return `
+                    <div class="${classes}" onclick="selectOption(${idx})">
+                        <span class="option-marker">${letters[idx]}</span>
+                        <span class="option-text">${opt}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            let explanationHtml = '';
+            if (currentMode === 'learn' && revealed) {
+                const isCorrect = userAnswer === q.correct;
+                explanationHtml = `
+                    <div class="explanation show">
+                        <div class="answer-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            Correct Answer: ${letters[q.correct]}
+                        </div>
+                        <p class="explanation-text">${q.explanation}</p>
+                        ${q.docLink ? `<a href="${q.docLink}" target="_blank" class="doc-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>${q.docLinkText || 'Documentation'}</a>` : ''}
+                    </div>
+                `;
             }
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Function to attach click handlers for option selection
-        function attachOptionHandlers() {
-            document.querySelectorAll('.option').forEach(option => {
-                // Remove existing listener to prevent duplicates
-                option.replaceWith(option.cloneNode(true));
-            });
             
-            document.querySelectorAll('.option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const input = this.querySelector('input[type="radio"]');
-                    if (input.disabled) return;
-                    
-                    // Remove selected class from siblings
-                    this.closest('.options').querySelectorAll('.option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    
-                    // Add selected class
-                    this.classList.add('selected');
-                    input.checked = true;
-                    
-                    // Update progress in exam mode
-                    if (currentMode === 'exam') {
-                        updateExamProgress();
-                    }
-                });
-            });
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question ${currentQuestion + 1}</span>
+                        <span class="question-domain">GuardDuty</span>
+                    </div>
+                    <p class="question-text">${q.question}</p>
+                    <div class="options">${optionsHtml}</div>
+                    ${currentMode === 'learn' && !revealed ? 
+                        '<button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="revealAnswer()">Show Answer</button>' : ''}
+                    ${explanationHtml}
+                </div>
+            `;
+            
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            document.getElementById('progressFill').style.width = 
+                `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`;
+            
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentQuestion === shuffledQuestions.length - 1) {
+                nextBtn.textContent = currentMode === 'exam' ? 'Submit Quiz' : 'See Results';
+            } else {
+                nextBtn.textContent = 'Next →';
+            }
         }
-        
-        // Initial setup
-        attachOptionHandlers();
+
+        function selectOption(idx) {
+            if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
+            
+            userAnswers[currentQuestion] = idx;
+            renderQuestion();
+        }
+
+        function revealAnswer() {
+            if (userAnswers[currentQuestion] === null) {
+                userAnswers[currentQuestion] = -1; // Mark as revealed but not answered
+            }
+            answersRevealed[currentQuestion] = true;
+            renderQuestion();
+        }
+
+        function navigate(direction) {
+            if (direction === 1 && currentQuestion === shuffledQuestions.length - 1) {
+                showResults();
+                return;
+            }
+            
+            currentQuestion += direction;
+            currentQuestion = Math.max(0, Math.min(currentQuestion, shuffledQuestions.length - 1));
+            renderQuestion();
+        }
+
+        function shuffleQuiz() {
+            if (currentMode !== 'learn') return;
+            
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            answersRevealed = new Array(questions.length).fill(false);
+            shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
+            renderQuestion();
+            
+            const notice = document.getElementById('shuffleNotice');
+            notice.style.animation = 'none';
+            notice.offsetHeight;
+            notice.style.animation = 'fadeIn 0.5s ease';
+        }
     </script>
 </body>
 </html>
