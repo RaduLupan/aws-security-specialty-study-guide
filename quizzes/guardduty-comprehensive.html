@@ -3,665 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon GuardDuty Comprehensive Quiz | AWS Security Specialty</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Amazon GuardDuty Comprehensive Quiz | AWS Security Specialty (SCS-C03)</title>
     <style>
-        :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-card: #1c2128;
-            --bg-hover: #262c36;
-            --accent-orange: #ff6b35;
-            --accent-cyan: #00d4aa;
-            --accent-purple: #a855f7;
-            --text-primary: #e6edf3;
-            --text-secondary: #8b949e;
-            --text-muted: #6e7681;
-            --border-color: #30363d;
-            --success: #3fb950;
-            --error: #f85149;
-            --warning: #d29922;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            background-image: 
-                radial-gradient(ellipse at 20% 0%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(0, 212, 170, 0.06) 0%, transparent 50%);
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 2rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
-            color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            font-weight: 300;
-        }
-
-        /* Mode Toggle */
-        .mode-toggle-container {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            padding: 0.5rem;
-            background: var(--bg-card);
-            border-radius: 12px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .mode-btn {
-            padding: 0.6rem 1.2rem;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: transparent;
-            color: var(--text-muted);
-        }
-
-        .mode-btn:hover {
-            color: var(--text-primary);
-        }
-
-        .mode-btn.active {
-            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
-            color: white;
-        }
-
-        .mode-description {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-top: 0.75rem;
-        }
-
-        /* Exam mode specific */
-        body.exam-mode .btn-reveal {
-            display: none;
-        }
-
-        body.exam-mode .answer-section {
-            display: none !important;
-        }
-
-        body.exam-mode .answer-section.visible {
-            display: block !important;
-        }
-
-        .submit-container {
-            display: none;
-            text-align: center;
-            margin: 2rem 0;
-        }
-
-        body.exam-mode .submit-container {
-            display: block;
-        }
-
-        body.exam-mode .submit-container.hidden {
-            display: none;
-        }
-
-        .btn-submit {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            color: white;
-            padding: 1rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .unanswered-warning {
-            color: var(--warning);
-            font-size: 0.9rem;
-            margin-top: 1rem;
-            display: none;
-        }
-
-        .unanswered-warning.visible {
-            display: block;
-        }
-
-        .progress-container {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Timer Styles */
-        .timer-container {
-            display: none;
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        body.exam-mode .timer-container {
-            display: block;
-        }
-
-        .timer-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .timer-display {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--accent-cyan);
-            letter-spacing: 2px;
-        }
-
-        .timer-display.warning {
-            color: var(--warning);
-            animation: pulse 1s ease-in-out infinite;
-        }
-
-        .timer-display.critical {
-            color: var(--error);
-            animation: pulse 0.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        .timer-per-question {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .progress-label {
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .progress-stats {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            color: var(--accent-cyan);
-        }
-
-        .progress-bar {
-            height: 8px;
-            background: var(--bg-card);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-orange), var(--accent-cyan));
-            border-radius: 4px;
-            transition: width 0.4s ease;
-            width: 0%;
-        }
-
-        .question-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .question-card:hover {
-            border-color: var(--accent-orange);
-            box-shadow: 0 0 30px rgba(255, 107, 53, 0.1);
-        }
-
-        .question-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .question-number {
-            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            flex-shrink: 0;
-        }
-
-        .question-text {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            line-height: 1.5;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .option {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.25rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .option:hover {
-            background: var(--bg-hover);
-            border-color: var(--text-muted);
-        }
-
-        .option.selected {
-            border-color: var(--accent-cyan);
-            background: rgba(0, 212, 170, 0.1);
-        }
-
-        .option.correct {
-            border-color: var(--success);
-            background: rgba(63, 185, 80, 0.15);
-        }
-
-        .option.incorrect {
-            border-color: var(--error);
-            background: rgba(248, 81, 73, 0.15);
-        }
-
-        .option input[type="radio"] {
-            display: none;
-        }
-
-        .option-marker {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--text-muted);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            flex-shrink: 0;
-            transition: all 0.2s ease;
-        }
-
-        .option.selected .option-marker {
-            border-color: var(--accent-cyan);
-            background: var(--accent-cyan);
-            color: var(--bg-primary);
-        }
-
-        .option.correct .option-marker {
-            border-color: var(--success);
-            background: var(--success);
-            color: white;
-        }
-
-        .option.incorrect .option-marker {
-            border-color: var(--error);
-            background: var(--error);
-            color: white;
-        }
-
-        .option-text {
-            color: var(--text-primary);
-            font-size: 0.95rem;
-        }
-
-        .answer-section {
-            display: none;
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 1rem;
-            border-left: 4px solid var(--accent-cyan);
-        }
-
-        .answer-section.visible {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .answer-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-            color: var(--accent-cyan);
-        }
-
-        .answer-header svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .explanation {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        .doc-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-orange);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 107, 53, 0.1);
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .doc-link:hover {
-            background: rgba(255, 107, 53, 0.2);
-        }
-
-        .doc-link svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-reveal {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-reveal:hover {
-            background: var(--bg-hover);
-            border-color: var(--accent-cyan);
-        }
-
-        .btn-reveal:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .results-card {
-            display: none;
-            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 3rem;
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .results-card.visible {
-            display: block;
-            animation: slideIn 0.4s ease;
-        }
-
-        .results-score {
-            font-size: 4rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-
-        .results-label {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .pass-fail-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 2rem;
-        }
-
-        .pass-fail-badge.passed {
-            background: rgba(63, 185, 80, 0.15);
-            border: 2px solid var(--success);
-            color: var(--success);
-        }
-
-        .pass-fail-badge.failed {
-            background: rgba(248, 81, 73, 0.15);
-            border: 2px solid var(--error);
-            color: var(--error);
-        }
-
-        .pass-fail-badge svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .pass-threshold {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-
-        .results-breakdown {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 2rem;
-        }
-
-        .result-stat {
-            text-align: center;
-        }
-
-        .result-stat-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            font-weight: 600;
-        }
-
-        .result-stat-value.correct {
-            color: var(--success);
-        }
-
-        .result-stat-value.incorrect {
-            color: var(--error);
-        }
-
-        .result-stat-label {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .btn-restart {
-            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
-            color: white;
-            padding: 1rem 2rem;
-            font-size: 1rem;
-        }
-
-        .btn-restart:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 3rem;
-        }
-
-        footer a {
-            color: var(--accent-cyan);
-            text-decoration: none;
-        }
-
-        @media (max-width: 640px) {
-            .container {
-                padding: 1rem;
-            }
-
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .question-card {
-                padding: 1.5rem;
-            }
-
-            .results-breakdown {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-        }
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #14b8a6; --accent-secondary: #2dd4bf; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .mode-btn.active { border-color: var(--accent-primary); background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(45, 212, 191, 0.1)); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(20, 184, 166, 0.1); }
+        .option.selected { border-color: var(--accent-primary); border-width: 3px; background: rgba(20, 184, 166, 0.2); box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25), inset 0 0 12px rgba(20, 184, 166, 0.1); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; transition: all 0.2s ease; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .answer-section { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .answer-section.visible { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .answer-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--success); }
+        .answer-header svg { width: 20px; height: 20px; }
+        .explanation { color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.7; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(20, 184, 166, 0.1); border-radius: 6px; transition: all 0.2s ease; }
+        .doc-link:hover { background: rgba(20, 184, 166, 0.2); }
+        .doc-link svg { width: 16px; height: 16px; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-reveal { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-reveal:hover { border-color: var(--accent-primary); background: rgba(20, 184, 166, 0.1); }
+        .btn-reveal:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4); }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.visible { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(20, 184, 166, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        body.exam-mode .btn-reveal { display: none; }
+        body.exam-mode .answer-section { display: none !important; }
+        body.exam-mode .answer-section.visible { display: block !important; }
+        .submit-container { display: none; text-align: center; margin: 2rem 0; }
+        body.exam-mode .submit-container { display: block; }
+        .btn-submit { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; padding: 1rem 3rem; font-size: 1.1rem; font-weight: 600; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(20, 184, 166, 0.3); }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .timer-container { display: none; background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 2rem; border: 1px solid var(--border); text-align: center; }
+        body.exam-mode .timer-container { display: block; }
+        .timer-display { font-family: 'Consolas', monospace; font-size: 2rem; font-weight: 600; color: var(--accent-primary); }
+        .timer-display.warning { color: var(--warning); animation: pulse 1s infinite; }
+        .timer-display.critical { color: var(--error); animation: pulse 0.5s infinite; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="badge">AWS Security Specialty</div>
-            <h1>Amazon GuardDuty Comprehensive</h1>
-            <p class="subtitle">25 questions covering all GuardDuty topics for SCS-C03</p>
-            <div class="mode-toggle-container">
-                <button class="mode-btn active" id="learnModeBtn" onclick="setMode('learn')">
-                    📚 Learn Mode
-                </button>
-                <button class="mode-btn" id="examModeBtn" onclick="setMode('exam')">
-                    📝 Exam Mode
-                </button>
+            <span class="badge">Domain 1: Detection</span>
+            <h1>Amazon GuardDuty</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">25</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">62:30</div><div class="stat-label">Exam Time</div></div>
             </div>
-            <p class="mode-description" id="modeDescription">Reveal answers one at a time as you go</p>
         </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="setMode('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="setMode('exam')">⏱️ Exam Mode</button>
+        </div>
 
         <div class="timer-container" id="timerContainer">
             <div class="timer-label">⏱️ Time Remaining</div>
@@ -732,22 +172,22 @@
                     <label class="option">
                         <input type="radio" name="q2" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">S3 access logs stored in a logging bucket</span>
+                        <span class="option-text">S3 access logs stored in a dedicated logging bucket for analysis</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q2" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">AWS CloudTrail data events for S3 (object-level API operations)</span>
+                        <span class="option-text">AWS CloudTrail data events for S3 object-level API operations</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q2" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">S3 bucket policies and ACL configurations</span>
+                        <span class="option-text">S3 bucket policies, ACL configurations, and IAM permissions</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q2" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">CloudWatch S3 metrics and alarms</span>
+                        <span class="option-text">CloudWatch S3 metrics, alarms, and performance monitoring data</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(2)">Show Answer</button>
@@ -816,22 +256,22 @@
                     <label class="option">
                         <input type="radio" name="q4" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">GuardDuty-initiated malware scan (agentless, scans EBS volumes)</span>
+                        <span class="option-text">GuardDuty-initiated agentless malware scan of EBS volumes</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q4" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Agent-based real-time file scanning</span>
+                        <span class="option-text">Agent-based real-time file scanning on EC2 instances</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q4" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">Memory dump analysis</span>
+                        <span class="option-text">Memory dump analysis and process inspection</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q4" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">Network traffic inspection for malware signatures</span>
+                        <span class="option-text">Network traffic inspection for known malware signatures</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(4)">Show Answer</button>
@@ -900,22 +340,22 @@
                     <label class="option">
                         <input type="radio" name="q6" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">Lambda function code and dependencies</span>
+                        <span class="option-text">Lambda function code, dependencies, and deployment packages</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q6" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Lambda network activity logs (including VPC and non-VPC flow logs)</span>
+                        <span class="option-text">Lambda network activity logs from VPC and non-VPC functions</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q6" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">Lambda execution logs in CloudWatch</span>
+                        <span class="option-text">Lambda execution logs, errors, and performance metrics in CloudWatch</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q6" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">Lambda IAM role permissions and policy changes</span>
+                        <span class="option-text">Lambda IAM role permissions, policy changes, and access patterns</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(6)">Show Answer</button>
@@ -984,22 +424,22 @@
                     <label class="option">
                         <input type="radio" name="q8" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">Customize threat detection by specifying trusted and known malicious IP addresses</span>
+                        <span class="option-text">Customize threat detection with trusted and known malicious IP addresses</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q8" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Block specific IP addresses from accessing AWS resources</span>
+                        <span class="option-text">Block specific IP addresses from accessing AWS resources via WAF</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q8" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">Configure firewall rules for VPC security groups</span>
+                        <span class="option-text">Configure firewall rules and ingress policies for VPC security groups</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q8" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">Set up DNS filtering for malicious domains</span>
+                        <span class="option-text">Set up DNS filtering and domain blocking for known malicious domains</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(8)">Show Answer</button>
@@ -1068,22 +508,22 @@
                     <label class="option">
                         <input type="radio" name="q10" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">Block threats from affecting AWS resources</span>
+                        <span class="option-text">Block threats from affecting AWS resources through automated remediation</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q10" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Delete findings permanently from the system</span>
+                        <span class="option-text">Delete findings permanently from the GuardDuty system and Security Hub</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q10" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">Disable specific protection plans temporarily</span>
+                        <span class="option-text">Disable specific protection plans temporarily for maintenance windows</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q10" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">Automatically archive findings that match specific criteria (reduce noise)</span>
+                        <span class="option-text">Automatically archive findings matching specific criteria to reduce noise</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(10)">Show Answer</button>
@@ -1320,22 +760,22 @@
                     <label class="option">
                         <input type="radio" name="q16" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">Compromised credentials, cryptomining, communication with malicious IPs/domains</span>
+                        <span class="option-text">Compromised credentials, cryptomining, and communication with malicious IPs/domains</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q16" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Only S3 bucket policy violations</span>
+                        <span class="option-text">S3 bucket policy violations and access control misconfigurations</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q16" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">Only Lambda function vulnerabilities</span>
+                        <span class="option-text">Lambda function vulnerabilities and code-level security issues</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q16" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">Only EKS cluster misconfigurations</span>
+                        <span class="option-text">EKS cluster misconfigurations and Kubernetes security gaps</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(16)">Show Answer</button>
@@ -1362,12 +802,12 @@
                     <label class="option">
                         <input type="radio" name="q17" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">Processes them only in us-east-1</span>
+                        <span class="option-text">Processes them only in us-east-1 where global services are hosted</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q17" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Ignores them entirely</span>
+                        <span class="option-text">Ignores them entirely as they are not region-specific</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q17" value="C">
@@ -1377,7 +817,7 @@
                     <label class="option">
                         <input type="radio" name="q17" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">Requires manual configuration to enable</span>
+                        <span class="option-text">Requires manual configuration in each Region to enable processing</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(17)">Show Answer</button>
@@ -1446,17 +886,17 @@
                     <label class="option">
                         <input type="radio" name="q19" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">EKS, ECS, EC2, Lambda, RDS</span>
+                        <span class="option-text">EKS, ECS, EC2, Lambda, and RDS service names</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q19" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">IAM, S3, VPC, CloudTrail, DNS</span>
+                        <span class="option-text">IAM, S3, VPC, CloudTrail, and DNS data sources</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q19" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">Recon, Initial Access, Persistence, Exfiltration, Impact</span>
+                        <span class="option-text">Recon, Initial Access, Persistence, Exfiltration, and Impact stages</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q19" value="D">
@@ -1493,17 +933,17 @@
                     <label class="option">
                         <input type="radio" name="q20" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Only Amazon EKS clusters</span>
+                        <span class="option-text">Only Amazon EKS clusters with managed node groups</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q20" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">Lambda functions and S3 buckets</span>
+                        <span class="option-text">Lambda functions, S3 buckets, and API Gateway endpoints</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q20" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">RDS databases and ElastiCache clusters</span>
+                        <span class="option-text">RDS databases, ElastiCache clusters, and Redshift clusters</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(20)">Show Answer</button>
@@ -1572,7 +1012,7 @@
                     <label class="option">
                         <input type="radio" name="q22" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">Includes them with lower weight in correlation</span>
+                        <span class="option-text">Includes them with lower weight in correlation analysis</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q22" value="B">
@@ -1582,12 +1022,12 @@
                     <label class="option">
                         <input type="radio" name="q22" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">Automatically unarchives them when part of a sequence</span>
+                        <span class="option-text">Automatically unarchives them when part of a detected sequence</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q22" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">Creates duplicate findings for correlation purposes</span>
+                        <span class="option-text">Creates duplicate findings for correlation and analysis purposes</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(22)">Show Answer</button>
@@ -1614,17 +1054,17 @@
                     <label class="option">
                         <input type="radio" name="q23" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">Only EKS Audit Log Monitoring</span>
+                        <span class="option-text">Only EKS Audit Log Monitoring for control plane activities</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q23" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Only Runtime Monitoring for EKS</span>
+                        <span class="option-text">Only Runtime Monitoring for EKS container workloads</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q23" value="C">
                         <span class="option-marker">C</span>
-                        <span class="option-text">S3 Protection and Lambda Protection</span>
+                        <span class="option-text">S3 Protection and Lambda Protection for serverless resources</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q23" value="D">
@@ -1698,12 +1138,12 @@
                     <label class="option">
                         <input type="radio" name="q25" value="A">
                         <span class="option-marker">A</span>
-                        <span class="option-text">Findings are deleted from GuardDuty after export</span>
+                        <span class="option-text">Findings are deleted from GuardDuty after successful export to S3</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q25" value="B">
                         <span class="option-marker">B</span>
-                        <span class="option-text">Only High and Critical findings are exported</span>
+                        <span class="option-text">Only High and Critical severity findings are exported automatically</span>
                     </label>
                     <label class="option">
                         <input type="radio" name="q25" value="C">
@@ -1713,7 +1153,7 @@
                     <label class="option">
                         <input type="radio" name="q25" value="D">
                         <span class="option-marker">D</span>
-                        <span class="option-text">Findings are exported once per day in batch</span>
+                        <span class="option-text">Findings are exported once per day in a scheduled batch process</span>
                     </label>
                 </div>
                 <button class="btn btn-reveal" onclick="revealAnswer(25)">Show Answer</button>
