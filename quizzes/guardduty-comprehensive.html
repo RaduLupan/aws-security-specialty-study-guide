@@ -1214,14 +1214,15 @@
         
         // Extract questions from HTML
         const questions = [];
-        document.querySelectorAll('[data-question]').forEach(card => {
-            const qNum = parseInt(card.dataset.question);
-            const correctAnswer = card.dataset.answer;
+        document.querySelectorAll('#questions .question-card').forEach(card => {
             const questionText = card.querySelector('.question-text').textContent.trim();
+            const correctAnswer = card.dataset.answer;
             const options = Array.from(card.querySelectorAll('.option-text')).map(opt => opt.textContent.trim());
-            const explanation = card.querySelector('.explanation')?.textContent.trim() || '';
-            const docLink = card.querySelector('.doc-link')?.href || '';
-            const docLinkText = card.querySelector('.doc-link')?.textContent.trim() || '';
+            const explanationEl = card.querySelector('.explanation');
+            const explanation = explanationEl ? explanationEl.textContent.trim() : '';
+            const docLinkEl = card.querySelector('.doc-link');
+            const docLink = docLinkEl ? docLinkEl.href : '';
+            const docLinkText = docLinkEl ? docLinkEl.textContent.trim() : '';
             
             const correctIndex = ['A', 'B', 'C', 'D'].indexOf(correctAnswer);
             
@@ -1237,6 +1238,31 @@
         
         const totalQuestions = questions.length;
 
+        function startQuiz(mode) {
+            currentMode = mode;
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            answersRevealed = new Array(questions.length).fill(false);
+            shuffledQuestions = shuffleArray(questions).map(q => shuffleQuestionOptions(q));
+            
+            document.getElementById('modeSelector').classList.add('hidden');
+            document.getElementById('quizContent').classList.remove('hidden');
+            document.getElementById('resultsCard').classList.add('hidden');
+            document.getElementById('resultsCard').classList.remove('show');
+            
+            document.getElementById('totalQ').textContent = shuffledQuestions.length;
+            
+            if (mode === 'exam') {
+                timeRemaining = shuffledQuestions.length * 150; // 2.5 min per question
+                startTimer();
+                document.getElementById('shuffleBtn').classList.add('hidden');
+            } else {
+                stopTimer();
+                document.getElementById('timer').textContent = 'Learn Mode';
+                document.getElementById('shuffleBtn').classList.remove('hidden');
+            }
+            renderQuestion();
+        }
 
         function stopTimer() {
             if (timerInterval) {
@@ -1283,86 +1309,24 @@
             return shuffled;
         }
 
-        function shuffleQuiz() {
-            const questionsContainer = document.getElementById('questions');
-            const questionCards = Array.from(questionsContainer.querySelectorAll('.question-card'));
+        function shuffleQuestionOptions(question) {
+            const indices = [0, 1, 2, 3];
+            const shuffledIndices = shuffleArray(indices);
+            const shuffledOptions = shuffledIndices.map(i => question.options[i]);
+            const newCorrectIndex = shuffledIndices.indexOf(question.correct);
             
-            // Shuffle question order
-            const shuffledCards = shuffleArray(questionCards);
-            
-            // Clear and re-append in new order
-            questionsContainer.innerHTML = '';
-            shuffledCards.forEach((card, index) => {
-                const newQuestionNum = index + 1;
-                const oldQuestionNum = card.dataset.question;
-                
-                // Update question number display and data attribute
-                card.querySelector('.question-number').textContent = newQuestionNum;
-                card.dataset.question = newQuestionNum;
-                
-                // Update radio input names to match new question number
-                card.querySelectorAll('input[type="radio"]').forEach(input => {
-                    input.name = `q${newQuestionNum}`;
-                });
-                
-                // Update answer section ID
-                const answerSection = card.querySelector('.answer-section');
-                if (answerSection) {
-                    answerSection.id = `answer${newQuestionNum}`;
-                }
-                
-                // Update reveal button onclick
-                const revealBtn = card.querySelector('.btn-reveal');
-                if (revealBtn) {
-                    revealBtn.setAttribute('onclick', `revealAnswer(${newQuestionNum})`);
-                }
-                
-                // Shuffle options within the question
-                const optionsContainer = card.querySelector('.options');
-                const options = Array.from(optionsContainer.querySelectorAll('.option'));
-                const shuffledOptions = shuffleArray(options);
-                
-                // First, find which letter is currently the correct answer
-                const originalCorrectLetter = card.dataset.answer;
-                let newCorrectLetter = null;
-                
-                // Update option letters and re-append
-                const letters = ['A', 'B', 'C', 'D'];
-                optionsContainer.innerHTML = '';
-                shuffledOptions.forEach((option, optIndex) => {
-                    const input = option.querySelector('input[type="radio"]');
-                    const oldValue = input.value;
-                    const newLetter = letters[optIndex];
-                    
-                    // Update marker text
-                    option.querySelector('.option-marker').textContent = newLetter;
-                    
-                    // Update input value
-                    input.value = newLetter;
-                    
-                    // Track if this was the correct answer
-                    if (oldValue === originalCorrectLetter) {
-                        newCorrectLetter = newLetter;
-                    }
-                    
-                    optionsContainer.appendChild(option);
-                });
-                
-                // Update the correct answer on the card
-                if (newCorrectLetter) {
-                    card.dataset.answer = newCorrectLetter;
-                    
-                    // Also update the answer explanation text
-                    const answerHeaderDisplay = card.querySelector('.answer-header');
-                    if (answerHeaderDisplay) {
-                        answerHeaderDisplay.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Correct Answer: ${newCorrectLetter}`;
-                    }
-                }
-                
-                questionsContainer.appendChild(card);
-            });
+            return {
+                ...question,
+                options: shuffledOptions,
+                correct: newCorrectIndex
+            };
         }
 
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
 
 
         function showResults() {
