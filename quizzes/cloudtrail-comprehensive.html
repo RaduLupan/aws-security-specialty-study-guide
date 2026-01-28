@@ -145,10 +145,10 @@
                 id: 1,
                 question: "What is the primary purpose of AWS CloudTrail?",
                 options: [
-                    "To monitor network traffic between VPCs",
+                    "To monitor and analyze network traffic between VPC resources",
                     "To record API calls and account activity for auditing and compliance",
-                    "To detect malware on EC2 instances",
-                    "To encrypt data at rest in S3 buckets"
+                    "To detect and analyze malware threats on EC2 instances",
+                    "To automatically encrypt data at rest in S3 buckets"
                 ],
                 correct: 1,
                 explanation: "AWS CloudTrail helps you enable operational and risk auditing, governance, and compliance of your AWS account. Actions taken by a user, role, or AWS service are recorded as events in CloudTrail, providing a complete audit trail of API calls.",
@@ -210,10 +210,10 @@
                 id: 6,
                 question: "What is a 'multi-Region trail' in CloudTrail?",
                 options: [
-                    "A trail that only logs cross-region API calls",
-                    "A trail that logs events from all enabled Regions to a single S3 bucket",
-                    "A trail that replicates logs between Regions",
-                    "A trail that requires VPC peering between Regions"
+                    "A trail that logs only cross-region API calls and replication",
+                    "A trail that logs events from all enabled Regions to one S3 bucket",
+                    "A trail that automatically replicates logs between multiple Regions",
+                    "A trail that requires VPC peering connections between Regions"
                 ],
                 correct: 1,
                 explanation: "A multi-Region trail logs events from all enabled Regions in your AWS account to a single S3 bucket. This is a security best practice as it ensures you capture activity across your entire AWS footprint in one location.",
@@ -223,10 +223,10 @@
                 id: 7,
                 question: "What are CloudTrail Insights events used for?",
                 options: [
-                    "Logging all successful API calls",
-                    "Detecting unusual API call rates and error rates",
-                    "Encrypting CloudTrail log files",
-                    "Compressing log files for storage"
+                    "Logging all successful API calls made to AWS resources",
+                    "Detecting unusual API call rates and error rates in accounts",
+                    "Encrypting CloudTrail log files with AWS KMS customer managed keys",
+                    "Compressing log files to reduce storage costs in S3"
                 ],
                 correct: 1,
                 explanation: "CloudTrail Insights events help you identify unusual account activity by detecting anomalous API call rates and API error rates. Insights analyzes normal management event patterns and alerts you when activity deviates significantly from the baseline.",
@@ -236,10 +236,10 @@
                 id: 8,
                 question: "What is an 'organization trail' in CloudTrail?",
                 options: [
-                    "A trail created for a single organizational unit",
+                    "A trail created for a single organizational unit within AWS Organizations",
                     "A trail that logs events for all accounts in an AWS Organization",
-                    "A trail that organizes events by service type",
-                    "A trail managed by a third-party organization"
+                    "A trail that organizes events by AWS service type and resource",
+                    "A trail managed by third-party security organization for compliance"
                 ],
                 correct: 1,
                 explanation: "An organization trail logs events for all AWS accounts in your AWS Organization. It's created in the management account and automatically applies to all member accounts, providing centralized logging for the entire organization.",
@@ -249,10 +249,10 @@
                 id: 9,
                 question: "Which of the following is considered a 'data event' in CloudTrail?",
                 options: [
-                    "Creating an S3 bucket",
-                    "GetObject operations on S3 objects",
-                    "Launching an EC2 instance",
-                    "Creating an IAM user"
+                    "Creating an S3 bucket in a specific AWS Region",
+                    "GetObject operations on S3 objects in buckets",
+                    "Launching an EC2 instance with specific configurations",
+                    "Creating an IAM user with specific permissions"
                 ],
                 correct: 1,
                 explanation: "Data events capture resource operations performed on or within a resource. Examples include S3 object-level API operations (GetObject, PutObject, DeleteObject), Lambda function invocations, and DynamoDB item-level operations. These must be explicitly enabled.",
@@ -262,10 +262,10 @@
                 id: 10,
                 question: "What is 'log file integrity validation' in CloudTrail?",
                 options: [
-                    "Encrypting log files with KMS",
-                    "A feature that determines whether log files were modified or deleted after delivery",
-                    "Compressing log files to save storage",
-                    "Scanning log files for sensitive data"
+                    "Encrypting log files with AWS KMS customer managed keys",
+                    "A feature to determine if log files were modified after delivery",
+                    "Compressing log files automatically to save storage costs",
+                    "Scanning log files for sensitive data and PII"
                 ],
                 correct: 1,
                 explanation: "Log file integrity validation is a feature that helps you determine whether a CloudTrail log file was modified, deleted, or unchanged after CloudTrail delivered it. CloudTrail creates a digest file with a hash of each log file.",
@@ -288,9 +288,9 @@
                 id: 12,
                 question: "What is CloudTrail Lake?",
                 options: [
-                    "A feature for storing logs in Amazon S3 Glacier",
-                    "A managed data lake for capturing, storing, and querying CloudTrail events",
-                    "A service for visualizing CloudTrail data",
+                    "A feature for storing CloudTrail logs in Amazon S3 Glacier",
+                    "A managed data lake for capturing and querying CloudTrail events",
+                    "A service for visualizing CloudTrail data with custom dashboards",
                     "A feature for exporting logs to third-party SIEM tools"
                 ],
                 correct: 1,
@@ -301,10 +301,10 @@
                 id: 13,
                 question: "Which AWS service can CloudTrail deliver log files to for real-time monitoring?",
                 options: [
-                    "Amazon Kinesis only",
-                    "Amazon CloudWatch Logs",
-                    "AWS Lambda only",
-                    "Amazon SQS only"
+                    "Amazon Kinesis Data Streams only for log processing",
+                    "Amazon CloudWatch Logs for real-time monitoring and alerting",
+                    "AWS Lambda functions only for automated processing",
+                    "Amazon SQS queues only for decoupled processing"
                 ],
                 correct: 1,
                 explanation: "CloudTrail can deliver log files to Amazon CloudWatch Logs for real-time monitoring and alerting. You can create metric filters and alarms to detect specific API calls or patterns, enabling rapid response to security events.",
@@ -314,10 +314,10 @@
                 id: 14,
                 question: "What is the recommended security best practice for storing CloudTrail logs?",
                 options: [
-                    "Store in the same account as the source events",
-                    "Store in a dedicated, centralized logging account with restricted access",
-                    "Store on EC2 instance EBS volumes",
-                    "Store only in CloudTrail Lake, not S3"
+                    "Store in the same account as the source events for simplicity",
+                    "Store in a dedicated logging account with restricted access controls",
+                    "Store on EC2 instance EBS volumes with encryption enabled",
+                    "Store only in CloudTrail Lake, not in S3 buckets"
                 ],
                 correct: 1,
                 explanation: "Best practice is to store CloudTrail logs in a dedicated, centralized S3 bucket in a separate logging account with restricted access. This prevents attackers who compromise a workload account from modifying or deleting logs.",
@@ -340,10 +340,10 @@
                 id: 16,
                 question: "What additional charges apply for the first copy of management events delivered to S3?",
                 options: [
-                    "$2 per 100,000 events",
+                    "$2 per 100,000 events delivered to the S3 bucket",
                     "Standard S3 storage charges only, CloudTrail delivery is free",
-                    "Both CloudTrail and S3 charges apply",
-                    "$0.10 per GB of log data"
+                    "Both CloudTrail delivery charges and S3 storage charges apply",
+                    "$0.10 per GB of log data delivered to S3"
                 ],
                 correct: 1,
                 explanation: "You can deliver one copy of your ongoing management events to an S3 bucket at no charge from CloudTrail by creating a trail. You only pay for S3 storage charges. Additional copies of management events incur CloudTrail charges.",
@@ -366,10 +366,10 @@
                 id: 18,
                 question: "What is an 'event data store' in CloudTrail Lake?",
                 options: [
-                    "An S3 bucket configured for CloudTrail",
+                    "An S3 bucket configured for CloudTrail log delivery",
                     "An immutable collection of events based on criteria you select",
-                    "A backup of CloudTrail configuration",
-                    "A real-time stream of events"
+                    "A backup of CloudTrail configuration for disaster recovery",
+                    "A real-time stream of events for immediate processing"
                 ],
                 correct: 1,
                 explanation: "An event data store is an immutable collection of events in CloudTrail Lake based on criteria you select using advanced event selectors. Events are converted to Apache ORC format for fast retrieval. You can create separate stores for different event types.",
@@ -379,10 +379,10 @@
                 id: 19,
                 question: "How can you receive notifications when CloudTrail publishes new log files?",
                 options: [
-                    "CloudWatch Events only",
-                    "Configure SNS notifications for the trail",
-                    "Email notifications are automatic",
-                    "CloudTrail doesn't support notifications"
+                    "CloudWatch Events only for automated log processing",
+                    "Configure SNS notifications for the trail in CloudTrail",
+                    "Email notifications are automatic with no configuration",
+                    "CloudTrail doesn't support notifications for new log files"
                 ],
                 correct: 1,
                 explanation: "You can configure Amazon SNS notifications for a trail to receive alerts when CloudTrail publishes new log files to your S3 bucket. This enables you to take immediate action on new events or trigger automated workflows.",
@@ -392,10 +392,10 @@
                 id: 20,
                 question: "What is the purpose of advanced event selectors in CloudTrail?",
                 options: [
-                    "To encrypt specific events",
+                    "To encrypt specific events with AWS KMS customer managed keys",
                     "To filter which data events are logged based on detailed criteria",
-                    "To prioritize certain events for faster delivery",
-                    "To compress specific event types"
+                    "To prioritize certain events for faster S3 delivery and processing",
+                    "To compress specific event types to reduce storage costs"
                 ],
                 correct: 1,
                 explanation: "Advanced event selectors allow you to create fine-grained selectors to log only the data events you need. You can filter by event source, event name, resource type, resource ARN, and more, helping control costs and reduce noise.",
@@ -405,10 +405,10 @@
                 id: 21,
                 question: "Which CloudTrail feature helps detect potentially suspicious activity involving AWS accounts?",
                 options: [
-                    "Log file integrity validation",
-                    "CloudTrail Insights",
-                    "Multi-Region trails",
-                    "Organization trails"
+                    "Log file integrity validation using digest files",
+                    "CloudTrail Insights for anomalous API activity detection",
+                    "Multi-Region trails for cross-region event logging",
+                    "Organization trails for centralized account logging"
                 ],
                 correct: 1,
                 explanation: "CloudTrail Insights helps detect potentially suspicious activity by identifying unusual patterns in API call rates and error rates. It establishes a baseline of normal activity and alerts you when activity deviates significantly.",
@@ -418,10 +418,10 @@
                 id: 22,
                 question: "What happens to CloudTrail events when you stop logging on a trail?",
                 options: [
-                    "All historical logs are deleted",
+                    "All historical logs in S3 are automatically deleted",
                     "Event history continues but no events are delivered to S3",
-                    "CloudTrail is completely disabled",
-                    "Only data events are stopped"
+                    "CloudTrail is completely disabled in all Regions",
+                    "Only data events are stopped, management events continue"
                 ],
                 correct: 1,
                 explanation: "When you stop logging on a trail, CloudTrail stops delivering events to the S3 bucket. However, the Event history (90-day console view) continues to capture events. Existing logs in S3 are retained based on your bucket lifecycle policies.",
@@ -431,10 +431,10 @@
                 id: 23,
                 question: "Which service can you use to query CloudTrail logs stored in S3 without loading them into a database?",
                 options: [
-                    "Amazon RDS",
-                    "Amazon Athena",
-                    "Amazon DynamoDB",
-                    "Amazon ElastiCache"
+                    "Amazon RDS with query optimization for JSON logs",
+                    "Amazon Athena using standard SQL for serverless queries",
+                    "Amazon DynamoDB with global secondary indexes for performance",
+                    "Amazon ElastiCache with Redis for in-memory query processing"
                 ],
                 correct: 1,
                 explanation: "Amazon Athena allows you to query CloudTrail logs stored in S3 using standard SQL without loading them into a database. You can create tables that reference your CloudTrail log location and run ad-hoc queries for security investigations.",
@@ -444,10 +444,10 @@
                 id: 24,
                 question: "What is the recommended practice for MFA Delete on CloudTrail log buckets?",
                 options: [
-                    "MFA Delete is not supported for CloudTrail buckets",
-                    "Enable MFA Delete to require MFA for deleting log files or changing versioning",
-                    "MFA Delete should be disabled for automation",
-                    "MFA Delete only applies to bucket deletion"
+                    "MFA Delete is not supported for CloudTrail S3 buckets",
+                    "Enable MFA Delete to require MFA for deleting log files",
+                    "MFA Delete should be disabled for automation and workflows",
+                    "MFA Delete only applies to bucket deletion, not objects"
                 ],
                 correct: 1,
                 explanation: "Enabling MFA Delete on your CloudTrail log bucket requires multi-factor authentication to delete objects or change the bucket's versioning state. This adds an extra layer of protection against accidental or malicious log deletion.",
@@ -457,10 +457,10 @@
                 id: 25,
                 question: "How can CloudTrail events be sent to Amazon EventBridge?",
                 options: [
-                    "CloudTrail events cannot be sent to EventBridge",
-                    "CloudTrail automatically sends events to EventBridge in the Region where they occur",
+                    "CloudTrail events cannot be sent to Amazon EventBridge",
+                    "CloudTrail automatically sends events to EventBridge in the Region",
                     "You must configure a Lambda function to forward events",
-                    "Only Insights events can be sent to EventBridge"
+                    "Only Insights events can be automatically sent to EventBridge"
                 ],
                 correct: 1,
                 explanation: "CloudTrail automatically sends events to Amazon EventBridge in the Region where the API call was made. You can create EventBridge rules to match specific CloudTrail events and trigger automated responses like Lambda functions or SNS notifications.",
@@ -544,7 +544,7 @@
         function selectOption(idx) {
             if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
             userAnswers[currentQuestion] = idx;
-            if (currentMode === 'exam') renderQuestion();
+            renderQuestion();
         }
 
         function revealAnswer() {
