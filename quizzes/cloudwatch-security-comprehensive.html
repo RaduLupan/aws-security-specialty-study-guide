@@ -170,10 +170,10 @@
                 id: 3,
                 question: "What is the default retention period for CloudWatch Logs?",
                 options: [
-                    "7 days",
-                    "30 days",
-                    "Never expires (indefinite)",
-                    "90 days"
+                    "7 days with automatic deletion after expiration",
+                    "30 days with optional extension available",
+                    "Never expires (indefinite retention by default)",
+                    "90 days matching CloudTrail Event history"
                 ],
                 correct: 2,
                 explanation: "By default, CloudWatch Logs are stored indefinitely and never expire. You can configure a retention policy for each log group to automatically delete logs after a specified period (1 day to 10 years) to manage costs and compliance requirements.",
@@ -183,10 +183,10 @@
                 id: 4,
                 question: "Which CloudWatch feature allows you to detect anomalies in metric patterns?",
                 options: [
-                    "CloudWatch Alarms",
-                    "CloudWatch Anomaly Detection",
-                    "CloudWatch Insights",
-                    "CloudWatch Dashboards"
+                    "CloudWatch Alarms with static threshold configurations",
+                    "CloudWatch Anomaly Detection using machine learning models",
+                    "CloudWatch Insights for interactive log analysis",
+                    "CloudWatch Dashboards with custom visualization widgets"
                 ],
                 correct: 1,
                 explanation: "CloudWatch Anomaly Detection uses machine learning to analyze metric data and create a model of expected values. It can then detect when metrics deviate from normal patterns, which is valuable for identifying unusual security-related activity.",
@@ -222,10 +222,10 @@
                 id: 7,
                 question: "What type of CloudWatch alarm monitors a single metric?",
                 options: [
-                    "Composite alarm",
-                    "Metric alarm",
-                    "Simple alarm",
-                    "Basic alarm"
+                    "Composite alarm combining multiple alarm states",
+                    "Metric alarm watching a single metric value",
+                    "Simple alarm with basic threshold monitoring",
+                    "Basic alarm for fundamental alerting use cases"
                 ],
                 correct: 1,
                 explanation: "A metric alarm watches a single CloudWatch metric and performs one or more actions based on the value of the metric relative to a threshold. Composite alarms, in contrast, consider the states of multiple other alarms.",
@@ -235,10 +235,10 @@
                 id: 8,
                 question: "What is a CloudWatch composite alarm?",
                 options: [
-                    "An alarm that monitors multiple AWS Regions",
-                    "An alarm that combines the states of multiple alarms using Boolean logic",
-                    "An alarm that creates compound metrics",
-                    "An alarm that runs on multiple schedules"
+                    "An alarm that monitors multiple AWS Regions simultaneously",
+                    "An alarm combining multiple alarm states using Boolean logic",
+                    "An alarm that creates compound metrics from data sources",
+                    "An alarm that runs on multiple schedules and intervals"
                 ],
                 correct: 1,
                 explanation: "A composite alarm considers the states of multiple other alarms (metric or composite) using Boolean logic (AND, OR, NOT). This helps reduce alarm noise and creates sophisticated alerting strategies where you only get notified when multiple conditions are met.",
@@ -248,10 +248,10 @@
                 id: 9,
                 question: "Which CloudWatch feature can mask sensitive data in logs?",
                 options: [
-                    "Log encryption",
-                    "Data protection policies",
-                    "Metric filters",
-                    "Subscription filters"
+                    "Log encryption using AWS KMS customer managed keys",
+                    "Data protection policies defining sensitive data patterns",
+                    "Metric filters extracting and masking specific log patterns",
+                    "Subscription filters redacting data before streaming"
                 ],
                 correct: 1,
                 explanation: "CloudWatch Logs data protection policies allow you to define patterns for sensitive data (like credit card numbers, SSN, etc.) that should be masked or redacted in logs. This helps maintain compliance while still capturing log data for analysis.",
@@ -287,10 +287,10 @@
                 id: 12,
                 question: "What does a CloudWatch alarm state of 'INSUFFICIENT_DATA' indicate?",
                 options: [
-                    "The alarm is in an error state",
+                    "The alarm is in an error state requiring administrator action",
                     "Not enough data points are available to determine the alarm state",
-                    "The metric has been deleted",
-                    "The alarm has been disabled"
+                    "The metric has been deleted from CloudWatch permanently",
+                    "The alarm has been disabled by an administrator"
                 ],
                 correct: 1,
                 explanation: "INSUFFICIENT_DATA means the alarm has just started, the metric is not available, or not enough data points are available to determine the alarm state. The other states are OK (within threshold) and ALARM (threshold exceeded).",
@@ -300,10 +300,10 @@
                 id: 13,
                 question: "Which security-related metrics can you monitor with VPC Flow Logs in CloudWatch?",
                 options: [
-                    "IAM policy changes",
-                    "Network traffic patterns, rejected connections, and traffic to/from specific IPs",
-                    "S3 bucket access patterns",
-                    "Lambda function errors"
+                    "IAM policy changes and user permission modifications",
+                    "Network traffic patterns, rejected connections, and traffic to specific IPs",
+                    "S3 bucket access patterns and object-level operations",
+                    "Lambda function errors and execution duration metrics"
                 ],
                 correct: 1,
                 explanation: "VPC Flow Logs capture network traffic metadata that can be sent to CloudWatch Logs. You can monitor accepted/rejected connections, traffic patterns, unusual data transfers, and connections to/from known malicious IPs for security analysis.",
@@ -326,10 +326,10 @@
                 id: 15,
                 question: "What is the purpose of CloudWatch Contributor Insights?",
                 options: [
-                    "Identifying top contributors to system performance issues",
-                    "Analyzing time-series data to identify top-N contributors from log data",
-                    "Showing which IAM users are contributing logs",
-                    "Tracking cost contributors"
+                    "Identifying top contributors to system performance bottlenecks",
+                    "Analyzing time-series data to identify top-N contributors from logs",
+                    "Showing which IAM users are contributing logs to groups",
+                    "Tracking cost contributors across AWS services and accounts"
                 ],
                 correct: 1,
                 explanation: "CloudWatch Contributor Insights analyzes time-series data to create reports showing the top-N contributors. For security, you can identify top IP addresses making requests, top error generators, or top users/resources associated with specific events.",
@@ -378,10 +378,10 @@
                 id: 19,
                 question: "How long is CloudWatch metric data retained?",
                 options: [
-                    "90 days for all metrics",
-                    "Data points with 1-minute resolution are retained for 15 days; aggregated data up to 15 months",
-                    "30 days for all data",
-                    "Indefinitely like CloudWatch Logs"
+                    "90 days for all metrics regardless of resolution",
+                    "1-minute data for 15 days; aggregated data up to 15 months",
+                    "30 days for all data points and resolutions",
+                    "Indefinitely like CloudWatch Logs without expiration"
                 ],
                 correct: 1,
                 explanation: "CloudWatch retains metric data with different resolutions for different periods: 1-minute data for 15 days, 5-minute data for 63 days, and 1-hour data for 455 days (15 months). Understanding this helps with security forensics and compliance requirements.",
@@ -391,10 +391,10 @@
                 id: 20,
                 question: "Which CloudWatch feature helps create alerts for security group changes?",
                 options: [
-                    "CloudWatch Synthetics",
-                    "CloudWatch Events/EventBridge integration with CloudTrail for API call monitoring",
-                    "CloudWatch RUM",
-                    "CloudWatch ServiceLens"
+                    "CloudWatch Synthetics for synthetic monitoring canaries",
+                    "CloudWatch Events/EventBridge integration with CloudTrail API monitoring",
+                    "CloudWatch RUM for real-time user monitoring",
+                    "CloudWatch ServiceLens for application observability insights"
                 ],
                 correct: 1,
                 explanation: "You can use CloudWatch Events (now Amazon EventBridge) integrated with CloudTrail to create rules that trigger when specific API calls occur, like security group modifications (AuthorizeSecurityGroupIngress, RevokeSecurityGroupIngress). This enables real-time alerting on security-sensitive changes.",
@@ -478,7 +478,7 @@
         function selectOption(idx) {
             if (currentMode === 'learn' && answersRevealed[currentQuestion]) return;
             userAnswers[currentQuestion] = idx;
-            if (currentMode === 'exam') renderQuestion();
+            renderQuestion();
         }
 
         function revealAnswer() {
