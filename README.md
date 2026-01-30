@@ -240,13 +240,13 @@ A suggested 10-week study plan based on new domain weights:
 > **SCS-C03 launched December 2, 2025** - Key changes from SCS-C02:
 
 ### New Content Added
-| Topic | Description |
-|-------|-------------|
-| **Generative AI Security** | OWASP Top 10 for LLM Applications protections |
-| **OCSF Format Integration** | Open Cybersecurity Schema Framework for data ingestion |
-| **Inter-Resource Encryption** | EMR, EKS, SageMaker AI, Nitro encryption configs |
-| **Data Masking** | CloudWatch Logs data protection, SNS message data protection |
-| **Multi-Region Key Management** | KMS keys and certificates across regions |
+| Topic | Description | AWS Resources |
+|-------|-------------|---------------|
+| **Generative AI Security** | OWASP Top 10 for LLM Applications protections | [Guardrails for Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) • [Responsible AI on AWS](https://aws.amazon.com/ai/responsible-ai/) • [Blog: Security best practices for generative AI](https://aws.amazon.com/blogs/security/category/artificial-intelligence/generative-ai/) |
+| **OCSF Format Integration** | Open Cybersecurity Schema Framework for data ingestion | [OCSF Schema Documentation](https://schema.ocsf.io/) • [Amazon Security Lake OCSF Support](https://docs.aws.amazon.com/security-lake/latest/userguide/open-cybersecurity-schema-framework.html) • [Blog: Introducing OCSF support](https://aws.amazon.com/blogs/security/introducing-open-cybersecurity-schema-framework-support-in-amazon-security-lake/) |
+| **Inter-Resource Encryption** | EMR, EKS, SageMaker AI, Nitro encryption configs | [EMR Encryption Options](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-data-encryption-options.html) • [EKS Encryption Best Practices](https://docs.aws.amazon.com/eks/latest/best-practices/security.html) • [SageMaker Encryption](https://docs.aws.amazon.com/sagemaker/latest/dg/encryption-at-rest.html) • [Nitro Enclaves](https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html) |
+| **Data Masking** | CloudWatch Logs data protection, SNS message data protection | [CloudWatch Logs Data Protection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/mask-sensitive-log-data.html) • [SNS Message Data Protection](https://docs.aws.amazon.com/sns/latest/dg/sns-message-data-protection.html) • [Blog: Protect sensitive data with data protection policies](https://aws.amazon.com/blogs/security/protect-sensitive-data-in-logs-with-amazon-cloudwatch-logs-data-protection/) |
+| **Multi-Region Key Management** | KMS keys and certificates across regions | [KMS Multi-Region Keys](https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html) • [ACM Multi-Region Certificates](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) • [Whitepaper: KMS Best Practices](https://docs.aws.amazon.com/whitepapers/latest/kms-best-practices/multi-region-keys.html) |
 
 ### New Question Types
 - **Ordering Questions** - Select and arrange steps in correct sequence
