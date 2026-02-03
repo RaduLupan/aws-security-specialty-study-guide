@@ -92,6 +92,26 @@
         .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
         .hidden { display: none !important; }
         .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(6, 182, 212, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
+        .review-section { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; border: 1px solid var(--border); display: none; }
+        .review-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .review-header { text-align: center; margin-bottom: 2rem; }
+        .review-hint { text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; }
+        .review-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .review-table th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; padding: 1rem; text-align: left; border-bottom: 2px solid var(--border); }
+        .review-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .review-table tbody tr { cursor: pointer; transition: all 0.2s ease; }
+        .review-table tbody tr:hover { background: rgba(6, 182, 212, 0.1); transform: translateX(4px); }
+        .review-table tbody tr.reviewed { background: rgba(6, 182, 212, 0.25); border-left: 6px solid var(--accent-primary); box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.15); }
+        .review-table tbody tr.reviewed:hover { background: rgba(6, 182, 212, 0.3); }
+        .review-table tbody tr.reviewed .review-q-num { color: var(--accent-secondary); font-weight: 800; }
+        .review-table tbody tr.reviewed .review-q-num::before { content: "✓ "; color: var(--accent-primary); font-size: 1rem; }
+        .review-q-num { font-weight: 700; color: var(--accent-primary); white-space: nowrap; }
+        .review-q-text { color: var(--text-primary); line-height: 1.6; }
+        .review-answer { font-weight: 600; }
+        .review-answer.correct { color: var(--success); }
+        .review-answer.incorrect { color: var(--error); }
+        .review-status { text-align: center; font-size: 1.25rem; }
         @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector { flex-direction: column; } .btn-container { flex-direction: column; } .results-breakdown { flex-direction: column; gap: 1.5rem; } }
     </style>
 </head>
@@ -122,6 +142,7 @@
             <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
             <div id="questionsContainer"></div>
             <div class="btn-container">
+                <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
                 <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
                 <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
                 <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
@@ -136,7 +157,34 @@
                 <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
                 <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
             </div>
-            <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            <div class="btn-group" id="resultsButtons">
+                <button class="btn btn-primary" id="reviewBtn" onclick="showReview()" style="display: none;">📊 Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+
+        <div class="review-section" id="reviewSection">
+            <div class="review-header">
+                <h2>Answer Review</h2>
+                <p class="results-details">Click any question to review the full answer and explanation</p>
+            </div>
+            <p class="review-hint">💡 Tip: Click on any row to see the full question and explanation in Learn mode</p>
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">#</th>
+                        <th style="width: 50%">Question</th>
+                        <th style="width: 15%">Your Answer</th>
+                        <th style="width: 15%">Correct Answer</th>
+                        <th style="width: 10%">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+            </table>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="backToResults()">← Back to Results</button>
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
         </div>
     </div>
     <script>
@@ -474,6 +522,7 @@
         let shuffledQuestions = [];
         let timerInterval = null;
         let timeRemaining = 0;
+        let inReviewMode = false, reviewedQuestions = [];
 
         function shuffleArray(array) {
             const newArray = [...array];
@@ -494,6 +543,8 @@
         }
 
         function startQuiz(mode) {
+            inReviewMode = false;
+            reviewedQuestions = [];
             currentMode = mode;
             currentQuestion = 0;
             userAnswers = new Array(questions.length).fill(null);
@@ -503,6 +554,8 @@
             document.getElementById('quizContent').classList.remove('hidden');
             document.getElementById('resultsCard').classList.remove('show');
             document.getElementById('totalQ').textContent = shuffledQuestions.length;
+            document.getElementById('reviewSection').classList.remove('show');
+            document.getElementById('backToReviewBtn').style.display = 'none';
             if (mode === 'exam') {
                 timeRemaining = shuffledQuestions.length * 150;
                 startTimer();
@@ -577,6 +630,7 @@
             const percentage = Math.round((correct / total) * 100);
             const passed = percentage >= 80;
             document.getElementById('quizContent').classList.add('hidden');
+            document.getElementById('reviewSection').classList.remove('show');
             document.getElementById('resultsCard').classList.add('show');
             const scoreEl = document.getElementById('scorePercent');
             scoreEl.textContent = percentage + '%';
@@ -587,13 +641,64 @@
             document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`;
             document.getElementById('correctCount').textContent = correct;
             document.getElementById('incorrectCount').textContent = total - correct;
+            document.getElementById('reviewBtn').style.display = currentMode === 'exam' ? 'inline-block' : 'none';
         }
 
         function restartQuiz() {
             document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('reviewSection').classList.remove('show');
+            document.getElementById('backToReviewBtn').style.display = 'none';
             document.getElementById('modeSelector').classList.remove('hidden');
             document.getElementById('quizContent').classList.add('hidden');
             if (timerInterval) clearInterval(timerInterval);
+            inReviewMode = false;
+            reviewedQuestions = [];
+        }
+
+        function showReview() {
+            const letters = ['A','B','C','D'];
+            const tbody = document.getElementById('reviewTableBody');
+            tbody.innerHTML = shuffledQuestions.map((q, i) => {
+                const userAns = userAnswers[i];
+                const isCorrect = userAns === q.correct;
+                const userLetter = userAns !== null && userAns >= 0 ? letters[userAns] : 'No Answer';
+                const correctLetter = letters[q.correct];
+                const statusIcon = isCorrect ? '✓' : '✗';
+                const statusClass = isCorrect ? 'correct' : 'incorrect';
+                const qText = q.question.length > 120 ? q.question.substring(0, 120) + '...' : q.question;
+                const reviewedClass = reviewedQuestions.includes(i) ? 'reviewed' : '';
+                return `<tr class="${reviewedClass}" onclick="reviewQuestion(${i})"><td class="review-q-num">${i + 1}</td><td class="review-q-text">${qText}</td><td class="review-answer ${userAns === q.correct ? 'correct' : 'incorrect'}">${userLetter}</td><td class="review-answer correct">${correctLetter}</td><td class="review-status ${statusClass}">${statusIcon}</td></tr>`;
+            }).join('');
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('reviewSection').classList.add('show');
+            inReviewMode = true;
+        }
+
+        function reviewQuestion(qIndex) {
+            if (!reviewedQuestions.includes(qIndex)) {
+                reviewedQuestions.push(qIndex);
+            }
+            currentMode = 'learn';
+            currentQuestion = qIndex;
+            answersRevealed[qIndex] = true;
+            document.getElementById('reviewSection').classList.remove('show');
+            document.getElementById('quizContent').classList.remove('hidden');
+            document.getElementById('timer').textContent = 'Learn Mode';
+            document.getElementById('shuffleBtn').style.display = 'none';
+            document.getElementById('backToReviewBtn').style.display = 'inline-block';
+            if (timerInterval) clearInterval(timerInterval);
+            renderQuestion();
+        }
+
+        function backToReview() {
+            document.getElementById('quizContent').classList.add('hidden');
+            showReview();
+        }
+
+        function backToResults() {
+            document.getElementById('reviewSection').classList.remove('show');
+            document.getElementById('resultsCard').classList.add('show');
+            inReviewMode = false;
         }
     </script>
 </body>
