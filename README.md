@@ -103,9 +103,9 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-> **🎉 Total: 480 questions across 23 quizzes - ALL 6 DOMAINS COMPLETE!**
+> **🎉 Total: 500 questions across 24 quizzes - ALL 6 DOMAINS COMPLETE!**
 
-#### ✅ Domain 1: Detection (130 questions)
+#### ✅ Domain 1: Detection (150 questions)
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
@@ -114,6 +114,7 @@ Interactive HTML-based quizzes with two modes:
 | **Amazon Detective** | 20 | [View](./quizzes/detective-comprehensive.html) |
 | **AWS CloudTrail** | 25 | [View](./quizzes/cloudtrail-comprehensive.html) |
 | **CloudWatch Security** | 20 | [View](./quizzes/cloudwatch-security-comprehensive.html) |
+| **Amazon Security Lake** | 20 | [View](./quizzes/security-lake-comprehensive.html) |
 | GuardDuty Extended Threat Detection | 15 | [View](./quizzes/guardduty-extended-threat-detection.html) |
 
 #### ✅ Domain 2: Incident Response (45 questions)

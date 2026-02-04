@@ -14,7 +14,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 
 ## Available Quizzes
 
-### Domain 1: Detection (Complete - 130 questions!)
+### Domain 1: Detection (Complete - 150 questions!)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
@@ -23,6 +23,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [detective-comprehensive.html](./detective-comprehensive.html) | **Amazon Detective (All Topics)** | 20 |
 | [cloudtrail-comprehensive.html](./cloudtrail-comprehensive.html) | **AWS CloudTrail (All Topics)** | 25 |
 | [cloudwatch-security-comprehensive.html](./cloudwatch-security-comprehensive.html) | **Amazon CloudWatch Security** | 20 |
+| [security-lake-comprehensive.html](./security-lake-comprehensive.html) | **Amazon Security Lake** | 20 |
 | [guardduty-extended-threat-detection.html](./guardduty-extended-threat-detection.html) | GuardDuty Extended Threat Detection | 15 |
 
 ### Domain 2: Incident Response (Complete - 45 questions!)
