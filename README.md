@@ -183,6 +183,8 @@ python -m http.server 8080
 <details>
 <summary><b>🔍 Threat Detection & Incident Response</b></summary>
 
+- [AWS re:Invent 2025 - Detect and stop malware threats using Amazon GuardDuty (SEC350)](https://www.youtube.com/watch?v=E5p_WnP4pw8&list=WL&index=135)
+- [AWS re:Invent 2024 - Uncovering sophisticated cloud threats with Amazon GuardDuty (SEC219)](https://www.youtube.com/watch?v=3fR2PMtW7fs&list=WL&index=140&t=1849s)
 - [AWS re:Inforce 2022: Introducing Amazon GuardDuty Malware Protection (TDR210)](https://www.youtube.com/watch?v=9wCxAZtrjpw)
 - [AWS re:Inforce 2022: What's new with AWS threat detection services (TDR202)](https://www.youtube.com/watch?v=uDvP6tlkpjQ)
 - [AWS re:Inforce 2022: Running effective security incident response simulations (TDR201)](https://www.youtube.com/watch?v=63EdzHT25_A)
@@ -193,6 +195,7 @@ python -m http.server 8080
 <details>
 <summary><b>🔑 Identity & Access Management</b></summary>
 
+- [AWS re:Invent 2025 - IAM Access Analyzer Deep Dive: From Configuration to Remediation (SEC340)](https://www.youtube.com/watch?v=IJVe5GxEo44&list=WL&index=130)
 - [AWS re:Inforce 2022: Security best practices with AWS IAM (IAM201)](https://www.youtube.com/watch?v=SMjvtxXOXdU)
 - [AWS re:Inforce 2022: Designing a well-architected IAM solution (IAM309)](https://www.youtube.com/watch?v=qrQzUzDyjks)
 - [AWS re:Invent 2022: Harness power of IAM policies with Access Analyzer (SEC313)](https://www.youtube.com/watch?v=x-Kh8hKVX74)
@@ -215,6 +218,13 @@ python -m http.server 8080
 - [AWS re:Invent 2022: Introducing AWS Verified Access (NET214)](https://www.youtube.com/watch?v=Kkxn-bAIlnI)
 - [AWS re:Invent 2022: Protect against ransomware with Zero Trust (STG208)](https://www.youtube.com/watch?v=ELSm3WgR8RE)
 - [AWS re:Invent 2022: Architecting secure serverless applications (SVS302-R)](https://www.youtube.com/watch?v=A8iHQjHv8nY)
+
+</details>
+
+<details>
+<summary><b>🛠️ Security Development & Operations</b></summary>
+
+- [AWS re:Invent 2025 - AWS Security Agent: Proactive AppSec from Design to Deployment (SEC348)](https://www.youtube.com/watch?v=LPo4kI656bY&list=WL&index=127)
 
 </details>
 
