@@ -387,11 +387,10 @@
                 <div class="progress-fill" id="progressBar"></div>
             </div>
             <div id="questionContainer"></div>
-            <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
             <div class="btn-container">
-                <button class="btn btn-secondary" id="prevBtn">← Previous</button>
-                <button class="btn btn-primary" id="nextBtn">Next →</button>
-                <button class="btn btn-primary" id="submitBtn" style="display: none;">Submit Quiz</button>
+                <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next →</button>
             </div>
         </div>
 
@@ -411,8 +410,8 @@
                 </div>
             </div>
             <div class="btn-group" id="resultsButtons">
-                <button class="btn btn-primary" id="reviewBtn" onclick="showReview()" style="display: none;">📊 Review Answers</button>
-                <button class="btn btn-secondary" id="restartBtn" onclick="restartQuiz()">🔄 Restart Quiz</button>
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
             </div>
         </div>
 
@@ -718,12 +717,6 @@
         ];
 
         // Initialize
-        document.getElementById('prevBtn').addEventListener('click', previousQuestion);
-        document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-        document.getElementById('submitBtn').addEventListener('click', submitQuiz);
-        document.getElementById('restartBtn').addEventListener('click', restartQuiz);
-        document.getElementById('reviewBtn').addEventListener('click', showReview);
-
         function startQuiz(selectedMode) {
             mode = selectedMode;
             currentMode = selectedMode;
@@ -817,10 +810,12 @@
         }
 
         function nextQuestion() {
-            if (currentQuestion < shuffledQuestions.length - 1) {
-                currentQuestion++;
-                showQuestion();
+            if (currentQuestion === shuffledQuestions.length - 1) {
+                submitQuiz();
+                return;
             }
+            currentQuestion++;
+            showQuestion();
         }
 
         function previousQuestion() {
@@ -840,16 +835,16 @@
             const nextBtn = document.getElementById('nextBtn');
             const submitBtn = document.getElementById('submitBtn');
 
-            prevBtn.style.display = currentQuestion === 0 ? 'none' : 'inline-block';
-
-            if (mode === 'exam') {
-                const allAnswered = userAnswers.every(a => a !== null);
-                nextBtn.style.display = currentQuestion === shuffledQuestions.length - 1 ? 'none' : 'inline-block';
-                submitBtn.style.display = allAnswered ? 'inline-block' : 'none';
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === shuffledQuestions.length - 1) {
+                nextBtn.textContent = mode === 'exam' ? 'Submit Quiz' : 'See Results';
             } else {
-                nextBtn.style.display = currentQuestion === shuffledQuestions.length - 1 ? 'none' : 'inline-block';
-                submitBtn.style.display = 'none';
+                nextBtn.textContent = 'Next →';
             }
+            
+            nextBtn.style.display = 'inline-block';
+            submitBtn.style.display = 'none';
         }
 
         function submitQuiz() {
@@ -875,7 +870,6 @@
             document.getElementById('correctCount').textContent = correct;
             document.getElementById('incorrectCount').textContent = total - correct;
             document.getElementById('reviewSection').classList.remove('show');
-            document.getElementById('reviewBtn').style.display = currentMode === 'exam' ? 'inline-block' : 'none';
         }
 
         function showReview() {
@@ -906,10 +900,10 @@
             answersRevealed[qIndex] = true;
             document.getElementById('reviewSection').classList.remove('show');
             document.getElementById('quizScreen').classList.add('active');
+            document.getElementById('timer').textContent = 'Learn Mode';
             document.getElementById('backToReviewBtn').style.display = 'inline-block';
             document.getElementById('prevBtn').style.display = 'none';
             document.getElementById('nextBtn').style.display = 'none';
-            document.getElementById('submitBtn').style.display = 'none';
             if (timerInterval) clearInterval(timerInterval);
             showQuestion();
         }
