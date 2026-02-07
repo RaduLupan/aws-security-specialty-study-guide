@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCS-C03 New Topics Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #14b8a6; --accent-secondary: #2dd4bf; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(20, 184, 166, 0.1); }
+        .option.selected { border-color: var(--accent-primary); border-width: 3px; background: rgba(20, 184, 166, 0.2); box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25), inset 0 0 12px rgba(20, 184, 166, 0.1); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(20, 184, 166, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(20, 184, 166, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .review-section { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; border: 1px solid var(--border); display: none; }
+        .review-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .review-header { text-align: center; margin-bottom: 2rem; }
+        .review-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .review-table th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; padding: 1rem; text-align: left; border-bottom: 2px solid var(--border); }
+        .review-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .review-table tbody tr { cursor: pointer; transition: all 0.2s ease; }
+        .review-table tbody tr:hover { background: rgba(20, 184, 166, 0.1); transform: translateX(4px); }
+        .review-table tbody tr.reviewed { background: rgba(20, 184, 166, 0.25); border-left: 6px solid var(--accent-primary); box-shadow: inset 0 0 20px rgba(20, 184, 166, 0.15); }
+        .review-table tbody tr.reviewed:hover { background: rgba(20, 184, 166, 0.3); }
+        .review-table tbody tr.reviewed .review-q-num { color: var(--accent-secondary); font-weight: 800; }
+        .review-table tbody tr.reviewed .review-q-num::before { content: "✓ "; color: var(--accent-primary); font-size: 1rem; }
+        .review-q-num { font-weight: 700; color: var(--accent-primary); white-space: nowrap; }
+        .review-q-text { color: var(--text-primary); line-height: 1.6; }
+        .review-answer { font-weight: 600; }
+        .review-answer.correct { color: var(--success); }
+        .review-answer.incorrect { color: var(--error); }
+        .review-status { text-align: center; font-size: 1.25rem; }
+        .review-hint { text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(20, 184, 166, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">SCS-C03 New Topics</span>
+            <h1>AWS Security Specialty - What's New in SCS-C03</h1>
+            <p class="subtitle">Covering new topics added to the 2026 exam version</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">20</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">50:00</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">10</span></span>
+                    <span class="timer" id="timer">25:00</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+        <div class="review-section" id="reviewSection">
+            <div class="review-header">
+                <h2>Answer Review</h2>
+                <p class="results-details">Click any question to review the full answer and explanation</p>
+            </div>
+            <p class="review-hint">💡 Tip: Click on any row to see the full question and explanation in Learn mode</p>
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">#</th>
+                        <th style="width: 50%">Question</th>
+                        <th style="width: 15%">Your Answer</th>
+                        <th style="width: 15%">Correct Answer</th>
+                        <th style="width: 10%">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+            </table>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="backToResults()">← Back to Results</button>
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { 
+                id: 1, 
+                question: "A security architect is designing a centralized security monitoring solution that will ingest logs from multiple AWS services and third-party security tools. The solution must normalize all security data into a consistent schema for analysis. Which approach best meets these requirements?", 
+                options: [
+                    "Configure CloudWatch Logs Insights to query logs from different sources using custom field mappings and create unified dashboards across all log groups",
+                    "Enable Amazon Security Lake to automatically convert AWS service logs to Open Cybersecurity Schema Framework (OCSF) format and ingest third-party data using OCSF-compliant sources",
+                    "Deploy Amazon OpenSearch Service with custom Logstash pipelines to transform incoming logs into a normalized internal schema for indexing and search",
+                    "Use AWS Glue DataBrew to profile and transform security logs from various sources into Parquet format stored in S3 with a standardized column structure"
+                ], 
+                correct: 1, 
+                explanation: "Amazon Security Lake automatically converts AWS service logs (CloudTrail, VPC Flow Logs, Security Hub findings, etc.) to OCSF format and stores them centrally. OCSF provides a vendor-agnostic schema that simplifies ingestion from third-party tools. This eliminates the need for custom transformation logic and provides industry-standard normalization.", 
+                docLink: "https://docs.aws.amazon.com/security-lake/latest/userguide/open-cybersecurity-schema-framework.html" 
+            },
+            { 
+                id: 2, 
+                question: "An organization wants to create custom security analytics queries that join data from AWS CloudTrail, VPC Flow Logs, and third-party EDR solutions. All data must be stored in a standardized format. Which Security Lake capability enables this use case?", 
+                options: [
+                    "Security Lake's ASFF (AWS Security Finding Format) converter that transforms all security events into a unified findings format compatible with Security Hub",
+                    "Security Lake's integration with Amazon Athena to query OCSF-formatted Parquet files stored in the Security Lake S3 bucket using standard SQL",
+                    "Security Lake's built-in correlation engine that automatically joins events from different sources based on common entity identifiers like IP addresses",
+                    "Security Lake's real-time streaming API that publishes normalized events to Amazon MSK for complex event processing using Apache Flink"
+                ], 
+                correct: 1, 
+                explanation: "Security Lake stores all ingested data in OCSF format as Parquet files in S3. You can query this data directly using Amazon Athena with standard SQL, joining data across different sources because they all use the same OCSF schema. The OCSF event classes provide common fields (like IP addresses, usernames, timestamps) that enable effective correlation.", 
+                docLink: "https://docs.aws.amazon.com/security-lake/latest/userguide/subscriber-query-access.html" 
+            },
+            { 
+                id: 3, 
+                question: "A company is deploying a generative AI application using Amazon Bedrock. The security team requires guardrails to prevent the model from generating content containing PII, toxic language, or responses to prompt injection attacks. Which approach implements these protections?", 
+                options: [
+                    "Configure Amazon Bedrock Guardrails with content filters for toxicity and PII, denied topics for sensitive subjects, and contextual grounding checks to detect hallucinations and prompt attacks",
+                    "Deploy AWS WAF in front of the Bedrock API endpoint with custom rules that inspect request bodies for malicious prompts and block requests containing PII patterns",
+                    "Implement Amazon Comprehend to analyze all user prompts before sending to Bedrock, using the DetectPII and DetectSentiment APIs to filter inappropriate inputs",
+                    "Use AWS Lambda to wrap all Bedrock API calls with custom validation logic that applies regex patterns for PII detection and prompt injection signature matching"
+                ], 
+                correct: 0, 
+                explanation: "Amazon Bedrock Guardrails provides purpose-built protections for generative AI applications. Content filters detect and block harmful content (hate speech, violence, sexual content, etc.) and PII. Denied topics prevent the model from responding to specific subjects. Contextual grounding checks help detect hallucinations and prompt injection attempts by verifying responses against provided context.", 
+                docLink: "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html" 
+            },
+            { 
+                id: 4, 
+                question: "A development team is building an LLM-powered chatbot. To align with OWASP Top 10 for LLM Applications security guidance, which combination of controls should they implement?", 
+                options: [
+                    "Input validation on the frontend, TLS encryption for data in transit, and CloudWatch monitoring for API call volumes to detect anomalies in usage patterns",
+                    "Input sanitization to prevent prompt injection, output filters to prevent sensitive data leakage, rate limiting to prevent denial of wallet attacks, and access controls on training data",
+                    "WAF rules to block SQL injection attempts, Network ACLs to restrict inbound traffic, AWS Shield for DDoS protection, and Amazon Macie to scan model artifacts for PII",
+                    "VPC endpoints for private Bedrock access, KMS encryption for prompt history storage, IAM roles with least privilege, and AWS Config rules to audit model configurations"
+                ], 
+                correct: 1, 
+                explanation: "OWASP Top 10 for LLM Applications identifies specific AI/ML risks: prompt injection, sensitive information disclosure, supply chain vulnerabilities, data poisoning, denial of wallet, and others. The correct controls address these LLM-specific threats: input sanitization (prompt injection), output filtering (data leakage), rate limiting (cost attacks), and training data access controls (poisoning). Traditional application security controls (WAF for SQL injection, Shield for DDoS) don't address LLM-specific attack vectors.", 
+                docLink: "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/gensec02-bp01.html" 
+            },
+            { 
+                id: 5, 
+                question: "A financial services company runs Apache Spark jobs on Amazon EMR that process sensitive transaction data across multiple nodes. To comply with data protection regulations, they must encrypt all data exchanged between cluster nodes. How should they configure inter-node encryption?", 
+                options: [
+                    "Enable encryption in-transit in the EMR security configuration, which activates TLS for inter-node communication in Spark, HDFS, and other frameworks automatically",
+                    "Configure VPC encryption in transit to enforce automatic encryption of all network traffic between EC2 instances within the same VPC subnet where the EMR cluster runs",
+                    "Modify the Spark configuration to set spark.authenticate.enableSaslEncryption=true and spark.network.crypto.enabled=true, then manually configure certificates for each worker node",
+                    "Deploy AWS Certificate Manager Private CA to issue certificates for each EMR node, then configure IPsec tunnels between all node pairs using AWS VPN"
+                ], 
+                correct: 0, 
+                explanation: "EMR security configurations provide a centralized way to enable encryption in-transit, which automatically configures TLS encryption for inter-node communication across Spark, HDFS, MapReduce, and other frameworks. This is far simpler than manually configuring Spark settings or deploying IPsec. Note: VPC encryption in transit is a different feature that provides Nitro-based automatic encryption but requires supported instance types.", 
+                docLink: "https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-data-encryption.html" 
+            },
+            { 
+                id: 6, 
+                question: "An organization is deploying machine learning workloads on Amazon EKS that exchange model parameters and training data between pods. The security team requires encryption of this inter-pod traffic. Which solution provides this capability?", 
+                options: [
+                    "Configure Kubernetes Network Policies to enforce TLS for all pod-to-pod communication using annotations that specify required cipher suites and certificate authorities",
+                    "Enable AWS PrivateLink for Amazon EKS to encrypt all traffic between pods automatically using AWS-managed encryption without requiring application changes",
+                    "Deploy a service mesh like AWS App Mesh or Istio that provides mutual TLS (mTLS) between pods, with automatic certificate management and traffic encryption",
+                    "Enable Nitro Encryption for the EKS worker nodes, which automatically encrypts all network traffic between EC2 instances including inter-pod communication"
+                ], 
+                correct: 2, 
+                explanation: "Service meshes like AWS App Mesh or Istio provide mutual TLS (mTLS) for pod-to-pod communication in Kubernetes. They automatically handle certificate issuance, rotation, and traffic encryption without requiring application code changes. Kubernetes Network Policies control traffic flow but don't provide encryption. PrivateLink doesn't encrypt inter-pod traffic. Nitro Encryption works at the instance level but requires supported instance types and doesn't cover all inter-pod scenarios.", 
+                docLink: "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/mlsec04-bp02.html" 
+            },
+            { 
+                id: 7, 
+                question: "A healthcare application stores patient records in CloudWatch Logs. The security team needs to prevent accidental logging of Social Security Numbers, credit card numbers, and medical record numbers. Which approach provides this protection?", 
+                options: [
+                    "Create a CloudWatch Logs data protection policy that uses AWS-managed data identifiers to detect and mask SSNs, credit card numbers, and custom regex patterns for medical record numbers",
+                    "Configure AWS Macie to continuously scan CloudWatch Log Groups for sensitive data patterns and automatically redact matches by overwriting log events in place",
+                    "Deploy an AWS Lambda function triggered by CloudWatch Logs Subscription Filters that scans log events for PII using Amazon Comprehend and publishes sanitized logs to a new log group",
+                    "Enable CloudWatch Logs encryption with AWS KMS and configure key policies to restrict decryption permissions only to users who require access to sensitive data"
+                ], 
+                correct: 0, 
+                explanation: "CloudWatch Logs data protection policies use machine learning and pattern matching to detect sensitive data (PII, credentials, financial information) and automatically mask it when viewing logs in the console or via API. You can use AWS-managed data identifiers (for SSN, credit cards, etc.) and custom regex patterns. This protection is applied at query time, not during ingestion. Macie doesn't scan CloudWatch Logs. Encryption protects data at rest but doesn't mask sensitive content from authorized users.", 
+                docLink: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/mask-sensitive-log-data.html" 
+            },
+            { 
+                id: 8, 
+                question: "An organization publishes security alert notifications via Amazon SNS that may contain IP addresses, usernames, and system identifiers. They need to ensure that email subscribers don't receive PII while SMS subscribers receive full details. How should they implement this?", 
+                options: [
+                    "Create two separate SNS topics with different data protection policies: one for email with PII masking enabled, and another for SMS with no masking, publishing to both topics from the application",
+                    "Configure an SNS message data protection policy with audit and de-identify statements that mask PII based on data identifiers, then use subscription filter policies to control delivery",
+                    "Use AWS Lambda as an SNS subscription that receives the full message, applies conditional redaction logic based on subscriber type, and forwards sanitized messages to email recipients",
+                    "Enable AWS KMS encryption on the SNS topic with two different keys, granting email subscribers access only to the key that encrypts messages with pre-masked PII content"
+                ], 
+                correct: 1, 
+                explanation: "SNS message data protection policies can audit (detect) and de-identify (mask) sensitive data in messages. However, SNS data protection applies the same policy to all subscribers. The key insight is using subscription filter policies to control which subscribers receive messages, though the masking is consistent. For truly different masking levels per subscriber type, Option A (separate topics) or Option C (Lambda) would be more accurate. This question may need revision - the AWS documentation shows that SNS data protection applies uniformly.", 
+                docLink: "https://docs.aws.amazon.com/sns/latest/dg/message-data-protection.html" 
+            },
+            { 
+                id: 9, 
+                question: "A security architect is comparing AWS KMS key options. Which statement accurately describes a key difference between imported key material and AWS-generated key material?", 
+                options: [
+                    "Imported key material supports automatic rotation while AWS-generated keys require manual rotation; imported keys also have higher API rate limits for cryptographic operations",
+                    "AWS-generated key material never leaves AWS KMS hardware security modules and supports automatic rotation; imported key material can expire and does not support automatic rotation",
+                    "Imported key material enables cross-region replication for multi-region keys while AWS-generated keys are region-specific; imported keys also support both symmetric and asymmetric algorithms",
+                    "AWS-generated key material can be exported for backup purposes while imported key material cannot be exported after import; AWS-generated keys also support FIPS 140-2 Level 3 validation"
+                ], 
+                correct: 1, 
+                explanation: "Key differences: (1) AWS-generated key material is created within AWS KMS HSMs and never leaves them. Imported material comes from your own key generation system. (2) AWS-generated keys support automatic rotation (annual by default). Imported keys cannot be automatically rotated - you must manually import new material. (3) Imported keys can have an expiration time; AWS-generated keys don't expire. (4) Neither can be exported after creation/import. Both support multi-region keys and various algorithms.", 
+                docLink: "https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys-considerations.html" 
+            },
+            { 
+                id: 10, 
+                question: "An enterprise needs to issue and manage X.509 certificates for internal applications across multiple AWS regions. The solution must support automated certificate renewal and cross-region certificate portability. Which approach meets these requirements?", 
+                options: [
+                    "Use AWS Certificate Manager (ACM) to provision public certificates with automatic renewal, then export the certificates and manually import them into each region where they're needed",
+                    "Deploy AWS Private Certificate Authority (Private CA) in each region with identical CA hierarchies, configure each region's CA independently, and synchronize CRLs across regions using S3 replication",
+                    "Create a Private CA hierarchy with a root CA in one region, use ACM to issue certificates from the Private CA, and leverage multi-region KMS keys for cross-region certificate access",
+                    "Use ACM to import existing certificates from an external CA, enable automatic renewal notifications via SNS, and create Lambda functions to redistribute renewed certificates to all regions"
+                ], 
+                correct: 2, 
+                explanation: "AWS Private CA provides a managed certificate authority for internal use cases. You create a CA hierarchy (root and subordinate CAs) and use ACM to request certificates from your Private CA, which includes automatic renewal. For multi-region support, you can deploy Private CAs in multiple regions and use multi-region KMS keys to enable cross-region certificate operations. ACM public certificates can't be exported. Option B creates management complexity with duplicate CAs.", 
+                docLink: "https://docs.aws.amazon.com/privateca/latest/userguide/PcaWelcome.html" 
+            },
+            { 
+                id: 11, 
+                question: "A company stores sensitive customer data in Amazon SageMaker notebooks and requires encryption of all data in transit between the notebook instance and the SageMaker API endpoints. Which configuration ensures this protection?", 
+                options: [
+                    "Enable VPC encryption in transit for the VPC where SageMaker notebook instances are deployed, which automatically encrypts all network traffic using Nitro-based encryption",
+                    "Configure SageMaker notebook instances with VPC endpoints for SageMaker API, which automatically use TLS 1.2 or higher for all API calls within the VPC",
+                    "Attach an IAM policy to the notebook instance role requiring aws:SecureTransport condition for all SageMaker API calls, enforcing HTTPS connections",
+                    "Deploy AWS Certificate Manager certificates to the notebook instance and configure the SageMaker SDK to use mutual TLS (mTLS) for API authentication"
+                ], 
+                correct: 2, 
+                explanation: "The aws:SecureTransport condition in IAM policies enforces that all API calls must use HTTPS/TLS. When attached to the SageMaker notebook instance role, this ensures all API communications are encrypted in transit. SageMaker APIs use HTTPS by default, but this policy enforces it. VPC endpoints don't automatically enable encryption (they provide private connectivity). Nitro encryption requires specific instance types and doesn't apply to API calls. mTLS is not standard for SageMaker API authentication.", 
+                docLink: "https://docs.aws.amazon.com/sagemaker/latest/dg/encryption-in-transit.html" 
+            },
+            { 
+                id: 12, 
+                question: "A security team wants to detect when developers accidentally log AWS access keys, database passwords, or API tokens in CloudWatch Logs across hundreds of log groups. The solution must provide alerts when sensitive data is detected. Which approach is most efficient?", 
+                options: [
+                    "Create a CloudWatch Logs data protection policy using AWS-managed data identifiers for credentials, apply it to all log groups using AWS Organizations policies, and configure audit findings to publish to EventBridge for alerting",
+                    "Deploy a Lambda function triggered by CloudWatch Logs Subscription Filters that uses regex patterns to scan for credential patterns, then publishes alerts to SNS when matches are found",
+                    "Enable Amazon Macie with custom data identifiers for credential patterns, configure it to scan CloudWatch Logs on a schedule, and create findings for detected secrets",
+                    "Use AWS Secrets Manager to rotate all credentials automatically, then configure CloudWatch Logs Insights queries to search for old credential patterns on a schedule"
+                ], 
+                correct: 0, 
+                explanation: "CloudWatch Logs data protection policies provide purpose-built capability for detecting sensitive data including credentials (AWS keys, API tokens, passwords) using AWS-managed data identifiers. When configured in audit mode, they can publish findings to EventBridge for automated alerting. Applying policies at scale via Organizations is efficient. Lambda with subscription filters creates operational overhead and doesn't scale well. Macie doesn't scan CloudWatch Logs directly. Secrets Manager rotation doesn't detect logging of credentials.", 
+                docLink: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/protect-sensitive-log-data-types.html" 
+            },
+            { 
+                id: 13, 
+                question: "An organization uses Amazon Bedrock to power a customer service chatbot. The security team discovers that users can manipulate the chatbot into revealing training data by using specific prompt patterns. Which Bedrock Guardrail configuration best prevents this attack?", 
+                options: [
+                    "Configure content filters with high sensitivity for all categories (violence, hate, sexual, misconduct) to block any potentially harmful outputs from the model",
+                    "Enable contextual grounding with grounding threshold set to high and source grounding enabled to ensure responses are based only on provided context documents",
+                    "Create denied topics for 'training data' and 'system prompts' to prevent the model from responding to queries about its internal configuration",
+                    "Configure word filters to block specific terms like 'ignore previous instructions' and 'reveal training data' from user prompts"
+                ], 
+                correct: 1, 
+                explanation: "Contextual grounding in Bedrock Guardrails validates that model responses are grounded in the provided context/documents and haven't hallucinated or revealed training data. High grounding thresholds with source grounding ensure responses stay within boundaries of provided information. Content filters detect harmful content but don't prevent training data leakage. Denied topics work for specific subjects but attackers can use varied phrasing. Word filters are easily bypassed with synonym substitution.", 
+                docLink: "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding.html" 
+            },
+            { 
+                id: 14, 
+                question: "A fintech startup is building an LLM application that processes financial documents. To mitigate OWASP LLM risks, they implement input sanitization. An attacker attempts prompt injection by embedding instructions in a PDF document. Which additional control from OWASP Top 10 for LLM should they implement?", 
+                options: [
+                    "Training Data Poisoning detection by validating all documents against known good patterns before processing them through the LLM",
+                    "Model Denial of Service protection by implementing rate limiting and request throttling on the document processing API",
+                    "Insecure Output Handling controls by validating and sanitizing all LLM outputs before displaying them to users or executing actions",
+                    "Supply Chain Vulnerabilities mitigation by scanning all third-party libraries and model artifacts for known vulnerabilities"
+                ], 
+                correct: 2, 
+                explanation: "Even with input sanitization, attackers can embed instructions in document content that the LLM processes. Insecure Output Handling (OWASP LLM04) addresses this by treating all LLM outputs as potentially unsafe and implementing validation/sanitization before using outputs in downstream systems. This creates defense-in-depth. Training data poisoning (LLM03) relates to model training, not inference. DoS protection (LLM06) addresses availability, not injection. Supply chain (LLM05) addresses component risks, not prompt injection.", 
+                docLink: "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/gensec02-bp02.html" 
+            },
+            { 
+                id: 15, 
+                question: "A company imports encryption keys from their on-premises HSM into AWS KMS for use with AWS services. After 90 days, they notice the key material expired and encrypted data is inaccessible. Which statement about imported key material is correct?", 
+                options: [
+                    "Imported key material automatically expires after 90 days by default; AWS KMS will automatically re-import the material if the original import bundle is retained in S3",
+                    "Imported key material can have an optional expiration date set during import; once expired, the material must be manually re-imported, or the expiration can be removed before expiry",
+                    "Key material expiration only applies to automatic key rotation; manually imported keys don't support expiration, so the issue is likely due to CMK policy restrictions",
+                    "AWS-generated key material and imported key material both support automatic rotation; the expiration occurred because automatic rotation was not enabled at import time"
+                ], 
+                correct: 1, 
+                explanation: "When importing key material into KMS, you can optionally set an expiration date. Once expired, the key material is deleted and you must re-import it to use the CMK again (AWS KMS doesn't retain a copy). You can also remove the expiration date before it expires. Important: Imported keys do NOT support automatic rotation - you must manually import new material to rotate. AWS-generated keys support automatic rotation and never expire.", 
+                docLink: "https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys-considerations.html" 
+            },
+            { 
+                id: 16, 
+                question: "A security team is designing a multi-region disaster recovery strategy for encrypted applications. They need to ensure KMS keys can failover to another region automatically. Which solution provides this capability?", 
+                options: [
+                    "Create identical single-region KMS keys in each region with the same key policies, then use AWS Backup to automatically replicate encrypted data and re-encrypt with the target region's key during restore",
+                    "Create a multi-region KMS key with primary key in us-east-1 and replica keys in us-west-2 and eu-west-1, enabling seamless decryption of data encrypted in any region using the replica keys",
+                    "Enable automatic key replication in KMS, which synchronizes key material across all enabled regions and maintains consistent Key IDs for cross-region encrypted object access",
+                    "Use AWS Key Management Service global keys feature that creates a single logical key spanning multiple regions with automatic failover when a region becomes unavailable"
+                ], 
+                correct: 1, 
+                explanation: "Multi-region keys in KMS provide related keys in different regions with the same key material and key ID. Data encrypted with the primary key can be decrypted using replica keys in other regions without re-encryption. This enables cross-region disaster recovery and data migration. Single-region keys require re-encryption when moving data across regions. AWS KMS doesn't have automatic key replication or global keys features - multi-region keys must be explicitly created and managed.", 
+                docLink: "https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html" 
+            },
+            { 
+                id: 17, 
+                question: "An application sends notifications via SNS that may contain customer email addresses and phone numbers. Compliance requires that SMS subscribers never receive PII, but email subscribers need full details. What is the most effective solution?", 
+                options: [
+                    "Create separate SNS topics for SMS and email, apply data protection policy with PII masking only to the SMS topic, and publish messages to both topics from the application",
+                    "Configure an SNS data protection policy with PII masking on the main topic, then use Lambda subscription filters to selectively unmask PII for email subscribers",
+                    "Enable SNS message data protection with de-identify policy for PII, then configure subscription filter policies to route masked messages to SMS and unmasked to email",
+                    "Use SNS message attributes to tag messages containing PII, then configure subscription-level filtering to prevent PII-tagged messages from reaching SMS endpoints"
+                ], 
+                correct: 0, 
+                explanation: "SNS message data protection policies apply uniformly to all subscribers of a topic - you cannot selectively mask per subscriber. The most effective solution is separate topics: one with data protection policy for SMS (masks PII), another without masking for email. Subscription filter policies control which messages subscribers receive based on attributes, but don't control masking. Lambda cannot unmask data that's already been masked by SNS data protection. Message attributes don't provide masking functionality.", 
+                docLink: "https://docs.aws.amazon.com/sns/latest/dg/sns-message-data-protection-policies.html" 
+            },
+            { 
+                id: 18, 
+                question: "A machine learning team runs distributed training jobs on Amazon EKS where worker pods exchange gradient updates containing sensitive model parameters. The security team requires proof that this inter-pod traffic is encrypted. How can they verify this?", 
+                options: [
+                    "Check that EKS cluster has envelope encryption enabled for secrets at rest, which automatically encrypts all pod-to-pod network traffic using the same KMS key",
+                    "Verify that Network Policies are configured with TLS annotations on pod-to-pod communication rules, then review CloudWatch Logs for TLS handshake success messages",
+                    "Confirm that a service mesh (App Mesh/Istio) is deployed with mTLS enabled, then check service mesh observability metrics showing percentage of encrypted connections",
+                    "Enable VPC Flow Logs and analyze the traffic between pod IPs looking for TLS handshake patterns (port 443 traffic) in the packet-level capture data"
+                ], 
+                correct: 2, 
+                explanation: "Service meshes like AWS App Mesh or Istio provide mTLS for pod-to-pod communication and include observability features that show encryption status, connection success rates, and mTLS policy enforcement. This provides verifiable proof. EKS envelope encryption only applies to secrets at rest, not network traffic. Kubernetes Network Policies control traffic flow but don't provide encryption. VPC Flow Logs show connection metadata (IPs, ports, bytes) but don't capture packet payloads or TLS handshake details.", 
+                docLink: "https://docs.aws.amazon.com/app-mesh/latest/userguide/mutual-tls.html" 
+            },
+            { 
+                id: 19, 
+                question: "A SaaS company provides an LLM-powered document analysis service. Users report that when they upload documents containing competitors' proprietary information, the LLM sometimes includes that information in responses to other users. Which OWASP Top 10 for LLM risk does this represent?", 
+                options: [
+                    "LLM01: Prompt Injection - users are injecting malicious prompts via document uploads to manipulate the model into leaking data to other users",
+                    "LLM02: Insecure Output Handling - the application fails to validate and sanitize model outputs before presenting them to users",
+                    "LLM03: Training Data Poisoning - malicious users are poisoning the training dataset by uploading documents designed to influence model behavior",
+                    "LLM06: Sensitive Information Disclosure - the model is memorizing and exposing sensitive data from user inputs in its responses"
+                ], 
+                correct: 3, 
+                explanation: "This scenario describes LLM06: Sensitive Information Disclosure, where the model memorizes and reveals sensitive data from user inputs (prompts, documents) in responses to other users. This violates data isolation and confidentiality. Mitigations include: implementing proper data isolation, sanitizing training data, using techniques to prevent memorization, and output filtering. Prompt injection involves manipulating the model's behavior via crafted inputs. Insecure output handling relates to how outputs are processed. Training data poisoning is about compromising the base model during training.", 
+                docLink: "https://owasp.org/www-project-top-10-for-large-language-model-applications/" 
+            },
+            { 
+                id: 20, 
+                question: "An organization wants to query Security Lake data using Athena to investigate security incidents. They notice OCSF-formatted data has different event classes (Authentication, Network Activity, File Activity). How do OCSF event classes benefit security investigations?", 
+                options: [
+                    "Event classes partition data by severity level (Critical, High, Medium, Low) enabling investigators to query only high-priority security events efficiently",
+                    "Event classes provide consistent field names and structures across different security sources, allowing investigators to write queries that work across CloudTrail, VPC Flow Logs, and third-party data",
+                    "Event classes automatically correlate related security events using machine learning, creating investigation timelines that link authentication events to subsequent network activity",
+                    "Event classes define retention periods for different data types, ensuring high-value authentication events are retained longer than low-value network flow logs"
+                ], 
+                correct: 1, 
+                explanation: "OCSF event classes (Authentication, Network Activity, File Activity, Process Activity, etc.) provide standardized schemas with consistent field names and structures. This means an investigator can query for 'src_endpoint.ip' across CloudTrail authentication events, VPC Flow network events, and third-party security tool data without learning different field names for each source. This dramatically simplifies investigation queries and correlation. Event classes don't define severity, automatic correlation, or retention policies - they provide schema standardization.", 
+                docLink: "https://docs.aws.amazon.com/security-lake/latest/userguide/open-cybersecurity-schema-framework.html" 
+            }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], answersRevealed = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0, inReviewMode = false, reviewedQuestions = [];
+        function shuffleArray(a) { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); inReviewMode = false; reviewedQuestions = []; document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; document.getElementById('backToReviewBtn').style.display = 'none'; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">SCS-C03 New</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function selectOption(i) { if (currentMode === 'learn' && answersRevealed[currentQuestion]) return; userAnswers[currentQuestion] = i; renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; answersRevealed[currentQuestion] = true; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = pass ? 'results-score pass' : 'results-score fail'; document.getElementById('resultStatus').textContent = pass ? '✓ PASSED' : '✗ FAILED'; document.getElementById('resultStatus').className = pass ? 'results-status pass' : 'results-status fail'; document.getElementById('resultDetails').textContent = `You need ${Math.ceil(total * 0.8)} correct answers to pass. You got ${correct} out of ${total}.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function showReview() { const letters = ['A','B','C','D'], tbody = document.getElementById('reviewTableBody'); tbody.innerHTML = shuffledQuestions.map((q, i) => { const userAns = userAnswers[i], isCorrect = userAns === q.correct, userLetter = userAns !== null && userAns >= 0 ? letters[userAns] : 'No Answer', correctLetter = letters[q.correct], statusIcon = isCorrect ? '✓' : '✗', statusClass = isCorrect ? 'correct' : 'incorrect', qText = q.question.length > 120 ? q.question.substring(0, 120) + '...' : q.question, reviewedClass = reviewedQuestions.includes(i) ? 'reviewed' : ''; return `<tr class="${reviewedClass}" onclick="reviewQuestion(${i})"><td class="review-q-num">${i + 1}</td><td class="review-q-text">${qText}</td><td class="review-answer ${userAns === q.correct ? 'correct' : 'incorrect'}">${userLetter}</td><td class="review-answer correct">${correctLetter}</td><td class="review-status ${statusClass}">${statusIcon}</td></tr>`; }).join(''); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.add('show'); inReviewMode = true; }
+        function reviewQuestion(qIndex) { if (!reviewedQuestions.includes(qIndex)) reviewedQuestions.push(qIndex); currentMode = 'learn'; currentQuestion = qIndex; answersRevealed[qIndex] = true; document.getElementById('reviewSection').classList.remove('show'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').style.display = 'none'; document.getElementById('backToReviewBtn').style.display = 'inline-block'; if (timerInterval) clearInterval(timerInterval); renderQuestion(); }
+        function backToReview() { document.getElementById('quizContent').classList.add('hidden'); showReview(); }
+        function backToResults() { document.getElementById('reviewSection').classList.remove('show'); document.getElementById('resultsCard').classList.add('show'); inReviewMode = false; }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); document.getElementById('backToReviewBtn').style.display = 'none'; inReviewMode = false; reviewedQuestions = []; if (timerInterval) clearInterval(timerInterval); }
+    </script>
+</body>
+</html>

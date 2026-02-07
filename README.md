@@ -103,7 +103,7 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-> **🎉 Total: 500 questions across 24 quizzes - ALL 6 DOMAINS COMPLETE!**
+> **🎉 Total: 520 questions across 25 quizzes - ALL 6 DOMAINS COMPLETE!**
 
 #### ✅ Domain 1: Detection (150 questions)
 
@@ -116,6 +116,20 @@ Interactive HTML-based quizzes with two modes:
 | **CloudWatch Security** | 20 | [View](./quizzes/cloudwatch-security-comprehensive.html) |
 | **Amazon Security Lake** | 20 | [View](./quizzes/security-lake-comprehensive.html) |
 | GuardDuty Extended Threat Detection | 15 | [View](./quizzes/guardduty-extended-threat-detection.html) |
+
+#### 🆕 SCS-C03 Exam Update Topics (20 questions)
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **What's New in SCS-C03** | 20 | [View](./quizzes/scs-c03-new-topics.html) |
+
+Covers new topics added to the 2026 SCS-C03 exam version:
+- Open Cybersecurity Schema Framework (OCSF) with Security Lake
+- Generative AI security and OWASP Top 10 for LLM Applications
+- Inter-resource encryption (EMR, EKS, SageMaker, Nitro)
+- CloudWatch Logs and SNS message data protection
+- KMS imported key material vs AWS-generated keys
+- AWS Private Certificate Authority multi-region support
 
 #### ✅ Domain 2: Incident Response (45 questions)
 
