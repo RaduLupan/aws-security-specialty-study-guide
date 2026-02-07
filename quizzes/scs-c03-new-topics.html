@@ -261,13 +261,13 @@
                 question: "An organization publishes security alert notifications via Amazon SNS that may contain IP addresses, usernames, and system identifiers. They need to ensure that email subscribers don't receive PII while SMS subscribers receive full details. How should they implement this?", 
                 options: [
                     "Create two separate SNS topics with different data protection policies: one for email with PII masking enabled, and another for SMS with no masking, publishing to both topics from the application",
-                    "Configure an SNS message data protection policy with audit and de-identify statements that mask PII based on data identifiers, then use subscription filter policies to control delivery",
+                    "Configure an SNS message data protection policy with multiple outbound de-identify statements, each targeting different subscription principals (email vs SMS subscribers) with different masking configurations",
                     "Use AWS Lambda as an SNS subscription that receives the full message, applies conditional redaction logic based on subscriber type, and forwards sanitized messages to email recipients",
                     "Enable AWS KMS encryption on the SNS topic with two different keys, granting email subscribers access only to the key that encrypts messages with pre-masked PII content"
                 ], 
-                correct: 1, 
-                explanation: "SNS message data protection policies can audit (detect) and de-identify (mask) sensitive data in messages. However, SNS data protection applies the same policy to all subscribers. The key insight is using subscription filter policies to control which subscribers receive messages, though the masking is consistent. For truly different masking levels per subscriber type, Option A (separate topics) or Option C (Lambda) would be more accurate. This question may need revision - the AWS documentation shows that SNS data protection applies uniformly.", 
-                docLink: "https://docs.aws.amazon.com/sns/latest/dg/message-data-protection.html" 
+                correct: 0, 
+                explanation: "While SNS data protection policies support multiple statements with different principals, the most straightforward and maintainable solution is separate topics. Option A provides clear separation: one topic with a de-identify policy for email subscribers (masks PII), and another without masking for SMS subscribers. The application publishes to both. Option B is theoretically possible using multiple outbound statements targeting different subscription principals, but adds complexity in managing subscription principals and policy statements. Option C (Lambda) works but adds operational overhead. Option D (KMS encryption) doesn't provide masking functionality - encryption protects data at rest/in-transit but authorized subscribers still see full content when decrypted.", 
+                docLink: "https://docs.aws.amazon.com/sns/latest/dg/sns-message-data-protection-policies.html" 
             },
             { 
                 id: 9, 
@@ -375,16 +375,16 @@
             },
             { 
                 id: 17, 
-                question: "An application sends notifications via SNS that may contain customer email addresses and phone numbers. Compliance requires that SMS subscribers never receive PII, but email subscribers need full details. What is the most effective solution?", 
+                question: "A security team suspects that application logs published to SNS may inadvertently contain AWS access keys and database credentials. Before implementing blocking policies, they want to audit and analyze what sensitive data is being sent. Which approach allows them to detect and log sensitive data findings without interrupting message delivery?", 
                 options: [
-                    "Create separate SNS topics for SMS and email, apply data protection policy with PII masking only to the SMS topic, and publish messages to both topics from the application",
-                    "Configure an SNS data protection policy with PII masking on the main topic, then use Lambda subscription filters to selectively unmask PII for email subscribers",
-                    "Enable SNS message data protection with de-identify policy for PII, then configure subscription filter policies to route masked messages to SMS and unmasked to email",
-                    "Use SNS message attributes to tag messages containing PII, then configure subscription-level filtering to prevent PII-tagged messages from reaching SMS endpoints"
+                    "Configure an SNS message data protection policy with an Audit operation that samples 99% of messages, uses managed data identifiers for credentials, and sends findings to CloudWatch Logs for analysis",
+                    "Enable SNS delivery status logging to CloudWatch Logs, then create a CloudWatch Logs Insights query with regex patterns to search for credential patterns across all delivered messages",
+                    "Create a Lambda function subscribed to the SNS topic that scans message content using Amazon Comprehend DetectPII API and logs findings to CloudWatch without blocking message delivery",
+                    "Configure an SNS data protection policy with a De-identify operation using redact mode, which logs what would be redacted to CloudWatch while still delivering full messages to subscribers"
                 ], 
                 correct: 0, 
-                explanation: "SNS message data protection policies apply uniformly to all subscribers of a topic - you cannot selectively mask per subscriber. The most effective solution is separate topics: one with data protection policy for SMS (masks PII), another without masking for email. Subscription filter policies control which messages subscribers receive based on attributes, but don't control masking. Lambda cannot unmask data that's already been masked by SNS data protection. Message attributes don't provide masking functionality.", 
-                docLink: "https://docs.aws.amazon.com/sns/latest/dg/sns-message-data-protection-policies.html" 
+                explanation: "The Audit operation in SNS message data protection policies is purpose-built for this use case. It samples messages (up to 99%), detects sensitive data using managed data identifiers (including AWS keys, passwords, API tokens), and logs findings to destinations like CloudWatch Logs, S3, or Firehose without interrupting message delivery. Delivery status logging (Option B) only tracks delivery success/failure, not content. Lambda with Comprehend (Option C) works but adds complexity and operational overhead. De-identify with redact (Option D) actually modifies the messages delivered to subscribers - it doesn't deliver full messages while only logging.", 
+                docLink: "https://docs.aws.amazon.com/sns/latest/dg/sns-message-data-protection-operations.html" 
             },
             { 
                 id: 18, 
