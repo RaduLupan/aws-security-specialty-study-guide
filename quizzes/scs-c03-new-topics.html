@@ -284,16 +284,16 @@
             },
             { 
                 id: 10, 
-                question: "An enterprise needs to issue and manage X.509 certificates for internal applications across multiple AWS regions. The solution must support automated certificate renewal and cross-region certificate portability. Which approach meets these requirements?", 
+                question: "An enterprise needs to issue and manage X.509 certificates for internal applications across multiple AWS regions. The solution must support automated certificate renewal and cross-region certificate availability. Which approach meets these requirements?", 
                 options: [
                     "Use AWS Certificate Manager (ACM) to provision public certificates with automatic renewal, then export the certificates and manually import them into each region where they're needed",
-                    "Deploy AWS Private Certificate Authority (Private CA) in each region with identical CA hierarchies, configure each region's CA independently, and synchronize CRLs across regions using S3 replication",
-                    "Create a Private CA hierarchy with a root CA in one region, use ACM to issue certificates from the Private CA, and leverage multi-region KMS keys for cross-region certificate access",
+                    "Create a root Private CA in one region, then deploy subordinate CAs in each additional region and sign them with the root CA. Use ACM in each region to request certificates from the local subordinate CA with automatic renewal",
+                    "Deploy AWS Private Certificate Authority (Private CA) in each region with completely independent CA hierarchies, configure each region's CA separately, and synchronize CRLs across regions using S3 replication",
                     "Use ACM to import existing certificates from an external CA, enable automatic renewal notifications via SNS, and create Lambda functions to redistribute renewed certificates to all regions"
                 ], 
-                correct: 2, 
-                explanation: "AWS Private CA provides a managed certificate authority for internal use cases. You create a CA hierarchy (root and subordinate CAs) and use ACM to request certificates from your Private CA, which includes automatic renewal. For multi-region support, you can deploy Private CAs in multiple regions and use multi-region KMS keys to enable cross-region certificate operations. ACM public certificates can't be exported. Option B creates management complexity with duplicate CAs.", 
-                docLink: "https://docs.aws.amazon.com/privateca/latest/userguide/PcaWelcome.html" 
+                correct: 1, 
+                explanation: "Private CAs are regional resources - you cannot copy them between regions. The correct approach is to create a root CA in one region (highly secured, rarely used), then deploy subordinate CAs in each region where you need to issue certificates. The root CA signs each subordinate CA certificate. ACM in each region then requests certificates from the local subordinate CA with automatic renewal. This provides a unified trust hierarchy with regional certificate issuance. ACM public certificates can't be exported (Option A). Option C creates completely independent PKIs without a unified trust chain. Option D requires manual redistribution and ACM doesn't auto-renew imported certificates.", 
+                docLink: "https://docs.aws.amazon.com/privateca/latest/userguide/ca-hierarchy.html" 
             },
             { 
                 id: 11, 
