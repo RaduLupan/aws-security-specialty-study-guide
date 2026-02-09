@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route 53 Resolver Query Logging Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #f59e0b; --accent-secondary: #fbbf24; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(245, 158, 11, 0.1); }
+        .option.selected { border-color: var(--accent-primary); border-width: 3px; background: rgba(245, 158, 11, 0.2); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25), inset 0 0 12px rgba(245, 158, 11, 0.1); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(245, 158, 11, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(245, 158, 11, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .review-section { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; border: 1px solid var(--border); display: none; }
+        .review-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .review-header { text-align: center; margin-bottom: 2rem; }
+        .review-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .review-table th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; padding: 1rem; text-align: left; border-bottom: 2px solid var(--border); }
+        .review-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .review-table tbody tr { cursor: pointer; transition: all 0.2s ease; }
+        .review-table tbody tr:hover { background: rgba(245, 158, 11, 0.1); transform: translateX(4px); }
+        .review-table tbody tr.reviewed { background: rgba(245, 158, 11, 0.25); border-left: 6px solid var(--accent-primary); box-shadow: inset 0 0 20px rgba(245, 158, 11, 0.15); }
+        .review-table tbody tr.reviewed:hover { background: rgba(245, 158, 11, 0.3); }
+        .review-table tbody tr.reviewed .review-q-num { color: var(--accent-secondary); font-weight: 800; }
+        .review-table tbody tr.reviewed .review-q-num::before { content: "✓ "; color: var(--accent-primary); font-size: 1rem; }
+        .review-q-num { font-weight: 700; color: var(--accent-primary); white-space: nowrap; }
+        .review-q-text { color: var(--text-primary); line-height: 1.6; }
+        .review-answer { font-weight: 600; }
+        .review-answer.correct { color: var(--success); }
+        .review-answer.incorrect { color: var(--error); }
+        .review-status { text-align: center; font-size: 1.25rem; }
+        .review-hint { text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 1: Detection (16%)</span>
+            <h1>Route 53 Resolver Query Logging</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">20</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">50:00</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">20</span></span>
+                    <span class="timer" id="timer">50:00</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+        <div class="review-section" id="reviewSection">
+            <div class="review-header">
+                <h2>Answer Review</h2>
+                <p class="results-details">Click any question to review the full answer and explanation</p>
+            </div>
+            <p class="review-hint">💡 Tip: Click on any row to see the full question and explanation in Learn mode</p>
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">#</th>
+                        <th style="width: 50%">Question</th>
+                        <th style="width: 15%">Your Answer</th>
+                        <th style="width: 15%">Correct Answer</th>
+                        <th style="width: 10%">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+            </table>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="backToResults()">← Back to Results</button>
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { id: 1, question: "What does Route 53 VPC Resolver query logging capture?", options: ["Only DNS queries to malicious domains", "DNS queries that originate in your VPCs", "Only queries to public hosted zones", "API calls to the Route 53 Resolver service"], correct: 1, explanation: "VPC Resolver query logging captures DNS queries that originate in your VPCs. To start logging, you create a query logging configuration and associate it with VPCs or a Route 53 Profile. Logs appear within a few minutes.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logging-configurations-managing.html" },
+            { id: 2, question: "To which AWS resources can you send VPC Resolver query logs?", options: ["Only Amazon CloudWatch Logs", "Amazon CloudWatch Logs log group, Amazon S3 bucket, or Firehose delivery stream", "Only Amazon S3 for long-term retention", "Only Amazon Security Lake"], correct: 1, explanation: "You can send VPC Resolver query logs to: CloudWatch Logs (Logs Insights, metrics, alarms), S3 (economical for long-term archiving), or Firehose (real-time streaming to OpenSearch, Redshift, or other applications).", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs-choosing-target-resource.html" },
+            { id: 3, question: "How can you associate VPC Resolver query logging with VPCs?", options: ["Only by selecting individual VPCs in the console", "Direct VPC association or by associating the configuration to a Route 53 Profile (which applies to all VPCs associated with that Profile)", "Only through CloudFormation; no console option", "By enabling DNS logging on each subnet separately"], correct: 1, explanation: "You can configure query logging in two ways: (1) Direct VPC association—associate VPCs directly to the query logging configuration, or (2) Profile association—associate the configuration to a Route 53 Profile, which applies logging to all VPCs associated with that Profile.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logging-configurations-managing.html" },
+            { id: 4, question: "What region requirement exists when creating a Resolver query logging configuration?", options: ["The configuration can be in any region; logs flow globally", "The configuration must be in the same Region as the VPCs you want to log queries for; create at least one config per Region for multi-region VPCs", "The configuration must be in us-east-1 only", "The S3 or CloudWatch destination determines the region; VPC region does not matter"], correct: 1, explanation: "The query logging configuration must be in the same Region where you created the VPCs you want to log. If you have VPCs in multiple Regions, you must create at least one query logging configuration for each Region.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logging-configurations-managing.html" },
+            { id: 5, question: "What limitation applies to VPC log delivery destinations?", options: ["You can deliver to unlimited destinations of each type", "VPC log delivery can be enabled only once for a specific destination type; you cannot deliver to multiple destinations of the same type (e.g., two S3 buckets)", "You must use both CloudWatch and S3 together", "Firehose is required for all configurations"], correct: 1, explanation: "VPC log delivery can be enabled only once for a specific destination type. The logs cannot be delivered to multiple destinations of the same type—for example, VPC logs cannot be delivered to two Amazon S3 buckets.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logging-configurations-managing.html" },
+            { id: 6, question: "For workloads with high queries per second (QPS), which destination is recommended to avoid throttling?", options: ["CloudWatch Logs only; it has the highest throughput", "Amazon S3 to ensure query logs are not throttled when written; CloudWatch PutLogEvents can be increased but S3 is preferred for high QPS", "Firehose only", "Split logs across multiple CloudWatch log groups"], correct: 1, explanation: "If you expect high QPS, use Amazon S3 to ensure your query logs are not throttled. With CloudWatch, you can request an increase to the PutLogEvents limit, but S3 is the recommended choice for high-volume workloads.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs-choosing-target-resource.html" },
+            { id: 7, question: "When sending query logs to an S3 bucket with SSE-KMS encryption, what is required?", options: ["No additional configuration; KMS is automatic", "Update the KMS key policy so the log delivery account can write to your S3 bucket", "Use only S3-managed keys (SSE-S3); SSE-KMS is not supported", "Create a separate KMS key in each account that sends logs"], correct: 1, explanation: "If you choose Server-Side Encryption with AWS KMS Keys (SSE-KMS), you must update the key policy for your customer managed key so that the log delivery account can write to your Amazon S3 bucket.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs-choosing-target-resource.html" },
+            { id: 8, question: "For a central S3 bucket storing query logs across the organization, what approach does AWS recommend?", options: ["Each account sends logs directly to the central bucket with cross-account permissions", "Set up the query logging configuration from a centralized account (with permissions to write to the central bucket) and use RAM to share the configuration across accounts", "Use a single account and peer all VPCs into it", "Use Firehose to aggregate logs before S3 delivery"], correct: 1, explanation: "To store logs in a central S3 bucket for your organization, AWS recommends setting up the query logging configuration from a centralized account (with permissions to write to the central bucket) and using AWS RAM to share the configuration across accounts.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs-choosing-target-resource.html" },
+            { id: 9, question: "How do you share a Resolver query logging configuration with other AWS accounts?", options: ["Using IAM cross-account roles only", "Using AWS Resource Access Manager (RAM); the Route 53 console integrates with RAM for sharing", "Sharing is not supported; each account must create its own configuration", "Using AWS Organizations SCPs to propagate the configuration"], correct: 1, explanation: "You can share query logging configurations using AWS Resource Access Manager. The Route 53 VPC Resolver console integrates with RAM. Accounts that receive a shared configuration can associate their VPCs with it.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logging-configurations-managing-sharing.html" },
+            { id: 10, question: "What permission is required to share a Resolver query logging configuration with another account?", options: ["route53:ShareConfiguration", "route53resolver:PutResolverQueryLogConfigPolicy", "iam:CreateRole", "ram:CreateResourceShare only"], correct: 1, explanation: "To share a query logging configuration with another AWS account, you must have permission to use the PutResolverQueryLogConfigPolicy action.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logging-configurations-managing-sharing.html" },
+            { id: 11, question: "What can an account that receives a shared query logging configuration do?", options: ["Change or delete the configuration", "Associate VPCs with the configuration; it cannot change or delete the rule", "Add or remove tags on the configuration", "Modify the destination (CloudWatch, S3, or Firehose) of the shared configuration"], correct: 1, explanation: "The account that receives a shared configuration can associate its VPCs with the configuration. However, the account cannot change or delete the configuration. Only the creator can add, delete, or see tags.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logging-configurations-managing-sharing.html" },
+            { id: 12, question: "What is Route 53 VPC Resolver and where does it operate?", options: ["A global DNS service for public hosted zones only", "A recursive DNS resolver available by default in all VPCs; it answers queries for public records, VPC-specific names, and private hosted zones", "A VPN-based DNS proxy for on-premises networks", "A DNS firewall that blocks malicious domains"], correct: 1, explanation: "Route 53 VPC Resolver responds recursively to DNS queries for public records, VPC-specific DNS names, and private hosted zones. It is available by default in all VPCs. A VPC connects to it at the VPC+2 IP address.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html" },
+            { id: 13, question: "What is a primary security use case for Route 53 DNS Firewall (which works with Resolver)?", options: ["Blocking inbound DDoS attacks on DNS", "Helping prevent DNS exfiltration by filtering and regulating outbound DNS traffic from your VPCs", "Encrypting DNS queries with TLS", "Replacing VPC Flow Logs for network visibility"], correct: 1, explanation: "DNS Firewall helps prevent DNS exfiltration—when a compromised instance uses DNS lookups to send data to a domain the attacker controls. You can monitor and control which domains applications can query, deny known-bad domains, or allow only trusted domains.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall.html" },
+            { id: 14, question: "How does DNS Firewall differ from AWS Network Firewall regarding DNS traffic?", options: ["They are identical; both filter DNS the same way", "DNS Firewall filters outbound DNS queries through VPC Resolver; Network Firewall does not have visibility into queries made by VPC Resolver", "Network Firewall replaces DNS Firewall for all DNS filtering", "DNS Firewall only works with public hosted zones"], correct: 1, explanation: "DNS Firewall filters outbound DNS queries that pass through Route 53 VPC Resolver. Network Firewall filters network and application layer traffic but does not have visibility into queries made by VPC Resolver. They address different paths.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall.html" },
+            { id: 15, question: "What pricing applies to VPC Resolver query logging?", options: ["Resolver query logging is free", "CloudWatch Vended Logs charges apply when using VPC Resolver logs, even when logs are published directly to S3", "Only S3 storage charges apply; no CloudWatch charges", "Charges apply only when using Firehose"], correct: 1, explanation: "CloudWatch Vended Logs charges apply when using VPC Resolver logs, even when logs are published directly to Amazon S3. See CloudWatch pricing and Logs/Vended Logs for details.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs-choosing-target-resource.html" },
+            { id: 16, question: "When sending logs to an S3 bucket in an account you do not own, what must the bucket owner add to their bucket policy?", options: ["Nothing; the log delivery is automatic", "Permissions for delivery.logs.amazonaws.com (and optionally your account) to PutObject and GetBucketAcl", "A bucket policy that allows s3:GetObject from your account", "A lifecycle rule to expire logs after 90 days"], correct: 1, explanation: "If the S3 bucket is in an account you don't own, the bucket owner must add permissions for the delivery.logs.amazonaws.com service principal (PutObject, GetBucketAcl) and optionally your account for ListBucket.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs-choosing-target-resource.html" },
+            { id: 17, question: "Can you use Firehose to stream Resolver query logs to Amazon OpenSearch Service?", options: ["No; Firehose only supports S3 and Lambda", "Yes; you can stream logs in real time to OpenSearch Service, Redshift, or other applications via Firehose", "Only if you use a custom Lambda transformer", "Firehose is not supported for Resolver query logs"], correct: 1, explanation: "A Firehose delivery stream enables you to stream logs in real time to Amazon OpenSearch Service, Amazon Redshift, or other applications.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs-choosing-target-resource.html" },
+            { id: 18, question: "What happens when you delete or stop sharing a query logging configuration that had VPCs associated?", options: ["The VPCs retain a local copy of the configuration", "Route 53 VPC Resolver stops logging DNS queries that originate in those VPCs", "Logs continue to flow for 30 days", "The configuration is automatically recreated by AWS"], correct: 1, explanation: "If you share a configuration and then delete it or stop sharing it, and one or more VPCs were associated with it, Route 53 VPC Resolver stops logging DNS queries that originate in those VPCs.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logging-configurations-managing-sharing.html" },
+            { id: 19, question: "What can you do with Resolver query logs in CloudWatch Logs?", options: ["Only view raw logs; no analysis", "Analyze logs with Logs Insights and create metrics and alarms", "Export to S3 only; no CloudWatch analysis", "Use them only for GuardDuty integration"], correct: 1, explanation: "With CloudWatch Logs as the destination, you can analyze logs with Logs Insights and create metrics and alarms. This supports security monitoring and alerting on suspicious DNS activity.", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logs-choosing-target-resource.html" },
+            { id: 20, question: "Resolver query logging configurations can be created using which tools?", options: ["Only the Route 53 console", "Route 53 console, AWS CLI (create-resolver-query-log-config), and AWS CloudFormation (AWS::Route53Resolver::ResolverQueryLoggingConfig)", "Only CloudFormation", "Only the AWS SDK; no console support"], correct: 1, explanation: "You can create query logging configurations via the Route 53 console, AWS CLI (route53resolver create-resolver-query-log-config), and CloudFormation (AWS::Route53Resolver::ResolverQueryLoggingConfig resource).", docLink: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-query-logging-configurations-managing.html" }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], answersRevealed = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0, inReviewMode = false, reviewedQuestions = [];
+        function shuffleArray(a) { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); inReviewMode = false; reviewedQuestions = []; document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; document.getElementById('backToReviewBtn').style.display = 'none'; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Resolver Logs</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function selectOption(i) { if (currentMode === 'learn' && answersRevealed[currentQuestion]) return; userAnswers[currentQuestion] = i; renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; answersRevealed[currentQuestion] = true; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = 'results-score ' + (pass ? 'pass' : 'fail'); document.getElementById('resultStatus').textContent = pass ? '🎉 PASSED!' : '📚 Keep Studying'; document.getElementById('resultStatus').className = 'results-status ' + (pass ? 'pass' : 'fail'); document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function showReview() { const letters = ['A','B','C','D']; const tbody = document.getElementById('reviewTableBody'); tbody.innerHTML = shuffledQuestions.map((q, i) => { const userAns = userAnswers[i]; const isCorrect = userAns === q.correct; const userLetter = userAns !== null && userAns >= 0 ? letters[userAns] : 'No Answer'; const correctLetter = letters[q.correct]; const statusIcon = isCorrect ? '✓' : '✗'; const statusClass = isCorrect ? 'correct' : 'incorrect'; const qText = q.question.length > 120 ? q.question.substring(0, 120) + '...' : q.question; const reviewedClass = reviewedQuestions.includes(i) ? 'reviewed' : ''; return `<tr class="${reviewedClass}" onclick="reviewQuestion(${i})"><td class="review-q-num">${i + 1}</td><td class="review-q-text">${qText}</td><td class="review-answer ${userAns === q.correct ? 'correct' : 'incorrect'}">${userLetter}</td><td class="review-answer correct">${correctLetter}</td><td class="review-status ${statusClass}">${statusIcon}</td></tr>`; }).join(''); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.add('show'); inReviewMode = true; }
+        function reviewQuestion(qIndex) { if (!reviewedQuestions.includes(qIndex)) { reviewedQuestions.push(qIndex); } currentMode = 'learn'; currentQuestion = qIndex; answersRevealed[qIndex] = true; document.getElementById('reviewSection').classList.remove('show'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').style.display = 'none'; document.getElementById('backToReviewBtn').style.display = 'inline-block'; if (timerInterval) clearInterval(timerInterval); renderQuestion(); }
+        function backToReview() { document.getElementById('quizContent').classList.add('hidden'); showReview(); }
+        function backToResults() { document.getElementById('reviewSection').classList.remove('show'); document.getElementById('resultsCard').classList.add('show'); inReviewMode = false; }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); document.getElementById('backToReviewBtn').style.display = 'none'; inReviewMode = false; reviewedQuestions = []; if (timerInterval) clearInterval(timerInterval); }
+    </script>
+</body>
+</html>
