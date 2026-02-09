@@ -194,6 +194,75 @@
             font-size: 0.85rem;
         }
 
+        .domain-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .domain-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .domain-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .domain-weight {
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        .domain-weight.highlight {
+            background: var(--accent-green);
+        }
+
+        .domain-count {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .missing-topics {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            background: rgba(249, 115, 22, 0.05);
+            border: 1px dashed rgba(249, 115, 22, 0.3);
+            border-radius: 8px;
+        }
+
+        .missing-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-orange);
+            margin-right: 0.25rem;
+        }
+
+        .missing-tag {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -284,289 +353,323 @@
 
         <section>
             <h2>🎮 Practice Quizzes</h2>
-            <p style="color: var(--accent-green); font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600;">
-                🎉 ALL 6 DOMAINS COMPLETE! Full SCS-C03 Exam Coverage
+            <p style="color: var(--accent-cyan); font-size: 0.85rem; margin-bottom: 0.3rem;">
+                25 quizzes | 525 questions | Coverage in progress
             </p>
-            <p style="color: var(--accent-cyan); font-size: 0.85rem; margin-bottom: 1rem;">
-                Total: 525 questions across 25 quizzes
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">
+                Each quiz features Learn Mode (immediate feedback) and Exam Mode (timed simulation).
             </p>
+
+            <!-- Domain 1: Detection (16%) -->
+            <div class="domain-header">
+                <h3 class="domain-title">Domain 1: Detection <span class="domain-weight">16%</span></h3>
+                <span class="domain-count">6 quizzes | 130 questions</span>
+            </div>
             <ul class="quiz-list">
                 <li class="quiz-item">
-                    <a href="quizzes/control-tower-comprehensive.html">
-                        <span class="quiz-name">🏗️ AWS Control Tower</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 6</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/config-compliance-comprehensive.html">
-                        <span class="quiz-name">⚙️ AWS Config & Compliance</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 6</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/audit-manager-artifact-comprehensive.html">
-                        <span class="quiz-name">📋 Audit Manager & Artifact</span>
-                        <span class="quiz-info">
-                            <span>23 questions</span>
-                            <span>Domain 6</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/kms-comprehensive.html">
-                        <span class="quiz-name">🔐 AWS KMS (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>25 questions</span>
-                            <span>Domain 5</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/secrets-manager-cloudhsm-comprehensive.html">
-                        <span class="quiz-name">🤫 Secrets Manager & CloudHSM</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 5</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/acm-s3-encryption-comprehensive.html">
-                        <span class="quiz-name">📜 ACM & S3 Encryption</span>
-                        <span class="quiz-info">
-                            <span>18 questions</span>
-                            <span>Domain 5</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/macie-comprehensive.html">
-                        <span class="quiz-name">🔍 Amazon Macie</span>
-                        <span class="quiz-info">
-                            <span>18 questions</span>
-                            <span>Domain 5</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/iam-policies-comprehensive.html">
-                        <span class="quiz-name">🔑 IAM Policies & Permissions (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>25 questions</span>
-                            <span>Domain 4</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/organizations-scps-comprehensive.html">
-                        <span class="quiz-name">🏢 AWS Organizations & SCPs</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 4</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/identity-center-federation-comprehensive.html">
-                        <span class="quiz-name">🔐 IAM Identity Center & Federation</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 4</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/cognito-sts-comprehensive.html">
-                        <span class="quiz-name">👤 Amazon Cognito & AWS STS</span>
-                        <span class="quiz-info">
-                            <span>18 questions</span>
-                            <span>Domain 4</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/vpc-security-comprehensive.html">
-                        <span class="quiz-name">🌐 Amazon VPC Security (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>25 questions</span>
-                            <span>Domain 3</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/waf-comprehensive.html">
-                        <span class="quiz-name">🛡️ AWS WAF (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 3</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/shield-ddos-comprehensive.html">
-                        <span class="quiz-name">⚔️ AWS Shield & DDoS Protection</span>
-                        <span class="quiz-info">
-                            <span>18 questions</span>
-                            <span>Domain 3</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/network-firewall-comprehensive.html">
-                        <span class="quiz-name">🔥 AWS Network Firewall (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 3</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/incident-response-fundamentals.html">
-                        <span class="quiz-name">🚨 Incident Response Fundamentals</span>
-                        <span class="quiz-info">
-                            <span>25 questions</span>
-                            <span>Domain 2</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/automated-remediation.html">
-                        <span class="quiz-name">⚡ Automated Remediation</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 2</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/security-hub-comprehensive.html">
-                        <span class="quiz-name">🔥 AWS Security Hub (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>25 questions</span>
-                            <span>Domain 1</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/security-lake-comprehensive.html">
-                        <span class="quiz-name">🏞️ Amazon Security Lake</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 1</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/scs-c03-new-topics.html">
-                        <span class="quiz-name">🆕 SCS-C03 New Topics</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Multiple Domains</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
                     <a href="quizzes/guardduty-comprehensive.html">
-                        <span class="quiz-name">🔥 Amazon GuardDuty (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>25 questions</span>
-                            <span>Domain 1</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/detective-comprehensive.html">
-                        <span class="quiz-name">🔍 Amazon Detective (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 1</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/cloudtrail-comprehensive.html">
-                        <span class="quiz-name">📋 AWS CloudTrail (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>25 questions</span>
-                            <span>Domain 1</span>
-                        </span>
-                    </a>
-                </li>
-                <li class="quiz-item">
-                    <a href="quizzes/cloudwatch-security-comprehensive.html">
-                        <span class="quiz-name">📊 CloudWatch Security (Comprehensive)</span>
-                        <span class="quiz-info">
-                            <span>20 questions</span>
-                            <span>Domain 1</span>
-                        </span>
+                        <span class="quiz-name">Amazon GuardDuty (Comprehensive)</span>
+                        <span class="quiz-info"><span>25 questions</span></span>
                     </a>
                 </li>
                 <li class="quiz-item">
                     <a href="quizzes/guardduty-extended-threat-detection.html">
-                        <span class="quiz-name">🔥 GuardDuty Extended Threat Detection</span>
-                        <span class="quiz-info">
-                            <span>15 questions</span>
-                            <span>Domain 1</span>
-                        </span>
+                        <span class="quiz-name">GuardDuty Extended Threat Detection</span>
+                        <span class="quiz-info"><span>15 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/security-hub-comprehensive.html">
+                        <span class="quiz-name">AWS Security Hub (Comprehensive)</span>
+                        <span class="quiz-info"><span>25 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/cloudtrail-comprehensive.html">
+                        <span class="quiz-name">AWS CloudTrail (Comprehensive)</span>
+                        <span class="quiz-info"><span>25 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/cloudwatch-security-comprehensive.html">
+                        <span class="quiz-name">CloudWatch Security (Comprehensive)</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/security-lake-comprehensive.html">
+                        <span class="quiz-name">Amazon Security Lake</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
                     </a>
                 </li>
             </ul>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">
-                ✨ Each quiz features Learn Mode (immediate feedback) and Exam Mode (timed). More domains coming soon!
-            </p>
+            <div class="missing-topics">
+                <span class="missing-label">Needs quizzes:</span>
+                <span class="missing-tag">Athena (log analysis)</span>
+                <span class="missing-tag">OpenSearch Service</span>
+                <span class="missing-tag">Managed Grafana</span>
+                <span class="missing-tag">VPC Flow Logs & Transit GW Logs</span>
+                <span class="missing-tag">Route 53 Resolver Logs</span>
+            </div>
+
+            <!-- Domain 2: Incident Response (14%) -->
+            <div class="domain-header">
+                <h3 class="domain-title">Domain 2: Incident Response <span class="domain-weight">14%</span></h3>
+                <span class="domain-count">3 quizzes | 65 questions</span>
+            </div>
+            <ul class="quiz-list">
+                <li class="quiz-item">
+                    <a href="quizzes/incident-response-fundamentals.html">
+                        <span class="quiz-name">Incident Response Fundamentals</span>
+                        <span class="quiz-info"><span>25 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/automated-remediation.html">
+                        <span class="quiz-name">Automated Remediation</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/detective-comprehensive.html">
+                        <span class="quiz-name">Amazon Detective (Comprehensive)</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="missing-topics">
+                <span class="missing-label">Needs quizzes:</span>
+                <span class="missing-tag">Fault Injection Service</span>
+                <span class="missing-tag">Resilience Hub</span>
+                <span class="missing-tag">Application Recovery Controller</span>
+                <span class="missing-tag">Forensics Orchestrator for EC2</span>
+                <span class="missing-tag">OpsCenter</span>
+                <span class="missing-tag">Shield Advanced (IR)</span>
+            </div>
+
+            <!-- Domain 3: Infrastructure Security (18%) -->
+            <div class="domain-header">
+                <h3 class="domain-title">Domain 3: Infrastructure Security <span class="domain-weight">18%</span></h3>
+                <span class="domain-count">4 quizzes | 83 questions</span>
+            </div>
+            <ul class="quiz-list">
+                <li class="quiz-item">
+                    <a href="quizzes/vpc-security-comprehensive.html">
+                        <span class="quiz-name">Amazon VPC Security (Comprehensive)</span>
+                        <span class="quiz-info"><span>25 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/waf-comprehensive.html">
+                        <span class="quiz-name">AWS WAF (Comprehensive)</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/shield-ddos-comprehensive.html">
+                        <span class="quiz-name">AWS Shield & DDoS Protection</span>
+                        <span class="quiz-info"><span>18 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/network-firewall-comprehensive.html">
+                        <span class="quiz-name">AWS Network Firewall (Comprehensive)</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="missing-topics">
+                <span class="missing-label">Needs quizzes:</span>
+                <span class="missing-tag">Amazon Inspector</span>
+                <span class="missing-tag">EC2 Image Builder</span>
+                <span class="missing-tag">Systems Manager (Patch/Session Mgr)</span>
+                <span class="missing-tag">Verified Access</span>
+                <span class="missing-tag">Direct Connect & VPN (MACsec)</span>
+                <span class="missing-tag">Network Access Analyzer</span>
+                <span class="missing-tag">Q Developer & CodeGuru Security</span>
+                <span class="missing-tag">GenAI OWASP Top 10</span>
+                <span class="missing-tag">CloudFront Security</span>
+            </div>
+
+            <!-- Domain 4: IAM (20%) -->
+            <div class="domain-header">
+                <h3 class="domain-title">Domain 4: Identity & Access Management <span class="domain-weight highlight">20%</span></h3>
+                <span class="domain-count">4 quizzes | 83 questions</span>
+            </div>
+            <ul class="quiz-list">
+                <li class="quiz-item">
+                    <a href="quizzes/iam-policies-comprehensive.html">
+                        <span class="quiz-name">IAM Policies & Permissions (Comprehensive)</span>
+                        <span class="quiz-info"><span>25 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/organizations-scps-comprehensive.html">
+                        <span class="quiz-name">AWS Organizations & SCPs</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/identity-center-federation-comprehensive.html">
+                        <span class="quiz-name">IAM Identity Center & Federation</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/cognito-sts-comprehensive.html">
+                        <span class="quiz-name">Amazon Cognito & AWS STS</span>
+                        <span class="quiz-info"><span>18 questions</span></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="missing-topics">
+                <span class="missing-label">Needs quizzes:</span>
+                <span class="missing-tag">Verified Permissions (Cedar)</span>
+                <span class="missing-tag">IAM Roles Anywhere</span>
+                <span class="missing-tag">Directory Service</span>
+                <span class="missing-tag">IAM Access Analyzer</span>
+                <span class="missing-tag">IAM Policy Simulator</span>
+                <span class="missing-tag">ABAC / RBAC Strategies</span>
+            </div>
+
+            <!-- Domain 5: Data Protection (18%) -->
+            <div class="domain-header">
+                <h3 class="domain-title">Domain 5: Data Protection <span class="domain-weight">18%</span></h3>
+                <span class="domain-count">4 quizzes | 81 questions</span>
+            </div>
+            <ul class="quiz-list">
+                <li class="quiz-item">
+                    <a href="quizzes/kms-comprehensive.html">
+                        <span class="quiz-name">AWS KMS (Comprehensive)</span>
+                        <span class="quiz-info"><span>25 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/secrets-manager-cloudhsm-comprehensive.html">
+                        <span class="quiz-name">Secrets Manager & CloudHSM</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/acm-s3-encryption-comprehensive.html">
+                        <span class="quiz-name">ACM & S3 Encryption</span>
+                        <span class="quiz-info"><span>18 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/macie-comprehensive.html">
+                        <span class="quiz-name">Amazon Macie</span>
+                        <span class="quiz-info"><span>18 questions</span></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="missing-topics">
+                <span class="missing-label">Needs quizzes:</span>
+                <span class="missing-tag">PrivateLink & VPC Endpoints</span>
+                <span class="missing-tag">S3 Object Lock & Glacier Vault Lock</span>
+                <span class="missing-tag">AWS Backup & Vault Lock</span>
+                <span class="missing-tag">Data Lifecycle Manager</span>
+                <span class="missing-tag">Imported Keys & External Key Store (XKS)</span>
+                <span class="missing-tag">CW Logs & SNS Data Protection</span>
+                <span class="missing-tag">Private Certificate Authority</span>
+                <span class="missing-tag">Nitro / EMR / EKS Encryption</span>
+            </div>
+
+            <!-- Domain 6: Security Foundations & Governance (14%) -->
+            <div class="domain-header">
+                <h3 class="domain-title">Domain 6: Security Foundations & Governance <span class="domain-weight">14%</span></h3>
+                <span class="domain-count">3 quizzes | 63 questions</span>
+            </div>
+            <ul class="quiz-list">
+                <li class="quiz-item">
+                    <a href="quizzes/control-tower-comprehensive.html">
+                        <span class="quiz-name">AWS Control Tower</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/config-compliance-comprehensive.html">
+                        <span class="quiz-name">AWS Config & Compliance</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+                <li class="quiz-item">
+                    <a href="quizzes/audit-manager-artifact-comprehensive.html">
+                        <span class="quiz-name">Audit Manager & Artifact</span>
+                        <span class="quiz-info"><span>23 questions</span></span>
+                    </a>
+                </li>
+            </ul>
+            <div class="missing-topics">
+                <span class="missing-label">Needs quizzes:</span>
+                <span class="missing-tag">RCPs & Declarative Policies</span>
+                <span class="missing-tag">CloudFormation Guard & cfn-lint</span>
+                <span class="missing-tag">Firewall Manager</span>
+                <span class="missing-tag">Service Catalog</span>
+                <span class="missing-tag">Resource Access Manager (RAM)</span>
+                <span class="missing-tag">Well-Architected Tool</span>
+            </div>
+
+            <!-- Cross-Domain -->
+            <div class="domain-header">
+                <h3 class="domain-title">Cross-Domain <span class="domain-weight" style="background: var(--accent-orange);">Multi</span></h3>
+                <span class="domain-count">1 quiz | 20 questions</span>
+            </div>
+            <ul class="quiz-list">
+                <li class="quiz-item">
+                    <a href="quizzes/scs-c03-new-topics.html">
+                        <span class="quiz-name">SCS-C03 New Topics</span>
+                        <span class="quiz-info"><span>20 questions</span></span>
+                    </a>
+                </li>
+            </ul>
         </section>
 
         <section>
             <h2>📚 Study Domains (SCS-C03)</h2>
             <div class="card-grid">
-                <div class="card">
+                <a href="docs/domain-1-detection.md" class="card">
                     <div class="card-title">Domain 1: Detection</div>
-                    <div class="card-desc">GuardDuty, Security Hub, CloudTrail, CloudWatch</div>
+                    <div class="card-desc">GuardDuty, Security Hub, CloudTrail, CloudWatch, Security Lake, Athena, OpenSearch</div>
                     <div class="card-meta">
                         <span class="meta-item">16% weight</span>
                     </div>
-                </div>
-                <div class="card">
+                </a>
+                <a href="docs/domain-2-incident-response.md" class="card">
                     <div class="card-title">Domain 2: Incident Response</div>
-                    <div class="card-desc">Response Plans, Forensics, Detective</div>
+                    <div class="card-desc">Detective, Fault Injection Service, Resilience Hub, Forensics Orchestrator</div>
                     <div class="card-meta">
                         <span class="meta-item">14% weight</span>
                     </div>
-                </div>
-                <div class="card">
+                </a>
+                <a href="docs/domain-3-infrastructure-security.md" class="card">
                     <div class="card-title">Domain 3: Infrastructure Security</div>
-                    <div class="card-desc">VPC, WAF, Shield, Network Firewall</div>
+                    <div class="card-desc">VPC, WAF, Shield, Network Firewall, Inspector, Image Builder, Verified Access</div>
                     <div class="card-meta">
                         <span class="meta-item">18% weight</span>
                     </div>
-                </div>
-                <div class="card">
+                </a>
+                <a href="docs/domain-4-iam.md" class="card">
                     <div class="card-title">Domain 4: IAM</div>
-                    <div class="card-desc">Policies, SCPs, Federation, Identity Center</div>
+                    <div class="card-desc">Policies, SCPs, Cognito, Identity Center, Verified Permissions, Roles Anywhere</div>
                     <div class="card-meta">
                         <span class="meta-item highlight">20% weight</span>
                     </div>
-                </div>
-                <div class="card">
+                </a>
+                <a href="docs/domain-5-data-protection.md" class="card">
                     <div class="card-title">Domain 5: Data Protection</div>
-                    <div class="card-desc">KMS, Secrets Manager, ACM, Macie</div>
+                    <div class="card-desc">KMS, CloudHSM, Secrets Manager, ACM, Private CA, Backup, PrivateLink</div>
                     <div class="card-meta">
                         <span class="meta-item">18% weight</span>
                     </div>
-                </div>
-                <div class="card">
+                </a>
+                <a href="docs/domain-6-governance.md" class="card">
                     <div class="card-title">Domain 6: Security Foundations</div>
-                    <div class="card-desc">Control Tower, Organizations, Compliance</div>
+                    <div class="card-desc">Control Tower, Organizations, Config, RCPs, Service Catalog, RAM, Well-Architected</div>
                     <div class="card-meta">
                         <span class="meta-item">14% weight</span>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
