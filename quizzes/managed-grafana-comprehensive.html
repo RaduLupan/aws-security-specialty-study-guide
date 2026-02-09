@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Managed Grafana Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #8b5cf6; --accent-secondary: #a78bfa; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(139, 92, 246, 0.1); }
+        .option.selected { border-color: var(--accent-primary); border-width: 3px; background: rgba(139, 92, 246, 0.2); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25), inset 0 0 12px rgba(139, 92, 246, 0.1); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(139, 92, 246, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(139, 92, 246, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .review-section { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; border: 1px solid var(--border); display: none; }
+        .review-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .review-header { text-align: center; margin-bottom: 2rem; }
+        .review-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .review-table th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; padding: 1rem; text-align: left; border-bottom: 2px solid var(--border); }
+        .review-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .review-table tbody tr { cursor: pointer; transition: all 0.2s ease; }
+        .review-table tbody tr:hover { background: rgba(139, 92, 246, 0.1); transform: translateX(4px); }
+        .review-table tbody tr.reviewed { background: rgba(139, 92, 246, 0.25); border-left: 6px solid var(--accent-primary); box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.15); }
+        .review-table tbody tr.reviewed:hover { background: rgba(139, 92, 246, 0.3); }
+        .review-table tbody tr.reviewed .review-q-num { color: var(--accent-secondary); font-weight: 800; }
+        .review-table tbody tr.reviewed .review-q-num::before { content: "✓ "; color: var(--accent-primary); font-size: 1rem; }
+        .review-q-num { font-weight: 700; color: var(--accent-primary); white-space: nowrap; }
+        .review-q-text { color: var(--text-primary); line-height: 1.6; }
+        .review-answer { font-weight: 600; }
+        .review-answer.correct { color: var(--success); }
+        .review-answer.incorrect { color: var(--error); }
+        .review-status { text-align: center; font-size: 1.25rem; }
+        .review-hint { text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(139, 92, 246, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 1: Detection (16%)</span>
+            <h1>Amazon Managed Grafana</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">20</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">50:00</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">20</span></span>
+                    <span class="timer" id="timer">50:00</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+        <div class="review-section" id="reviewSection">
+            <div class="review-header">
+                <h2>Answer Review</h2>
+                <p class="results-details">Click any question to review the full answer and explanation</p>
+            </div>
+            <p class="review-hint">💡 Tip: Click on any row to see the full question and explanation in Learn mode</p>
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">#</th>
+                        <th style="width: 50%">Question</th>
+                        <th style="width: 15%">Your Answer</th>
+                        <th style="width: 15%">Correct Answer</th>
+                        <th style="width: 10%">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+            </table>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="backToResults()">← Back to Results</button>
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { id: 1, question: "What is Amazon Managed Grafana?", options: ["A self-hosted open-source Grafana deployment on EC2", "A fully managed and secure data visualization service to query, correlate, and visualize operational metrics, logs, and traces from multiple sources", "A managed Prometheus-compatible metrics service", "A log aggregation and search service for CloudWatch Logs"], correct: 1, explanation: "Amazon Managed Grafana is a fully managed and secure data visualization service that you can use to instantly query, correlate, and visualize operational metrics, logs, and traces from multiple sources. It makes it easy to deploy, operate, and scale Grafana without managing infrastructure.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 2, question: "In Amazon Managed Grafana, what is a workspace?", options: ["A physical Grafana server in a data center", "A logically isolated Grafana server used to create dashboards and visualizations", "A shared tenancy model where multiple organizations share one instance", "A read-only snapshot of a Grafana deployment"], correct: 1, explanation: "With Amazon Managed Grafana, you create logically isolated Grafana servers called workspaces. You can then create Grafana dashboards and visualizations to analyze metrics, logs, and traces without having to build, package, or deploy any hardware.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 3, question: "Which built-in security features does Amazon Managed Grafana provide for compliance?", options: ["Only encryption at rest; no access control", "Single sign-on, data access control, and audit reporting", "VPC-only deployment; no other security features", "MFA only; no SSO support"], correct: 1, explanation: "Amazon Managed Grafana provides built-in security features for compliance with corporate governance requirements, including single sign-on (SSO), data access control, and audit reporting.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 4, question: "Which AWS data sources is Amazon Managed Grafana integrated with?", options: ["Only Amazon CloudWatch", "Amazon CloudWatch, Amazon OpenSearch Service, AWS X-Ray, AWS IoT SiteWise, Amazon Timestream, and Amazon Managed Service for Prometheus", "Only OpenSearch and CloudWatch", "Only X-Ray and Prometheus"], correct: 1, explanation: "Amazon Managed Grafana is integrated with AWS data sources such as Amazon CloudWatch, Amazon OpenSearch Service, AWS X-Ray, AWS IoT SiteWise, Amazon Timestream, and Amazon Managed Service for Prometheus. It includes a permission provisioning feature for adding supported AWS services as data sources.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 5, question: "What authentication options does Amazon Managed Grafana support for user sign-in?", options: ["Only IAM users and access keys", "Identity providers that support SAML 2.0 and AWS IAM Identity Center", "Only username and password stored in Grafana", "OAuth 2.0 only; no SAML support"], correct: 1, explanation: "For user authentication and authorization, Amazon Managed Grafana can integrate with identity providers (IdPs) that support SAML 2.0 and also can integrate with AWS IAM Identity Center.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 6, question: "How is Amazon Managed Grafana priced?", options: ["Per workspace created", "Per hour of Grafana server uptime", "Per active user in a workspace", "Per data source connected"], correct: 2, explanation: "Amazon Managed Grafana is priced per active user in a workspace. This consumption-based model aligns costs with actual usage.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 7, question: "Which IAM permission is required to create an Amazon Managed Grafana workspace?", options: ["grafana:ListWorkspaces", "grafana:CreateWorkspace", "grafana:UpdateWorkspace", "grafana:AssociateLicense"], correct: 1, explanation: "Creating an Amazon Managed Grafana workspace requires the grafana:CreateWorkspace permission. A workspace is a logically isolated Grafana server used to create and visualize metrics, logs, and traces.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/AMG-and-IAM.html" },
+            { id: 8, question: "Which IAM action retrieves the authentication configuration associated with a workspace?", options: ["grafana:DescribeWorkspace", "grafana:DescribeWorkspaceAuthentication", "grafana:ListPermissions", "grafana:UpdateWorkspaceAuthentication"], correct: 1, explanation: "The grafana:DescribeWorkspaceAuthentication action retrieves the authentication configuration associated with a workspace. This helps auditors and administrators verify SSO or IAM Identity Center settings.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/AMG-and-IAM.html" },
+            { id: 9, question: "Which IAM actions allow updating workspace user and group permissions?", options: ["grafana:ListPermissions and grafana:DescribeWorkspace", "grafana:UpdatePermissions and grafana:UpdateWorkspace", "grafana:UpdatePermissions", "grafana:DeleteWorkspace"], correct: 2, explanation: "The grafana:UpdatePermissions action updates the permissions associated with workspace users and groups. Use grafana:ListPermissions to retrieve the current permissions.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/AMG-and-IAM.html" },
+            { id: 10, question: "What does the permission provisioning feature in Amazon Managed Grafana do?", options: ["Provisions IAM users automatically for each Grafana user", "Adds supported AWS services as data sources with appropriate IAM permissions", "Creates VPC endpoints for Grafana workspaces", "Enables cross-account access to Grafana"], correct: 1, explanation: "Amazon Managed Grafana includes a permission provisioning feature for adding supported AWS services as data sources. This simplifies configuring IAM roles and policies so that Grafana can query CloudWatch, OpenSearch, X-Ray, and other AWS data sources.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 11, question: "Besides AWS data sources, what other data sources does Amazon Managed Grafana support?", options: ["Only AWS services; no third-party support", "Many popular open-source, third-party, and other cloud data sources", "Only Prometheus and InfluxDB", "No additional data sources beyond the built-in AWS integrations"], correct: 1, explanation: "Amazon Managed Grafana also supports many popular open-source, third-party, and other cloud data sources. Grafana is widely deployed and popular for its extensible data support.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 12, question: "According to IAM policy best practices for Amazon Managed Grafana, what should you do when creating identity-based policies?", options: ["Grant broad * permissions for simplicity", "Apply least-privilege permissions—grant only the permissions required to perform a task", "Use only inline policies; avoid managed policies", "Disable MFA for API access"], correct: 1, explanation: "When creating identity-based policies, apply least-privilege permissions: grant only the permissions required to perform a task. Define the actions that can be taken on specific resources under specific conditions.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/security_iam_id-based-policy-examples.html" },
+            { id: 13, question: "Which IAM action associates a Grafana Enterprise license with a workspace?", options: ["grafana:UpdateWorkspace", "grafana:AssociateLicense", "grafana:CreateWorkspace", "grafana:UpdateWorkspaceAuthentication"], correct: 1, explanation: "The grafana:AssociateLicense action associates a Grafana enterprise license with a workspace. This enables Enterprise features for advanced visualization and alerting.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/AMG-and-IAM.html" },
+            { id: 14, question: "Does Amazon Managed Grafana support AWS GovCloud regions?", options: ["No; GovCloud is not supported", "Yes; AWS GovCloud (US-East) and GovCloud (US-West) are supported", "Only US-East GovCloud", "Only for read-only workspaces"], correct: 1, explanation: "Amazon Managed Grafana supports AWS GovCloud (US-East) and AWS GovCloud (US-West) regions, in addition to commercial regions. This enables sensitive workloads requiring GovCloud compliance.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 15, question: "What does Amazon Managed Grafana manage on your behalf?", options: ["Only dashboard creation; you manage servers", "Provisioning, setup, scaling, and maintenance of logical Grafana servers", "Only scaling; you provision and maintain", "Only authentication; you manage everything else"], correct: 1, explanation: "Amazon Managed Grafana manages the provisioning, setup, scaling, and maintenance of your logical Grafana servers so that you don't have to do these tasks yourself. You focus on creating dashboards and visualizations.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 16, question: "Which tool can you use to validate IAM policies for Amazon Managed Grafana?", options: ["Only manual review", "IAM Access Analyzer to validate policies and ensure secure, functional permissions", "CloudTrail for policy changes only", "Grafana's built-in policy validator"], correct: 1, explanation: "Use IAM Access Analyzer to validate your IAM policies to ensure secure and functional permissions. IAM Access Analyzer provides policy checks and actionable recommendations to help author secure policies.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/security_iam_id-based-policy-examples.html" },
+            { id: 17, question: "What types of operational data can you visualize in Amazon Managed Grafana?", options: ["Only metrics", "Metrics, logs, and traces", "Only logs and metrics", "Only traces for distributed tracing"], correct: 1, explanation: "Amazon Managed Grafana lets you query, correlate, and visualize operational metrics, logs, and traces from multiple sources. This supports full observability including metrics (e.g., from CloudWatch or Prometheus), logs (e.g., from OpenSearch or CloudWatch Logs), and traces (e.g., from X-Ray).", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" },
+            { id: 18, question: "For security, what does the IAM policy best practices document recommend regarding MFA?", options: ["MFA is not recommended for API access", "Require MFA for IAM users; add MFA conditions to policies to require MFA when API operations are called", "MFA is only for console access; API does not support it", "Disable MFA for Grafana workspace access"], correct: 1, explanation: "If you have IAM users, turn on MFA for additional security. To require MFA when API operations are called, add MFA conditions to your policies. This helps protect sensitive Grafana management operations.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/security_iam_id-based-policy-examples.html" },
+            { id: 19, question: "Which IAM action would you use to list all Amazon Managed Grafana workspaces in an account?", options: ["grafana:DescribeWorkspace", "grafana:ListWorkspaces", "grafana:CreateWorkspace", "grafana:ListPermissions"], correct: 1, explanation: "The grafana:ListWorkspaces action retrieves a list of the Amazon Managed Grafana workspaces that exist in the account. Use grafana:DescribeWorkspace to get detailed information about a specific workspace.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/AMG-and-IAM.html" },
+            { id: 20, question: "What is the underlying technology that Amazon Managed Grafana makes it easy to deploy and operate?", options: ["OpenSearch", "Grafana—a widely deployed data visualization tool popular for extensible data support", "Prometheus", "Kibana"], correct: 1, explanation: "Amazon Managed Grafana makes it easy to deploy, operate, and scale Grafana, a widely deployed data visualization tool that is popular for its extensible data support. AWS manages the infrastructure; you get Grafana's rich visualization capabilities.", docLink: "https://docs.aws.amazon.com/grafana/latest/userguide/what-is-Amazon-Managed-Service-Grafana.html" }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], answersRevealed = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0, inReviewMode = false, reviewedQuestions = [];
+        function shuffleArray(a) { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); inReviewMode = false; reviewedQuestions = []; document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; document.getElementById('backToReviewBtn').style.display = 'none'; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Managed Grafana</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function selectOption(i) { if (currentMode === 'learn' && answersRevealed[currentQuestion]) return; userAnswers[currentQuestion] = i; renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; answersRevealed[currentQuestion] = true; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = 'results-score ' + (pass ? 'pass' : 'fail'); document.getElementById('resultStatus').textContent = pass ? '🎉 PASSED!' : '📚 Keep Studying'; document.getElementById('resultStatus').className = 'results-status ' + (pass ? 'pass' : 'fail'); document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function showReview() { const letters = ['A','B','C','D']; const tbody = document.getElementById('reviewTableBody'); tbody.innerHTML = shuffledQuestions.map((q, i) => { const userAns = userAnswers[i]; const isCorrect = userAns === q.correct; const userLetter = userAns !== null && userAns >= 0 ? letters[userAns] : 'No Answer'; const correctLetter = letters[q.correct]; const statusIcon = isCorrect ? '✓' : '✗'; const statusClass = isCorrect ? 'correct' : 'incorrect'; const qText = q.question.length > 120 ? q.question.substring(0, 120) + '...' : q.question; const reviewedClass = reviewedQuestions.includes(i) ? 'reviewed' : ''; return `<tr class="${reviewedClass}" onclick="reviewQuestion(${i})"><td class="review-q-num">${i + 1}</td><td class="review-q-text">${qText}</td><td class="review-answer ${userAns === q.correct ? 'correct' : 'incorrect'}">${userLetter}</td><td class="review-answer correct">${correctLetter}</td><td class="review-status ${statusClass}">${statusIcon}</td></tr>`; }).join(''); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.add('show'); inReviewMode = true; }
+        function reviewQuestion(qIndex) { if (!reviewedQuestions.includes(qIndex)) { reviewedQuestions.push(qIndex); } currentMode = 'learn'; currentQuestion = qIndex; answersRevealed[qIndex] = true; document.getElementById('reviewSection').classList.remove('show'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').style.display = 'none'; document.getElementById('backToReviewBtn').style.display = 'inline-block'; if (timerInterval) clearInterval(timerInterval); renderQuestion(); }
+        function backToReview() { document.getElementById('quizContent').classList.add('hidden'); showReview(); }
+        function backToResults() { document.getElementById('reviewSection').classList.remove('show'); document.getElementById('resultsCard').classList.add('show'); inReviewMode = false; }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); document.getElementById('backToReviewBtn').style.display = 'none'; inReviewMode = false; reviewedQuestions = []; if (timerInterval) clearInterval(timerInterval); }
+    </script>
+</body>
+</html>
