@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPC Flow Logs & Transit Gateway Flow Logs Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #3b82f6; --accent-secondary: #60a5fa; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(59, 130, 246, 0.1); }
+        .option.selected { border-color: var(--accent-primary); border-width: 3px; background: rgba(59, 130, 246, 0.2); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25), inset 0 0 12px rgba(59, 130, 246, 0.1); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(59, 130, 246, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .review-section { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; border: 1px solid var(--border); display: none; }
+        .review-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .review-header { text-align: center; margin-bottom: 2rem; }
+        .review-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .review-table th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; padding: 1rem; text-align: left; border-bottom: 2px solid var(--border); }
+        .review-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .review-table tbody tr { cursor: pointer; transition: all 0.2s ease; }
+        .review-table tbody tr:hover { background: rgba(59, 130, 246, 0.1); transform: translateX(4px); }
+        .review-table tbody tr.reviewed { background: rgba(59, 130, 246, 0.25); border-left: 6px solid var(--accent-primary); box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.15); }
+        .review-table tbody tr.reviewed:hover { background: rgba(59, 130, 246, 0.3); }
+        .review-table tbody tr.reviewed .review-q-num { color: var(--accent-secondary); font-weight: 800; }
+        .review-table tbody tr.reviewed .review-q-num::before { content: "✓ "; color: var(--accent-primary); font-size: 1rem; }
+        .review-q-num { font-weight: 700; color: var(--accent-primary); white-space: nowrap; }
+        .review-q-text { color: var(--text-primary); line-height: 1.6; }
+        .review-answer { font-weight: 600; }
+        .review-answer.correct { color: var(--success); }
+        .review-answer.incorrect { color: var(--error); }
+        .review-status { text-align: center; font-size: 1.25rem; }
+        .review-hint { text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 1: Detection (16%)</span>
+            <h1>VPC Flow Logs & Transit Gateway Flow Logs</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">20</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">50:00</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">20</span></span>
+                    <span class="timer" id="timer">50:00</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+        <div class="review-section" id="reviewSection">
+            <div class="review-header">
+                <h2>Answer Review</h2>
+                <p class="results-details">Click any question to review the full answer and explanation</p>
+            </div>
+            <p class="review-hint">💡 Tip: Click on any row to see the full question and explanation in Learn mode</p>
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">#</th>
+                        <th style="width: 50%">Question</th>
+                        <th style="width: 15%">Your Answer</th>
+                        <th style="width: 15%">Correct Answer</th>
+                        <th style="width: 10%">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+            </table>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="backToResults()">← Back to Results</button>
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { id: 1, question: "What does VPC Flow Logs capture?", options: ["Application-layer payloads and packet contents", "Information about IP traffic going to and from network interfaces in your VPC", "Only denied/blocked traffic for security analysis", "Real-time streaming packet captures"], correct: 1, explanation: "VPC Flow Logs captures information about the IP traffic going to and from network interfaces in your VPC. It records flow-level metadata (source, destination, ports, protocol) not packet contents. Data is collected outside the network path, so it does not affect throughput or latency.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html" },
+            { id: 2, question: "To which destinations can VPC Flow Log data be published?", options: ["Only Amazon CloudWatch Logs", "Amazon CloudWatch Logs, Amazon S3, or Amazon Data Firehose", "Only Amazon S3 for long-term retention", "Only Amazon OpenSearch Service for analytics"], correct: 1, explanation: "Flow log data can be published to Amazon CloudWatch Logs, Amazon S3, or Amazon Data Firehose. The configured delivery path and permissions are referred to as subscriptions.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html" },
+            { id: 3, question: "Which use cases do VPC Flow Logs help with?", options: ["Encrypting traffic and managing TLS certificates", "Diagnosing overly restrictive security group rules, monitoring traffic reaching instances, and determining traffic direction", "Automatically remediating security group misconfigurations", "Load balancing and auto-scaling decisions"], correct: 1, explanation: "Flow logs help diagnose overly restrictive security group rules, monitor traffic reaching your instance, and determine the direction of traffic to and from network interfaces.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html" },
+            { id: 4, question: "What types of traffic do VPC Flow Logs NOT capture?", options: ["All IP traffic is captured; there are no exclusions", "Traffic to 169.254.169.254 (instance metadata), DHCP traffic, traffic to Amazon DNS when using AWS DNS, Windows license activation", "Only multicast and broadcast traffic", "Only traffic to public IP addresses"], correct: 1, explanation: "VPC Flow Logs do not capture: traffic to 169.254.169.254 (instance metadata), 169.254.169.123 (Time Sync), traffic to Amazon DNS server (unless using your own DNS), DHCP, ARP, traffic to default VPC router, traffic between NLB and VPC endpoint interfaces, and traffic mirror source traffic.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-limitations.html" },
+            { id: 5, question: "At which resource level can you create VPC Flow Logs?", options: ["Only at the VPC level", "Only at the subnet level", "For VPCs, subnets, or network interfaces", "Only for individual ENIs attached to EC2 instances"], correct: 2, explanation: "You can create flow logs for your VPCs, subnets, or network interfaces. You must specify a destination (CloudWatch Logs, S3, or Firehose) when creating a flow log.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html" },
+            { id: 6, question: "Which IAM actions are required to work with VPC Flow Logs?", options: ["ec2:CreateFlowLog, ec2:DescribeFlowLog, ec2:UpdateFlowLog", "ec2:CreateFlowLogs, ec2:DescribeFlowLogs, ec2:DeleteFlowLogs", "vpc:CreateFlowLog and vpc:DeleteFlowLog only", "cloudwatch:PutLogEvents and s3:PutObject"], correct: 1, explanation: "By default, users do not have permission to work with flow logs. You need an IAM policy granting ec2:CreateFlowLogs, ec2:DescribeFlowLogs, and ec2:DeleteFlowLogs to create, describe, and delete flow logs.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html" },
+            { id: 7, question: "How does flow log data collection affect network performance?", options: ["It adds latency to each packet as it is inspected", "It reduces throughput by sampling traffic", "Data is collected outside the path of network traffic; therefore it does not affect network throughput or latency", "It only affects traffic during the aggregation interval"], correct: 2, explanation: "Flow log data is collected outside of the path of your network traffic, and therefore does not affect network throughput or latency. You can create or delete flow logs without any risk of impact to network performance.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html" },
+            { id: 8, question: "What do ACCEPT and REJECT values in VPC Flow Log records indicate?", options: ["ACCEPT means traffic reached the destination; REJECT means packet was malformed", "ACCEPT means traffic was allowed by security groups/NACLs; REJECT means traffic was denied", "ACCEPT means traffic was encrypted; REJECT means plaintext", "ACCEPT means inbound; REJECT means outbound"], correct: 1, explanation: "Flow log records include ACCEPT or REJECT to indicate whether traffic was allowed or denied by security groups and network ACLs. Use these to diagnose overly restrictive or permissive rules.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html" },
+            { id: 9, question: "When diagnosing security group vs NACL behavior in flow logs, what is a key difference?", options: ["Security groups and NACLs behave identically; both are stateful", "Security groups are stateful (responses to allowed traffic are allowed); NACLs are stateless (responses are subject to NACL rules)", "NACLs are stateful; security groups are stateless", "Flow logs do not differentiate between security group and NACL decisions"], correct: 1, explanation: "Security groups are stateful—responses to allowed traffic are allowed even if outbound rules don't permit it. NACLs are stateless—responses to allowed traffic are subject to NACL rules. This affects how you interpret REJECT records.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html" },
+            { id: 10, question: "Can you enable VPC Flow Logs for a VPC that is peered with another VPC?", options: ["Yes, for any VPC peering connection", "Only if the peer VPC is in your account", "No; flow logs are not supported for peered VPCs", "Only when using a transit gateway between the VPCs"], correct: 1, explanation: "You cannot enable flow logs for VPCs that are peered with your VPC unless the peer VPC is in your account.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-limitations.html" },
+            { id: 11, question: "What is Transit Gateway Flow Logs and what does it capture?", options: ["A feature that captures VPC Flow Log data and forwards it to a central location", "A feature of AWS Transit Gateway that captures information about IP traffic going to and from your transit gateways", "A CloudWatch metric that counts packets through Transit Gateway", "A feature that logs Transit Gateway API calls to CloudTrail"], correct: 1, explanation: "Transit Gateway Flow Logs is a feature of AWS Transit Gateway that enables you to capture information about the IP traffic going to and from your transit gateways. For VPC network interface traffic, use VPC Flow Logs.", docLink: "https://docs.aws.amazon.com/vpc/latest/tgw/tgw-flow-logs.html" },
+            { id: 12, question: "To which destinations can Transit Gateway Flow Log data be published?", options: ["Only Amazon CloudWatch Logs", "Amazon CloudWatch Logs, Amazon S3, or Amazon Data Firehose", "Only Amazon S3", "Only Amazon Security Lake"], correct: 1, explanation: "Transit Gateway Flow Log data can be published to Amazon CloudWatch Logs, Amazon S3, or Amazon Data Firehose. The flow log data is collected outside the path of network traffic and does not affect throughput or latency.", docLink: "https://docs.aws.amazon.com/vpc/latest/tgw/tgw-flow-logs.html" },
+            { id: 13, question: "Who can create a Transit Gateway Flow Log?", options: ["Any IAM user with ec2:CreateFlowLogs permission", "Only the owner of the transit gateway; otherwise the owner must grant permission", "Only the AWS account root user", "Any user in the same organization with resource sharing enabled"], correct: 1, explanation: "To create a transit gateway flow log, you must be the owner of the transit gateway. If you are not the owner, the transit gateway owner must give you permission.", docLink: "https://docs.aws.amazon.com/vpc/latest/tgw/tgw-flow-logs.html" },
+            { id: 14, question: "Which limitation applies to Transit Gateway Flow Logs?", options: ["Real-time streaming; logs are delivered within 1 second", "Multicast traffic is not supported; Connect attachment flow logs appear under the transport attachment", "Flow logs cannot be published to S3", "Flow logs require a dedicated NAT gateway"], correct: 1, explanation: "Transit Gateway Flow Log limitations: multicast traffic is not supported; Connect attachments are not supported—Connect flow logs appear under the transport attachment and must be enabled on the transit gateway or Connect transport attachment.", docLink: "https://docs.aws.amazon.com/vpc/latest/tgw/tgw-flow-logs.html" },
+            { id: 15, question: "After creating a VPC or Transit Gateway flow log, can you change its configuration?", options: ["Yes; you can update the destination, format, and IAM role at any time", "No; you must delete the flow log and create a new one with the required configuration", "You can change the destination but not the record format", "You can add fields to the custom format but not change the destination"], correct: 1, explanation: "After you create a flow log, you cannot change its configuration or the flow log record format. You cannot associate a different IAM role or add/remove fields. Delete the flow log and create a new one with the required configuration.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-limitations.html" },
+            { id: 16, question: "Approximately how long does it take for flow log data to be delivered after capture?", options: ["Real-time; logs appear within seconds", "CloudWatch Logs: about 5 minutes; S3: about 10 minutes (best effort)", "Always 15 minutes regardless of destination", "CloudWatch: 1 hour; S3: 24 hours"], correct: 1, explanation: "Flow log service typically delivers logs to CloudWatch Logs in about 5 minutes and to S3 in about 10 minutes. Delivery is on a best-effort basis and logs might be delayed beyond typical delivery time.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-log-records.html" },
+            { id: 17, question: "How can you query VPC Flow Log data for security analysis?", options: ["Using CloudWatch Logs Insights only", "Using Amazon Athena to query flow logs stored in S3", "Flow logs cannot be queried; they must be exported manually", "Using Amazon QuickSight for visualization only"], correct: 1, explanation: "You can query flow logs using Amazon Athena when they are stored in S3. Athena supports SQL queries for log analysis. CloudWatch Logs Insights can also search flow logs in CloudWatch.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html" },
+            { id: 18, question: "What aggregation interval options are available for VPC Flow Logs?", options: ["Fixed at 5 minutes; cannot be changed", "1 minute or 10 minutes maximum aggregation interval; Nitro instances use 1 minute or less", "Real-time only; no aggregation", "15 minutes or 60 minutes"], correct: 1, explanation: "By default, the maximum aggregation interval is 10 minutes. You can specify 1 minute when creating a flow log. For Nitro-based instances, the aggregation interval is always 1 minute or less regardless of specification.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-log-records.html" },
+            { id: 19, question: "When creating a Transit Gateway Flow Log for CloudWatch Logs, what is required?", options: ["Only the transit gateway ID", "An IAM role with permissions to publish logs to CloudWatch Logs (and iam:PassRole if using IAM user)", "A VPC endpoint for CloudWatch Logs", "Amazon Kinesis Data Firehose delivery stream"], correct: 1, explanation: "Creating a transit gateway flow log for CloudWatch requires specifying the destination log group and an IAM role that has permissions to publish logs. IAM users need iam:PassRole permission.", docLink: "https://docs.aws.amazon.com/vpc/latest/tgw/flow-logs-cwl-create-flow-log.html" },
+            { id: 20, question: "How can you track costs from publishing flow logs to your destination?", options: ["Flow logs are free; no cost tracking needed", "Apply cost allocation tags to your destination resource (log group, S3 bucket, or Firehose stream); cost allocation reports include usage by tags", "Costs are automatically allocated to the VPC; no tags needed", "Use AWS Cost Explorer tags only; CloudWatch and S3 tags do not apply"], correct: 1, explanation: "Apply cost allocation tags to your destination resource (CloudWatch log group, S3 bucket, or Firehose delivery stream). Your AWS cost allocation report will then include usage and costs aggregated by these tags.", docLink: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html" }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], answersRevealed = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0, inReviewMode = false, reviewedQuestions = [];
+        function shuffleArray(a) { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); inReviewMode = false; reviewedQuestions = []; document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; document.getElementById('backToReviewBtn').style.display = 'none'; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Flow Logs</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function selectOption(i) { if (currentMode === 'learn' && answersRevealed[currentQuestion]) return; userAnswers[currentQuestion] = i; renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; answersRevealed[currentQuestion] = true; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = 'results-score ' + (pass ? 'pass' : 'fail'); document.getElementById('resultStatus').textContent = pass ? '🎉 PASSED!' : '📚 Keep Studying'; document.getElementById('resultStatus').className = 'results-status ' + (pass ? 'pass' : 'fail'); document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function showReview() { const letters = ['A','B','C','D']; const tbody = document.getElementById('reviewTableBody'); tbody.innerHTML = shuffledQuestions.map((q, i) => { const userAns = userAnswers[i]; const isCorrect = userAns === q.correct; const userLetter = userAns !== null && userAns >= 0 ? letters[userAns] : 'No Answer'; const correctLetter = letters[q.correct]; const statusIcon = isCorrect ? '✓' : '✗'; const statusClass = isCorrect ? 'correct' : 'incorrect'; const qText = q.question.length > 120 ? q.question.substring(0, 120) + '...' : q.question; const reviewedClass = reviewedQuestions.includes(i) ? 'reviewed' : ''; return `<tr class="${reviewedClass}" onclick="reviewQuestion(${i})"><td class="review-q-num">${i + 1}</td><td class="review-q-text">${qText}</td><td class="review-answer ${userAns === q.correct ? 'correct' : 'incorrect'}">${userLetter}</td><td class="review-answer correct">${correctLetter}</td><td class="review-status ${statusClass}">${statusIcon}</td></tr>`; }).join(''); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.add('show'); inReviewMode = true; }
+        function reviewQuestion(qIndex) { if (!reviewedQuestions.includes(qIndex)) { reviewedQuestions.push(qIndex); } currentMode = 'learn'; currentQuestion = qIndex; answersRevealed[qIndex] = true; document.getElementById('reviewSection').classList.remove('show'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').style.display = 'none'; document.getElementById('backToReviewBtn').style.display = 'inline-block'; if (timerInterval) clearInterval(timerInterval); renderQuestion(); }
+        function backToReview() { document.getElementById('quizContent').classList.add('hidden'); showReview(); }
+        function backToResults() { document.getElementById('reviewSection').classList.remove('show'); document.getElementById('resultsCard').classList.add('show'); inReviewMode = false; }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); document.getElementById('backToReviewBtn').style.display = 'none'; inReviewMode = false; reviewedQuestions = []; if (timerInterval) clearInterval(timerInterval); }
+    </script>
+</body>
+</html>
