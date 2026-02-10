@@ -25,7 +25,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [security-lake-comprehensive.html](./security-lake-comprehensive.html) | **Amazon Security Lake** | 20 |
 | [guardduty-extended-threat-detection.html](./guardduty-extended-threat-detection.html) | GuardDuty Extended Threat Detection | 15 |
 
-### Domain 2: Incident Response (132 questions)
+### Domain 2: Incident Response (152 questions)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
@@ -35,6 +35,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [fault-injection-resilience-hub-comprehensive.html](./fault-injection-resilience-hub-comprehensive.html) | **Fault Injection & Resilience Hub** | 25 |
 | [application-recovery-controller-comprehensive.html](./application-recovery-controller-comprehensive.html) | **Application Recovery Controller** | 20 |
 | [forensics-orchestrator-opscenter-comprehensive.html](./forensics-orchestrator-opscenter-comprehensive.html) | **Forensics Orchestrator & OpsCenter** | 22 |
+| [shield-advanced-comprehensive.html](./shield-advanced-comprehensive.html) | **Shield Advanced** | 20 |
 
 ### Domain 3: Infrastructure Security (Complete - 83 questions!)
 
