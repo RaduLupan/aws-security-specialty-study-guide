@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fault Injection & Resilience Hub Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #f97316; --accent-secondary: #fb923c; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(249, 115, 22, 0.1); }
+        .option.selected { border-color: var(--accent-primary); border-width: 3px; background: rgba(249, 115, 22, 0.2); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25), inset 0 0 12px rgba(249, 115, 22, 0.1); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(249, 115, 22, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(249, 115, 22, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .review-section { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; border: 1px solid var(--border); display: none; }
+        .review-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .review-header { text-align: center; margin-bottom: 2rem; }
+        .review-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .review-table th { background: var(--bg-tertiary); color: var(--text-secondary); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; padding: 1rem; text-align: left; border-bottom: 2px solid var(--border); }
+        .review-table td { padding: 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .review-table tbody tr { cursor: pointer; transition: all 0.2s ease; }
+        .review-table tbody tr:hover { background: rgba(249, 115, 22, 0.1); transform: translateX(4px); }
+        .review-table tbody tr.reviewed { background: rgba(249, 115, 22, 0.25); border-left: 6px solid var(--accent-primary); box-shadow: inset 0 0 20px rgba(249, 115, 22, 0.15); }
+        .review-table tbody tr.reviewed:hover { background: rgba(249, 115, 22, 0.3); }
+        .review-table tbody tr.reviewed .review-q-num { color: var(--accent-secondary); font-weight: 800; }
+        .review-table tbody tr.reviewed .review-q-num::before { content: "✓ "; color: var(--accent-primary); font-size: 1rem; }
+        .review-q-num { font-weight: 700; color: var(--accent-primary); white-space: nowrap; }
+        .review-q-text { color: var(--text-primary); line-height: 1.6; }
+        .review-answer { font-weight: 600; }
+        .review-answer.correct { color: var(--success); }
+        .review-answer.incorrect { color: var(--error); }
+        .review-status { text-align: center; font-size: 1.25rem; }
+        .review-hint { text-align: center; color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(249, 115, 22, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 2: Incident Response (14%)</span>
+            <h1>⚡ Fault Injection & Resilience Hub</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">25</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">62:30</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">25</span></span>
+                    <span class="timer" id="timer">62:30</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+        <div class="review-section" id="reviewSection">
+            <div class="review-header">
+                <h2>Answer Review</h2>
+                <p class="results-details">Click any question to review the full answer and explanation</p>
+            </div>
+            <p class="review-hint">💡 Tip: Click on any row to see the full question and explanation in Learn mode</p>
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">#</th>
+                        <th style="width: 50%">Question</th>
+                        <th style="width: 15%">Your Answer</th>
+                        <th style="width: 15%">Correct Answer</th>
+                        <th style="width: 10%">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+            </table>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="backToResults()">← Back to Results</button>
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { id: 1, question: "What is the primary purpose of AWS Fault Injection Service (FIS)?", options: ["To simulate load for capacity planning and performance testing of applications", "To perform fault injection experiments on AWS workloads to uncover application issues and improve resiliency", "To automatically detect and remediate security vulnerabilities in EC2 instances", "To provide disaster recovery failover testing between AWS Regions"], correct: 1, explanation: "AWS FIS enables fault injection experiments based on chaos engineering principles. It creates disruptive events to stress applications so you can observe responses and improve performance and resiliency.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/what-is.html" },
+            { id: 2, question: "Which three components define an AWS FIS experiment template?", options: ["Regions, accounts, and duration", "Actions, targets, and stop conditions", "Alarms, metrics, and dashboards", "Policies, roles, and permissions"], correct: 1, explanation: "An experiment template contains actions (fault injection activities), targets (AWS resources to act upon), and stop conditions (CloudWatch alarms to halt the experiment if thresholds are exceeded).", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/what-is.html" },
+            { id: 3, question: "How does AWS FIS implement stop conditions to run experiments safely?", options: ["FIS stops when a predefined duration elapses; there are no external triggers", "A stop condition uses a CloudWatch alarm—when the alarm triggers, FIS stops the experiment automatically", "FIS requires manual approval from an operator before continuing past each action", "Stop conditions use AWS Config rules to detect non-compliance and halt the experiment"], correct: 1, explanation: "Stop conditions are mechanisms that stop an experiment when a CloudWatch alarm reaches a threshold you define. You cannot resume a stopped experiment.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/stop-conditions.html" },
+            { id: 4, question: "For single-account AWS FIS experiments, where must target resources be located?", options: ["Target resources can be in any AWS account; FIS supports cross-account by default", "Target resources must be in the same AWS account as the experiment", "Target resources must be in a dedicated FIS testing account created by AWS", "Target resources can be on-premises if connected via Direct Connect"], correct: 1, explanation: "For single-account experiments, target resources must be in the same AWS account as the experiment. Multi-account experiments use a different capability to target resources in other accounts.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/what-is.html" },
+            { id: 5, question: "What AWS recommendation should you follow before running FIS experiments in production?", options: ["Disable all CloudWatch alarms to prevent false stops during the experiment", "Complete a planning phase and run experiments in a pre-production environment first", "Run experiments during business hours to maximize observability", "Use only the aws:fis:recovery action to ensure automatic rollback"], correct: 1, explanation: "FIS carries out real actions on real resources. AWS strongly recommends completing a planning phase and running experiments in pre-production before production use.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/what-is.html" },
+            { id: 6, question: "How is AWS FIS priced?", options: ["Per experiment run, with a flat fee per template", "Per minute that an action runs, based on the number of target accounts", "Per target resource affected, regardless of duration", "FIS is included at no charge with AWS Support Business or Enterprise"], correct: 1, explanation: "You are charged per minute that an action runs, from start to finish, based on the number of target accounts for your experiment.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/what-is.html" },
+            { id: 7, question: "Which FIS action allows you to create custom fault conditions using SSM documents?", options: ["aws:fis:inject-api-internal-error", "aws:ssm:send-command with a custom documentArn parameter", "aws:fis:custom-fault", "aws:ec2:stop-instances with fault-type parameter"], correct: 1, explanation: "AWS FIS supports custom fault types using aws:ssm:send-command, which uses the SSM Agent and an SSM command document to create the fault condition on targeted instances. The documentArn parameter specifies the ARN of the SSM document.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/action-sequence.html" },
+            { id: 8, question: "How can FIS actions be executed within a single experiment?", options: ["Only sequentially; parallel execution is not supported", "Sequentially or simultaneously (in parallel) using the startAfter parameter", "Only in parallel; sequential order is not configurable", "Actions run in random order to simulate real-world unpredictability"], correct: 1, explanation: "Actions can run sequentially or in parallel. The startAfter parameter specifies which actions must complete before another action can start; otherwise the action runs at experiment start.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/action-sequence.html" },
+            { id: 9, question: "What is a post action (rollback configuration) in AWS FIS?", options: ["A backup of the target resource taken before the experiment starts", "A mechanism that returns the target to its state before the action, running after the action duration", "An optional CloudWatch alarm that triggers automatic remediation", "A Lambda function that runs when the experiment completes successfully"], correct: 1, explanation: "A post action (rollback) returns the target to its state before the action ran. It runs after the time specified in the action duration. Not all actions support post actions—for example, terminating an EC2 instance cannot be reversed.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/action-sequence.html" },
+            { id: 10, question: "Which aws:fis action injects throttling errors into API requests made by a target IAM role?", options: ["aws:fis:inject-api-internal-error", "aws:fis:inject-api-throttle-error", "aws:fis:inject-api-unavailable-error", "aws:fis:inject-api-timeout"], correct: 1, explanation: "aws:fis:inject-api-throttle-error injects throttling errors into requests made by the target IAM role. Supported services include ec2 and kinesis.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/fis-actions-reference.html" },
+            { id: 11, question: "What are the four phases of how AWS Resilience Hub works?", options: ["Import, Configure, Test, Report", "Describe, Define, Assess, Validate", "Create, Deploy, Monitor, Recover", "Design, Build, Run, Analyze"], correct: 1, explanation: "Resilience Hub works in phases: Describe (import resources), Define (resiliency policies with RTO/RPO), Assess (run assessments), and Validate (run FIS tests to measure recovery).", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/arh-mgmt.html" },
+            { id: 12, question: "From which sources can you describe your application in AWS Resilience Hub?", options: ["Only from AWS CloudFormation stacks", "Only from Terraform state files", "CloudFormation stacks, Terraform state, AWS Resource Groups, EKS clusters, or myApplications", "Only from AWS Config aggregated findings"], correct: 2, explanation: "You can describe applications by importing from CloudFormation stacks, Terraform state files, AWS Resource Groups, Amazon EKS clusters, or applications in myApplications.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/arh-mgmt.html" },
+            { id: 13, question: "What do RTO and RPO represent in a Resilience Hub resiliency policy?", options: ["RTO is replication frequency; RPO is recovery frequency", "RTO is recovery time objective; RPO is recovery point objective—both determine policy compliance", "RTO is the maximum region outage tolerance; RPO is the minimum data redundancy", "RTO and RPO are AWS-defined constants and cannot be customized"], correct: 1, explanation: "RTO (recovery time objective) and RPO (recovery point objective) are targets you define. The assessment evaluates whether your application meets these targets for different disruption types.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/resiliency-policies.html" },
+            { id: 14, question: "For which disruption types does Resilience Hub measure resiliency using RTO and RPO?", options: ["Only application and infrastructure", "Application, Cloud infrastructure, Cloud infrastructure Availability Zone, and Cloud infrastructure Region", "Only Region-level disruptions", "Software, hardware, network, and database only"], correct: 1, explanation: "Resilience Hub measures resiliency for: Application (loss of software/service), Cloud infrastructure (hardware/EC2), AZ (one or more AZs unavailable), and Region (one or more Regions unavailable).", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/resiliency-policies.html" },
+            { id: 15, question: "What happens if you set RTO and RPO to zero in a resiliency policy?", options: ["The application receives a perfect resiliency score of 100", "The lowest possible assessment result is near zero, and the application will be marked as Policy breached", "The policy is invalid and cannot be saved", "Resilience Hub will recommend the minimum achievable values instead"], correct: 1, explanation: "You can enter zero, but the lowest possible assessment result is near zero. If you enter zero, estimated workload RTO/RPO will be near zero and Compliance status will be Policy breached.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/resiliency-policies.html" },
+            { id: 16, question: "What are the standard resiliency policy tiers in AWS Resilience Hub?", options: ["Low, Medium, High, Critical", "Basic, Standard, Premium, Enterprise", "Foundational IT core services, Mission critical, Critical, Important, and Non-critical", "Tier 1 through Tier 5 with predefined RTO/RPO values"], correct: 2, explanation: "Standard tiers include Foundational IT core services, Mission critical, Critical, Important, and Non-critical. You choose the tier appropriate for your application class.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/resiliency-policies.html" },
+            { id: 17, question: "What three types of recommendations does a Resilience Hub assessment provide?", options: ["Cost, performance, and security recommendations", "Alarm, SOP, and test recommendations", "Guardrail, policy, and compliance recommendations", "Backup, replication, and failover recommendations"], correct: 1, explanation: "Assessments provide alarm recommendations (detect outages), SOP recommendations (recovery procedures/scripts), and test recommendations (verify configurations work).", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/resil-assessments.html" },
+            { id: 18, question: "How does AWS Resilience Hub achieve a resiliency score of 100?", options: ["By having no recommended actions; a clean assessment gives 100", "By implementing all recommended alarms, SOPs, and tests and having them perform successfully", "By setting RTO and RPO to their maximum values", "By using only AWS managed services in the application"], correct: 1, explanation: "The top score is 100. To achieve it, you must implement all recommended alarms, SOPs, and tests. If the test runs, alarm fires, SOP executes, and the application meets the policy, the score approaches or equals 100.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/resil-score.html" },
+            { id: 19, question: "How does Resilience Hub integrate with AWS FIS?", options: ["Resilience Hub replaces FIS for all chaos testing; FIS is not used", "Resilience Hub experiments are built using FIS and execute FIS actions to simulate disruptions", "FIS is used only for alarm testing; Resilience Hub has its own experiment engine", "Resilience Hub sends recommendations to FIS; FIS runs experiments independently"], correct: 1, explanation: "All experiments in Resilience Hub are built using AWS FIS and execute FIS actions. They simulate disruptions (e.g., network errors, failovers, stopped processes) to measure recovery time.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/testing.html" },
+            { id: 20, question: "What is an SOP (Standard Operating Procedure) in Resilience Hub?", options: ["A security policy document that defines access controls for the application", "A prescriptive set of steps to recover the application in the event of an outage or alarm", "A compliance checklist that must be completed before deployment", "An automated backup schedule defined in the resiliency policy"], correct: 1, explanation: "An SOP is a prescriptive set of steps to efficiently recover your application during an outage. Resilience Hub recommends SOPs based on Application Components and works with Systems Manager to automate steps via SSM documents.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/sops.html" },
+            { id: 21, question: "How can you proactively test an SOP in Resilience Hub?", options: ["Resilience Hub does not support SOP testing; only manual verification is possible", "Use the recommended AWS FIS experiment that calls the SSM automation document", "Run a resiliency assessment; it automatically executes all SOPs", "Use AWS Config remediation to trigger the SOP on a schedule"], correct: 1, explanation: "Resilience Hub provides an FIS experiment that calls the SSM automation document, allowing you to proactively test that the SOP performs as intended before an actual outage.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/sops.html" },
+            { id: 22, question: "What does AWS recommend for validating builds before production deployment?", options: ["Run manual resiliency assessments quarterly", "Add Resilience Hub to your CI/CD pipeline to validate every build before release", "Use FIS only in production during maintenance windows", "Export assessment reports to S3 for compliance auditing only"], correct: 1, explanation: "After deploying to production, you can add Resilience Hub to your CI/CD pipeline to validate every build before it is released into production.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/arh-mgmt.html" },
+            { id: 23, question: "What impact does excluding operational recommendations have on the resiliency score?", options: ["Excluded recommendations do not affect the score", "You must run a new assessment to see the impact of excluded recommendations on the score", "Excluded recommendations automatically increase the score", "Excluding recommendations invalidates the entire assessment"], correct: 1, explanation: "You can exclude operational recommendations from your application. To understand the impact on the resiliency score, you must run a new assessment. You can always include excluded recommendations again and re-assess.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/resil-score.html" },
+            { id: 24, question: "What does Resilience Hub provide when you generate recommendations from an assessment?", options: ["A PDF report only", "A CloudFormation template you can add to your application code base", "Direct deployment of resources into your account without review", "Integration with Amazon SageMaker for ML-based recommendations"], correct: 1, explanation: "Resilience Hub provides recommendations as a CloudFormation template you can add to your application codebase. The template includes IAM roles, FIS experiments for testing SOPs, and SSM parameters.", docLink: "https://docs.aws.amazon.com/resilience-hub/latest/userguide/sops.html" },
+            { id: 25, question: "Which FIS action identifier format correctly stops target Amazon EC2 instances?", options: ["aws:fis:stop-ec2-instances", "aws:ec2:stop-instances", "ec2:StopInstances", "aws:fis:ec2:stop"], correct: 1, explanation: "FIS action identifiers use the format aws:service-name:action-type. For stopping EC2 instances, the action is aws:ec2:stop-instances.", docLink: "https://docs.aws.amazon.com/fis/latest/userguide/action-sequence.html" }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], answersRevealed = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0, inReviewMode = false, reviewedQuestions = [];
+        function shuffleArray(a) { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); inReviewMode = false; reviewedQuestions = []; document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; document.getElementById('backToReviewBtn').style.display = 'none'; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">FIS & Resilience Hub</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function selectOption(i) { if (currentMode === 'learn' && answersRevealed[currentQuestion]) return; userAnswers[currentQuestion] = i; renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; answersRevealed[currentQuestion] = true; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = 'results-score ' + (pass ? 'pass' : 'fail'); document.getElementById('resultStatus').textContent = pass ? '🎉 PASSED!' : '📚 Keep Studying'; document.getElementById('resultStatus').className = 'results-status ' + (pass ? 'pass' : 'fail'); document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function showReview() { const letters = ['A','B','C','D']; const tbody = document.getElementById('reviewTableBody'); tbody.innerHTML = shuffledQuestions.map((q, i) => { const userAns = userAnswers[i]; const isCorrect = userAns === q.correct; const userLetter = userAns !== null && userAns >= 0 ? letters[userAns] : 'No Answer'; const correctLetter = letters[q.correct]; const statusIcon = isCorrect ? '✓' : '✗'; const statusClass = isCorrect ? 'correct' : 'incorrect'; const qText = q.question.length > 120 ? q.question.substring(0, 120) + '...' : q.question; const reviewedClass = reviewedQuestions.includes(i) ? 'reviewed' : ''; return `<tr class="${reviewedClass}" onclick="reviewQuestion(${i})"><td class="review-q-num">${i + 1}</td><td class="review-q-text">${qText}</td><td class="review-answer ${userAns === q.correct ? 'correct' : 'incorrect'}">${userLetter}</td><td class="review-answer correct">${correctLetter}</td><td class="review-status ${statusClass}">${statusIcon}</td></tr>`; }).join(''); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.add('show'); inReviewMode = true; }
+        function reviewQuestion(qIndex) { if (!reviewedQuestions.includes(qIndex)) { reviewedQuestions.push(qIndex); } currentMode = 'learn'; currentQuestion = qIndex; answersRevealed[qIndex] = true; document.getElementById('reviewSection').classList.remove('show'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').style.display = 'none'; document.getElementById('backToReviewBtn').style.display = 'inline-block'; if (timerInterval) clearInterval(timerInterval); renderQuestion(); }
+        function backToReview() { document.getElementById('quizContent').classList.add('hidden'); showReview(); }
+        function backToResults() { document.getElementById('reviewSection').classList.remove('show'); document.getElementById('resultsCard').classList.add('show'); inReviewMode = false; }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); document.getElementById('backToReviewBtn').style.display = 'none'; inReviewMode = false; reviewedQuestions = []; if (timerInterval) clearInterval(timerInterval); }
+    </script>
+</body>
+</html>

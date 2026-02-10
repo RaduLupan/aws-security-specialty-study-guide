@@ -14,24 +14,25 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 
 ## Available Quizzes
 
-### Domain 1: Detection (Complete - 150 questions!)
+### Domain 1: Detection (130 questions)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
 | [security-hub-comprehensive.html](./security-hub-comprehensive.html) | **AWS Security Hub (All Topics)** | 25 |
 | [guardduty-comprehensive.html](./guardduty-comprehensive.html) | **Amazon GuardDuty (All Topics)** | 25 |
-| [detective-comprehensive.html](./detective-comprehensive.html) | **Amazon Detective (All Topics)** | 20 |
 | [cloudtrail-comprehensive.html](./cloudtrail-comprehensive.html) | **AWS CloudTrail (All Topics)** | 25 |
 | [cloudwatch-security-comprehensive.html](./cloudwatch-security-comprehensive.html) | **Amazon CloudWatch Security** | 20 |
 | [security-lake-comprehensive.html](./security-lake-comprehensive.html) | **Amazon Security Lake** | 20 |
 | [guardduty-extended-threat-detection.html](./guardduty-extended-threat-detection.html) | GuardDuty Extended Threat Detection | 15 |
 
-### Domain 2: Incident Response (Complete - 45 questions!)
+### Domain 2: Incident Response (90 questions)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
 | [incident-response-fundamentals.html](./incident-response-fundamentals.html) | **Incident Response Fundamentals** | 25 |
 | [automated-remediation.html](./automated-remediation.html) | **Automated Remediation** | 20 |
+| [detective-comprehensive.html](./detective-comprehensive.html) | **Amazon Detective** | 20 |
+| [fault-injection-resilience-hub-comprehensive.html](./fault-injection-resilience-hub-comprehensive.html) | **Fault Injection & Resilience Hub** | 25 |
 
 ### Domain 3: Infrastructure Security (Complete - 83 questions!)
 
