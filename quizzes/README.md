@@ -37,7 +37,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [forensics-orchestrator-opscenter-comprehensive.html](./forensics-orchestrator-opscenter-comprehensive.html) | **Forensics Orchestrator & OpsCenter** | 22 |
 | [shield-advanced-comprehensive.html](./shield-advanced-comprehensive.html) | **Shield Advanced** | 20 |
 
-### Domain 3: Infrastructure Security (Complete - 83 questions!)
+### Domain 3: Infrastructure Security (Complete - 103 questions!)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
@@ -45,6 +45,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [waf-comprehensive.html](./waf-comprehensive.html) | **AWS WAF** | 20 |
 | [shield-ddos-comprehensive.html](./shield-ddos-comprehensive.html) | **AWS Shield & DDoS Protection** | 18 |
 | [network-firewall-comprehensive.html](./network-firewall-comprehensive.html) | **AWS Network Firewall** | 20 |
+| [inspector-comprehensive.html](./inspector-comprehensive.html) | **Amazon Inspector** | 20 |
 
 ### Domain 4: Identity & Access Management (Complete - 83 questions!)
 
