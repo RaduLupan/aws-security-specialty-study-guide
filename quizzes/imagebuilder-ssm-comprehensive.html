@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Image Builder & Systems Manager Quiz | AWS Security Specialty (SCS-C03)</title>
+    <style>
+        :root { --bg-primary: #0a0e17; --bg-secondary: #141b2d; --bg-tertiary: #1a2236; --text-primary: #e2e8f0; --text-secondary: #94a3b8; --accent-primary: #3b82f6; --accent-secondary: #60a5fa; --success: #22c55e; --error: #ef4444; --warning: #eab308; --info: #3b82f6; --border: #2d3a52; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+        header { text-align: center; margin-bottom: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%); border-radius: 16px; border: 1px solid var(--border); }
+        .badge { display: inline-block; background: var(--accent-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; }
+        h1 { font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+        .stats-bar { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .stat { text-align: center; } .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent-primary); } .stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; }
+        .mode-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem; }
+        .mode-btn { padding: 0.75rem 2rem; border: 2px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); border-radius: 8px; cursor: pointer; font-size: 1rem; transition: all 0.3s ease; }
+        .mode-btn:hover { border-color: var(--accent-primary); background: var(--bg-tertiary); }
+        .progress-container { background: var(--bg-secondary); border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .progress-text { font-size: 0.875rem; color: var(--text-secondary); }
+        .timer { font-size: 1.25rem; font-weight: 600; color: var(--accent-primary); font-family: 'Consolas', monospace; }
+        .timer.warning { color: var(--warning); animation: pulse 1s infinite; } .timer.danger { color: var(--error); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .progress-bar { height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary)); border-radius: 4px; transition: width 0.3s ease; }
+        .question-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+        .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .question-number { background: var(--bg-tertiary); color: var(--accent-primary); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; }
+        .question-domain { font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; }
+        .question-text { font-size: 1.125rem; margin-bottom: 1.5rem; line-height: 1.7; }
+        .options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+        .option:hover:not(.disabled) { border-color: var(--accent-primary); background: rgba(59, 130, 246, 0.1); }
+        .option.selected { border-color: var(--accent-primary); background: rgba(59, 130, 246, 0.15); }
+        .option.correct { border-color: var(--success); background: rgba(34, 197, 94, 0.15); }
+        .option.incorrect { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
+        .option.disabled { cursor: default; }
+        .option-marker { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+        .option.selected .option-marker { border-color: var(--accent-primary); background: var(--accent-primary); color: white; }
+        .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
+        .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
+        .option-text { flex: 1; padding-top: 2px; }
+        .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
+        .explanation.show { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .explanation-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--info); }
+        .answer-header { font-weight: 600; color: var(--success); margin-bottom: 0.5rem; }
+        .explanation-text { color: var(--text-secondary); margin-bottom: 1rem; }
+        .doc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 6px; }
+        .doc-link:hover { background: rgba(59, 130, 246, 0.2); }
+        .btn-container { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent-primary); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-card { background: var(--bg-secondary); border-radius: 16px; padding: 2rem; text-align: center; border: 1px solid var(--border); display: none; }
+        .results-card.show { display: block; animation: fadeIn 0.5s ease; }
+        .results-score { font-size: 4rem; font-weight: 700; margin: 1rem 0; }
+        .results-score.pass { color: var(--success); } .results-score.fail { color: var(--error); }
+        .results-status { font-size: 1.5rem; margin-bottom: 1rem; }
+        .results-status.pass { color: var(--success); } .results-status.fail { color: var(--error); }
+        .results-details { color: var(--text-secondary); margin-bottom: 2rem; }
+        .results-breakdown { display: flex; justify-content: center; gap: 3rem; margin-bottom: 2rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; }
+        .breakdown-item { text-align: center; } .breakdown-value { font-size: 2rem; font-weight: 700; } .breakdown-value.correct { color: var(--success); } .breakdown-value.incorrect { color: var(--error); } .breakdown-label { font-size: 0.875rem; color: var(--text-secondary); }
+        .hidden { display: none !important; }
+        .shuffle-notice { text-align: center; padding: 0.75rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; margin-bottom: 1.5rem; color: var(--accent-secondary); font-size: 0.875rem; }
+        .review-section { display: none; }
+        .review-section.show { display: block; animation: fadeIn 0.5s ease; }
+        .review-header { text-align: center; margin-bottom: 2rem; }
+        .review-hint { text-align: center; color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.875rem; }
+        .review-table { width: 100%; background: var(--bg-secondary); border-radius: 12px; border: 1px solid var(--border); margin-bottom: 2rem; border-collapse: separate; border-spacing: 0; overflow: hidden; }
+        .review-table thead { background: var(--bg-tertiary); }
+        .review-table th { padding: 1rem; text-align: left; font-weight: 600; color: var(--accent-primary); border-bottom: 2px solid var(--border); }
+        .review-table tbody tr { cursor: pointer; transition: all 0.2s ease; border-bottom: 1px solid var(--border); }
+        .review-table tbody tr:hover { background: rgba(59, 130, 246, 0.1); }
+        .review-table tbody tr.reviewed { background: rgba(59, 130, 246, 0.05); }
+        .review-table td { padding: 1rem; color: var(--text-secondary); }
+        .review-table tbody tr:last-child { border-bottom: none; }
+        .btn-group { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        @media (max-width: 640px) { .container { padding: 1rem; } h1 { font-size: 1.5rem; } .stats-bar { gap: 1rem; } .mode-selector, .btn-container, .results-breakdown, .btn-group { flex-direction: column; } .review-table { font-size: 0.875rem; } .review-table th, .review-table td { padding: 0.5rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="badge">Domain 3: Infrastructure Security (26%)</span>
+            <h1>🖼️ EC2 Image Builder & Systems Manager</h1>
+            <p class="subtitle">Comprehensive Quiz for AWS Security Specialty (SCS-C03)</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">20</div><div class="stat-label">Questions</div></div>
+                <div class="stat"><div class="stat-value">80%</div><div class="stat-label">Pass Score</div></div>
+                <div class="stat"><div class="stat-value">50:00</div><div class="stat-label">Exam Time</div></div>
+            </div>
+        </header>
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-btn" onclick="startQuiz('learn')">📚 Learn Mode</button>
+            <button class="mode-btn" onclick="startQuiz('exam')">⏱️ Exam Mode</button>
+        </div>
+        <div id="quizContent" class="hidden">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-text">Question <span id="currentQ">1</span> of <span id="totalQ">20</span></span>
+                    <span class="timer" id="timer">50:00</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+            </div>
+            <div class="shuffle-notice" id="shuffleNotice">🔀 Questions and options have been randomized</div>
+            <div id="questionsContainer"></div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)" disabled>← Previous</button>
+                <button class="btn btn-secondary" id="backToReviewBtn" onclick="backToReview()" style="display: none;">← Back to Review</button>
+                <button class="btn btn-secondary" id="shuffleBtn" onclick="shuffleQuiz()">🔀 Shuffle</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="navigate(1)">Next →</button>
+            </div>
+        </div>
+        <div class="results-card" id="resultsCard">
+            <h2>Quiz Complete!</h2>
+            <div class="results-score" id="scorePercent">0%</div>
+            <div class="results-status" id="resultStatus">-</div>
+            <p class="results-details" id="resultDetails"></p>
+            <div class="results-breakdown">
+                <div class="breakdown-item"><div class="breakdown-value correct" id="correctCount">0</div><div class="breakdown-label">Correct</div></div>
+                <div class="breakdown-item"><div class="breakdown-value incorrect" id="incorrectCount">0</div><div class="breakdown-label">Incorrect</div></div>
+            </div>
+            <div class="btn-group" id="resultsButtons">
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
+                <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+        <div class="review-section" id="reviewSection">
+            <div class="review-header">
+                <h2>Answer Review</h2>
+                <p class="results-details">Click any question to review the full answer and explanation</p>
+            </div>
+            <p class="review-hint">💡 Tip: Click on any row to see the full question and explanation in Learn mode</p>
+            <table class="review-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">#</th>
+                        <th style="width: 50%">Question</th>
+                        <th style="width: 15%">Your Answer</th>
+                        <th style="width: 15%">Correct Answer</th>
+                        <th style="width: 10%">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+            </table>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="backToResults()">← Back to Results</button>
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Restart Quiz</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { id: 1, question: "What is the primary purpose of EC2 Image Builder?", options: ["To manage EC2 instance scaling", "To automate the creation, management, and deployment of customized, secure server images", "To monitor EC2 instance performance", "To configure EC2 instance networking"], correct: 1, explanation: "EC2 Image Builder is a fully managed AWS service that automates the creation, management, and deployment of customized, secure, and up-to-date server images (AMIs and container images). It helps you maintain consistent, compliant images across your infrastructure.", docLink: "https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html" },
+            { id: 2, question: "Which components make up an EC2 Image Builder pipeline?", options: ["Only image recipe and distribution settings", "Image recipe, infrastructure configuration, and distribution configuration", "Only base AMI and components", "Build instance type and security groups only"], correct: 1, explanation: "An Image Builder pipeline consists of three main components: an image recipe (defines base image and components), infrastructure configuration (defines where/how to build), and distribution configuration (defines how to distribute the resulting image across Regions and accounts).", docLink: "https://docs.aws.amazon.com/imagebuilder/latest/userguide/how-image-builder-works.html" },
+            { id: 3, question: "What types of images can EC2 Image Builder create?", options: ["Only Amazon Machine Images (AMIs)", "Only Docker container images", "Both AMIs and Docker container images", "Only EC2 instance snapshots"], correct: 2, explanation: "EC2 Image Builder can create both Amazon Machine Images (AMIs) for EC2 instances and Docker container images for Amazon ECR. You can choose your base image from existing AMIs, public Docker images on DockerHub, or Amazon-managed container images.", docLink: "https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html" },
+            { id: 4, question: "How can you share EC2 Image Builder resources with other AWS accounts?", options: ["Only through manual copying", "Using AWS Resource Access Manager (AWS RAM)", "By making all resources public", "Sharing is not supported"], correct: 1, explanation: "EC2 Image Builder integrates with AWS Resource Access Manager (AWS RAM) to share specific resources (components, images, image recipes, and container recipes) with any AWS account or through AWS Organizations, enabling centralized image management.", docLink: "https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html" },
+            { id: 5, question: "What security feature does EC2 Image Builder provide for regulated industries?", options: ["Automatic vulnerability patching", "Pre-configured STIG hardening components", "Real-time threat detection", "DDoS protection"], correct: 1, explanation: "Image Builder provides collections of Amazon-managed STIG (Security Technical Implementation Guide) hardening components for companies in regulated industries. These settings help you quickly build compliant images that meet STIG standards without manual configuration.", docLink: "https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html" },
+            { id: 6, question: "What is AWS Systems Manager Patch Manager primarily designed to do?", options: ["Monitor system performance", "Automate the process of patching managed nodes with security and other updates", "Manage IAM permissions", "Configure network settings"], correct: 1, explanation: "Patch Manager automates the process of patching managed nodes (EC2 instances, edge devices, on-premises servers, and VMs) with both security-related updates and other types of updates. It provides centralized control, compliance reporting, and cross-platform support.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" },
+            { id: 7, question: "What is a patch baseline in Patch Manager?", options: ["A backup of system configuration before patching", "A configuration that defines rules for which patches are approved for installation", "A list of all available patches", "A schedule for running patch operations"], correct: 1, explanation: "A patch baseline is a configuration that specifies rules for auto-approving patches within days of their release, along with approved and rejected patch lists. It defines what constitutes patch compliance for managed nodes in your organization, not AWS or OS vendors.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" },
+            { id: 8, question: "What is the recommended method for configuring patching operations in Patch Manager?", options: ["Manual patching through SSH", "Patch policies in Quick Setup", "Custom Lambda functions", "Direct API calls"], correct: 1, explanation: "Patch policies in Quick Setup is the recommended method. Using a single patch policy configuration, you can define patching for all accounts in all Regions in your organization, for only the accounts and Regions you choose, or for a single account-Region pair.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" },
+            { id: 9, question: "Can Patch Manager upgrade major versions of operating systems?", options: ["Yes, for all operating systems", "Yes, but only for Linux distributions", "No, major OS version upgrades are not supported", "Yes, but only for Windows Server"], correct: 2, explanation: "Patch Manager does NOT support upgrading major versions of operating systems, such as Windows Server 2016 to 2019, or RHEL 7 to RHEL 8. It's designed for patch management and minor version upgrades on Linux, not major OS version migrations.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" },
+            { id: 10, question: "What types of managed nodes can Patch Manager patch?", options: ["Only EC2 instances", "Only on-premises servers", "EC2 instances, edge devices, on-premises servers, and virtual machines", "Only Linux-based systems"], correct: 2, explanation: "Patch Manager can patch fleets of Amazon EC2 instances, edge devices, on-premises servers, and virtual machines (VMs) by operating system type. This includes multiple supported operating systems: Windows Server, various Linux distributions, and macOS.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" },
+            { id: 11, question: "What is the primary security benefit of AWS Systems Manager Session Manager?", options: ["Faster SSH connections", "Secure node management without open inbound ports, bastion hosts, or SSH keys", "Automatic patching of vulnerabilities", "Built-in antivirus scanning"], correct: 1, explanation: "Session Manager's main security benefit is enabling secure node management without opening inbound SSH/RDP ports, maintaining bastion hosts, or managing SSH keys. This reduces attack surface by closing inbound ports while providing centralized IAM-based access control.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html" },
+            { id: 12, question: "How does Session Manager control access to managed nodes?", options: ["Using SSH keys stored in S3", "Through IAM policies only", "Using bastion host credentials", "Through network ACLs"], correct: 1, explanation: "Session Manager provides centralized access control through IAM policies only. Administrators grant or revoke access to managed nodes using IAM policies, controlling which users/groups can use Session Manager and which nodes they can access, eliminating SSH key management.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html" },
+            { id: 13, question: "What types of nodes can you connect to using Session Manager?", options: ["Only EC2 instances in your AWS account", "Only on-premises servers", "Both EC2 instances and non-EC2 nodes in hybrid/multicloud environments", "Only Windows Server instances"], correct: 2, explanation: "Session Manager can connect to both Amazon EC2 instances and non-EC2 managed nodes in hybrid and multicloud environments. For non-EC2 nodes, you must activate the advanced-instances tier (which has a charge), but there's no additional charge for EC2 instances.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html" },
+            { id: 14, question: "What Session Manager feature allows you to access applications running inside a managed node?", options: ["SSH tunneling", "Port forwarding", "VPN connection", "Direct application access"], correct: 1, explanation: "Port forwarding allows you to redirect any port inside your managed node to a local port on your client. After that, you can connect to the local port and access server applications running inside the node without opening inbound ports on the instance.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html" },
+            { id: 15, question: "Which services can Session Manager integrate with for logging session activity?", options: ["Only CloudTrail", "Only S3", "CloudTrail, S3, CloudWatch Logs, and EventBridge with SNS", "Only CloudWatch Logs"], correct: 2, explanation: "Session Manager integrates with multiple AWS services for logging: CloudTrail (API calls), Amazon S3 (session log data), CloudWatch Logs (monitoring and debugging), and EventBridge with SNS (notifications for session start/stop events). This provides comprehensive audit capabilities.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html" },
+            { id: 16, question: "What is a key limitation of Session Manager logging?", options: ["Cannot log to S3", "Logging is not available for port forwarding or SSH connections", "Only logs connection time, not commands", "Cannot log Windows sessions"], correct: 1, explanation: "Logging is NOT available for Session Manager sessions that connect through port forwarding or SSH. This is because SSH encrypts all session data within the secure TLS connection, and Session Manager only serves as a tunnel for SSH connections, making logging impossible.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html" },
+            { id: 17, question: "In EC2 Image Builder, what are build components used for?", options: ["To define instance types for building", "To customize settings and scripts applied to the base image", "To distribute images across Regions", "To test the final image"], correct: 1, explanation: "Build components are scripts and customizations that Image Builder applies to your base image. They can add/remove software, customize settings, apply security configurations, and run scripts. Components are reusable building blocks that you can version and share.", docLink: "https://docs.aws.amazon.com/imagebuilder/latest/userguide/how-image-builder-works.html" },
+            { id: 18, question: "What validation capability does EC2 Image Builder provide before distributing images?", options: ["Only security scans", "Test components for validating images before distribution", "Manual approval only", "Automatic rollback only"], correct: 1, explanation: "Image Builder provides test components that you can use to validate images before deployment. You can use AWS-provided test components or create custom test components with AWSTOE. Image Builder only distributes your image if all configured tests succeed, ensuring quality and compliance.", docLink: "https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html" },
+            { id: 19, question: "What is a maintenance window in the context of Patch Manager?", options: ["The time patches are downloaded", "A scheduled period for performing patching operations on managed nodes", "The time between patch releases", "The instance reboot time"], correct: 1, explanation: "A maintenance window is a scheduled time period where patching operations (and other Systems Manager tasks) are executed on managed nodes. You can define maintenance windows with specific schedules, durations, and targets to control when patching occurs and minimize operational impact.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" },
+            { id: 20, question: "When using Session Manager, which AWS service role provides the necessary permissions for SSM Agent to communicate with Systems Manager?", options: ["AmazonEC2RoleforSSM", "AmazonSSMManagedInstanceCore", "AWSServiceRoleForAmazonSSM", "EC2InstanceProfileForSSM"], correct: 1, explanation: "AmazonSSMManagedInstanceCore is the AWS managed policy that provides the minimum permissions required for EC2 instances to communicate with Systems Manager. It should be attached to the IAM instance profile associated with your EC2 instances to enable Session Manager functionality.", docLink: "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-getting-started-instance-profile.html" }
+        ];
+
+        let currentMode = 'learn', currentQuestion = 0, userAnswers = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0, reviewedQuestions = new Set();
+        function shuffleArray(a) { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; }
+        function shuffleQuestionOptions(q) { const idx = shuffleArray([0,1,2,3]); return { ...q, options: idx.map(i => q.options[i]), correct: idx.indexOf(q.correct) }; }
+        function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); reviewedQuestions.clear(); document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
+        function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
+        function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && ans !== null) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${ans !== null ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Image Builder / SSM</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && ans === null ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; document.getElementById('backToReviewBtn').style.display = 'none'; document.getElementById('prevBtn').style.display = 'block'; document.getElementById('shuffleBtn').style.display = currentMode === 'learn' ? 'block' : 'none'; }
+        function selectOption(i) { if (currentMode === 'learn' && userAnswers[currentQuestion] !== null) return; userAnswers[currentQuestion] = i; if (currentMode === 'exam') renderQuestion(); }
+        function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; renderQuestion(); }
+        function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
+        function shuffleQuiz() { if (currentMode !== 'learn') return; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); reviewedQuestions.clear(); renderQuestion(); }
+        function showResults() { if (timerInterval) clearInterval(timerInterval); let correct = shuffledQuestions.reduce((c, q, i) => c + (userAnswers[i] === q.correct ? 1 : 0), 0); const total = shuffledQuestions.length, pct = Math.round((correct / total) * 100), pass = pct >= 80; document.getElementById('quizContent').classList.add('hidden'); document.getElementById('resultsCard').classList.add('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('scorePercent').textContent = pct + '%'; document.getElementById('scorePercent').className = 'results-score ' + (pass ? 'pass' : 'fail'); document.getElementById('resultStatus').textContent = pass ? '🎉 PASSED!' : '📚 Keep Studying'; document.getElementById('resultStatus').className = 'results-status ' + (pass ? 'pass' : 'fail'); document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly.`; document.getElementById('correctCount').textContent = correct; document.getElementById('incorrectCount').textContent = total - correct; }
+        function showReview() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.add('show'); const tbody = document.getElementById('reviewTableBody'), letters = ['A','B','C','D']; tbody.innerHTML = shuffledQuestions.map((q, i) => { const userAns = userAnswers[i], correct = userAns === q.correct, status = correct ? '✅' : '❌', userLetter = userAns >= 0 ? letters[userAns] : '-', correctLetter = letters[q.correct]; return `<tr onclick="reviewQuestion(${i})" class="${reviewedQuestions.has(i) ? 'reviewed' : ''}"><td>${i + 1}</td><td>${q.question.substring(0, 80)}${q.question.length > 80 ? '...' : ''}</td><td>${userLetter}</td><td>${correctLetter}</td><td>${status}</td></tr>`; }).join(''); }
+        function reviewQuestion(i) { reviewedQuestions.add(i); currentQuestion = i; currentMode = 'learn'; if (userAnswers[i] === null) userAnswers[i] = -1; document.getElementById('reviewSection').classList.remove('show'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('backToReviewBtn').style.display = 'block'; document.getElementById('prevBtn').style.display = 'none'; document.getElementById('shuffleBtn').style.display = 'none'; renderQuestion(); }
+        function backToReview() { showReview(); }
+        function backToResults() { document.getElementById('reviewSection').classList.remove('show'); document.getElementById('resultsCard').classList.add('show'); }
+        function restartQuiz() { document.getElementById('resultsCard').classList.remove('show'); document.getElementById('reviewSection').classList.remove('show'); document.getElementById('modeSelector').classList.remove('hidden'); document.getElementById('quizContent').classList.add('hidden'); if (timerInterval) clearInterval(timerInterval); reviewedQuestions.clear(); }
+    </script>
+</body>
+</html>
