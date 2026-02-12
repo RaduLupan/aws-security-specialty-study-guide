@@ -37,7 +37,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [forensics-orchestrator-opscenter-comprehensive.html](./forensics-orchestrator-opscenter-comprehensive.html) | **Forensics Orchestrator & OpsCenter** | 22 |
 | [shield-advanced-comprehensive.html](./shield-advanced-comprehensive.html) | **Shield Advanced** | 20 |
 
-### Domain 3: Infrastructure Security (Complete - 198 questions!)
+### Domain 3: Infrastructure Security (Complete - 223 questions!)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
@@ -50,6 +50,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [verifiedaccess-directconnect-vpn-comprehensive.html](./verifiedaccess-directconnect-vpn-comprehensive.html) | **AWS Verified Access, Direct Connect & VPN** | 25 |
 | [networkanalyzer-cloudfront-comprehensive.html](./networkanalyzer-cloudfront-comprehensive.html) | **Network Access Analyzer & CloudFront Security** | 25 |
 | [qdeveloper-codeguru-comprehensive.html](./qdeveloper-codeguru-comprehensive.html) | **Amazon Q Developer & CodeGuru Security** | 25 |
+| [genai-owasp-top10-comprehensive.html](./genai-owasp-top10-comprehensive.html) | **GenAI OWASP Top 10 Security** | 25 |
 
 ### Domain 4: Identity & Access Management (Complete - 83 questions!)
 
