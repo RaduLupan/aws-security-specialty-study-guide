@@ -64,7 +64,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [rolesanywhere-directoryservice-comprehensive.html](./rolesanywhere-directoryservice-comprehensive.html) | **IAM Roles Anywhere & Directory Service** | 25 |
 | [accessanalyzer-policysim-abac-comprehensive.html](./accessanalyzer-policysim-abac-comprehensive.html) | **IAM Access Analyzer, Policy Simulator & ABAC/RBAC** | 25 |
 
-### Domain 5: Data Protection (Complete - 81 questions!)
+### Domain 5: Data Protection (Complete - 106 questions!)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
@@ -72,6 +72,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [secrets-manager-cloudhsm-comprehensive.html](./secrets-manager-cloudhsm-comprehensive.html) | **Secrets Manager & CloudHSM** | 20 |
 | [acm-s3-encryption-comprehensive.html](./acm-s3-encryption-comprehensive.html) | **ACM & S3 Encryption** | 18 |
 | [macie-comprehensive.html](./macie-comprehensive.html) | **Amazon Macie** | 18 |
+| [privatelink-comprehensive.html](./privatelink-comprehensive.html) | **AWS PrivateLink & VPC Endpoints** | 25 |
 
 ### Domain 6: Security Governance (Complete - 58 questions!)
 
