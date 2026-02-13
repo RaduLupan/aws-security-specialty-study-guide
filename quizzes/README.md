@@ -64,7 +64,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [rolesanywhere-directoryservice-comprehensive.html](./rolesanywhere-directoryservice-comprehensive.html) | **IAM Roles Anywhere & Directory Service** | 25 |
 | [accessanalyzer-policysim-abac-comprehensive.html](./accessanalyzer-policysim-abac-comprehensive.html) | **IAM Access Analyzer, Policy Simulator & ABAC/RBAC** | 25 |
 
-### Domain 5: Data Protection (Complete - 106 questions!)
+### Domain 5: Data Protection (Complete - 131 questions!)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
@@ -73,6 +73,7 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [acm-s3-encryption-comprehensive.html](./acm-s3-encryption-comprehensive.html) | **ACM & S3 Encryption** | 18 |
 | [macie-comprehensive.html](./macie-comprehensive.html) | **Amazon Macie** | 18 |
 | [privatelink-comprehensive.html](./privatelink-comprehensive.html) | **AWS PrivateLink & VPC Endpoints** | 25 |
+| [s3objectlock-glaciervaultlock-comprehensive.html](./s3objectlock-glaciervaultlock-comprehensive.html) | **S3 Object Lock & Glacier Vault Lock** | 25 |
 
 ### Domain 6: Security Governance (Complete - 58 questions!)
 
