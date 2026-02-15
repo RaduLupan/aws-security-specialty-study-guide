@@ -52,10 +52,11 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [qdeveloper-codeguru-comprehensive.html](./qdeveloper-codeguru-comprehensive.html) | **Amazon Q Developer & CodeGuru Security** | 25 |
 | [genai-owasp-top10-comprehensive.html](./genai-owasp-top10-comprehensive.html) | **GenAI OWASP Top 10 Security** | 25 |
 
-### Domain 4: Identity & Access Management (Complete - 158 questions!)
+### Domain 4: Identity & Access Management (183 questions - Complete!)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
+| [iam-fundamentals-comprehensive.html](./iam-fundamentals-comprehensive.html) | **IAM Fundamentals: Users, Groups, Policy Evaluation & Credentials** | 25 |
 | [iam-policies-comprehensive.html](./iam-policies-comprehensive.html) | **IAM Policies & Permissions** | 25 |
 | [organizations-scps-comprehensive.html](./organizations-scps-comprehensive.html) | **AWS Organizations & SCPs** | 20 |
 | [identity-center-federation-comprehensive.html](./identity-center-federation-comprehensive.html) | **IAM Identity Center & Federation** | 20 |
