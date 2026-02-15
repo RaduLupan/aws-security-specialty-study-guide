@@ -80,13 +80,14 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [privateca-comprehensive.html](./privateca-comprehensive.html) | **AWS Private Certificate Authority** | 25 |
 | [nitro-emr-eks-encryption-comprehensive.html](./nitro-emr-eks-encryption-comprehensive.html) | **Nitro / EMR / EKS Encryption** | 25 |
 
-### Domain 6: Security Governance (Complete - 58 questions!)
+### Domain 6: Security Governance (88 questions)
 
 | Quiz | Topic | Questions | 
 |------|-------|-----------|
 | [control-tower-comprehensive.html](./control-tower-comprehensive.html) | **AWS Control Tower** | 20 |
 | [config-compliance-comprehensive.html](./config-compliance-comprehensive.html) | **AWS Config & Compliance** | 20 |
 | [audit-manager-artifact-comprehensive.html](./audit-manager-artifact-comprehensive.html) | **Audit Manager & Artifact** | 18 |
+| [rcp-declarative-policies-comprehensive.html](./rcp-declarative-policies-comprehensive.html) | **Resource Control Policies & Declarative Policies** | 25 |
 
 ## How to Use
 
