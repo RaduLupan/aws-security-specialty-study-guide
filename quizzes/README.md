@@ -80,15 +80,16 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | [privateca-comprehensive.html](./privateca-comprehensive.html) | **AWS Private Certificate Authority** | 25 |
 | [nitro-emr-eks-encryption-comprehensive.html](./nitro-emr-eks-encryption-comprehensive.html) | **Nitro / EMR / EKS Encryption** | 25 |
 
-### Domain 6: Security Governance (113 questions)
+### Domain 6: Security Governance (138 questions)
 
-| Quiz | Topic | Questions | 
+| Quiz | Topic | Questions |
 |------|-------|-----------|
 | [control-tower-comprehensive.html](./control-tower-comprehensive.html) | **AWS Control Tower** | 20 |
 | [config-compliance-comprehensive.html](./config-compliance-comprehensive.html) | **AWS Config & Compliance** | 20 |
 | [audit-manager-artifact-comprehensive.html](./audit-manager-artifact-comprehensive.html) | **Audit Manager & Artifact** | 18 |
 | [rcp-declarative-policies-comprehensive.html](./rcp-declarative-policies-comprehensive.html) | **Resource Control Policies & Declarative Policies** | 25 |
 | [cfn-guard-cfn-lint-comprehensive.html](./cfn-guard-cfn-lint-comprehensive.html) | **CloudFormation Guard & cfn-lint** | 25 |
+| [firewall-manager-service-catalog-comprehensive.html](./firewall-manager-service-catalog-comprehensive.html) | **Firewall Manager & Service Catalog** | 25 |
 
 ## How to Use
 
