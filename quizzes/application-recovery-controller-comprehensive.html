@@ -165,26 +165,266 @@
     </div>
     <script>
         const questions = [
-            { id: 1, question: "What are the two main recovery capabilities that Amazon Application Recovery Controller (ARC) provides?", options: ["Single-AZ recovery and single-Region recovery", "Multi-AZ recovery (zonal shift, autoshift) and multi-Region recovery (routing control, Region switch, readiness check)", "Database failover only and cache failover only", "Load balancer failover and API Gateway failover"], correct: 1, explanation: "ARC provides multi-AZ recovery (zonal shift, zonal autoshift) and multi-Region recovery (routing control, Region switch, readiness check) to prepare for and complete faster recovery.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/what-is-route53-recovery.html" },
-            { id: 2, question: "How does ARC zonal shift differ from zonal autoshift?", options: ["Zonal shift is automatic; zonal autoshift requires manual initiation", "Zonal shift is manual and temporary; zonal autoshift authorizes AWS to shift traffic automatically when internal telemetry indicates an AZ impairment", "Zonal shift works across Regions; zonal autoshift works only within a single AZ", "Zonal shift requires Route 53; zonal autoshift uses CloudWatch only"], correct: 1, explanation: "Zonal shift is manual—you start it and set an expiration. Zonal autoshift authorizes AWS to automatically shift traffic when AWS internal telemetry detects an AZ impairment.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/what-is-route53-recovery.html" },
-            { id: 3, question: "Which resources does ARC support for zonal shift and zonal autoshift?", options: ["Only Amazon EC2 instances and EBS volumes", "EC2 Auto Scaling groups, EKS, Application Load Balancers, and Network Load Balancers", "Amazon RDS databases and ElastiCache clusters", "Amazon S3 buckets and DynamoDB tables"], correct: 1, explanation: "ARC supports EC2 Auto Scaling groups, Amazon EKS, Application Load Balancers (ALB), and Network Load Balancers (NLB) for zonal shift and zonal autoshift. Resources must be opt-in.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-shift.resource-types.html" },
-            { id: 4, question: "What is the maximum expiration time you can set when starting a zonal shift?", options: ["One hour, non-extendable", "Up to 24 hours with optional extension", "Up to three days (72 hours), extendable if needed", "One week, with automatic renewal"], correct: 2, explanation: "Zonal shifts are temporary. You can set an initial expiration from one minute up to three days (72 hours). You can extend the shift if needed.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-shift.html" },
-            { id: 5, question: "What AWS recommendation applies before enabling zonal autoshift or practice runs?", options: ["Disable auto scaling to prevent conflicts with ARC", "Pre-scale your application resource capacity in all AZs; do not rely on scaling on demand when an autoshift starts", "Use only single-AZ deployments for testing", "Configure zonal shift to run before enabling autoshift"], correct: 1, explanation: "Pre-scale capacity in all AZs. Zonal autoshift does not wait for auto scaling. Relying on auto scaling can result in longer recovery times.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-autoshift.html" },
-            { id: 6, question: "How often do zonal autoshift practice runs occur, and how long does each practice run last?", options: ["Daily, for 1 hour", "Weekly, for about 30 minutes per resource", "Monthly, for 2 hours", "On-demand only, for 15 minutes"], correct: 1, explanation: "Practice runs occur weekly. Each practice run shifts traffic away from one AZ for about 30 minutes for a single resource, then returns traffic.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-autoshift.html" },
-            { id: 7, question: "When does a zonal shift have no effect on an Application or Network Load Balancer?", options: ["When the load balancer has cross-zone load balancing disabled", "When the load balancer is in a fail-open state", "When the load balancer has fewer than two target groups", "When the load balancer is in a different account"], correct: 1, explanation: "When an NLB or ALB is in a fail-open state, a zonal shift has no effect. Zonal shift cannot force an AZ to be unhealthy when the load balancer is failing open.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-shift.resource-types.html" },
-            { id: 8, question: "What are routing controls in ARC?", options: ["Lambda functions that execute recovery scripts", "Simple on/off switches that enable failover of DNS traffic across AWS Regions", "CloudWatch alarms that trigger SNS notifications", "Step Functions state machines that orchestrate recovery"], correct: 1, explanation: "Routing controls are on/off switches that enable you to reroute traffic. You turn one On and another Off to fail over DNS traffic from one Region to another via Route 53 health checks.", docLink: "https://docs.aws.amazon.com/recovery-cluster/latest/api/what-is-recovery-control.html" },
-            { id: 9, question: "Which Region must you specify when creating readiness checks or routing controls in ARC?", options: ["The primary Region where your application runs", "The Region you are failing over to", "US West (Oregon)", "Any Region; ARC is region-agnostic"], correct: 2, explanation: "ARC is a global service but you must specify US West (Oregon) when working with readiness and recovery control configuration resources. Use regional endpoints for routing control state updates.", docLink: "https://docs.aws.amazon.com/recovery-cluster/latest/api/what-is-recovery-control.html" },
-            { id: 10, question: "What is the architecture of an ARC cluster?", options: ["A single endpoint in the primary Region", "A data plane of endpoints in five AWS Regions", "One endpoint per customer account", "Endpoints only in us-east-1 and eu-west-1"], correct: 1, explanation: "Each cluster in ARC is a data plane of endpoints in five AWS Regions, providing high availability for routing control operations.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html" },
-            { id: 11, question: "How should you ideally update routing control states for failover?", options: ["Use the AWS Management Console for maximum visibility", "Use API actions or AWS CLI; they are more resilient than the console", "Use CloudFormation drift detection", "Use AWS Config remediation runbooks"], correct: 1, explanation: "AWS recommends using API or CLI to update routing control states. API actions are not dependent on the console, so they are more resilient during an outage.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/getting-started.html" },
-            { id: 12, question: "What do ARC safety rules help prevent?", options: ["Unauthorized access to routing controls", "Turning two routing controls off at once and stopping all traffic flow", "Cross-Region data replication failures", "Route 53 health check timeouts"], correct: 1, explanation: "Safety rules impose guardrails you define. For example, a safety rule can ensure only one of your application replicas (active or standby) is enabled at a time.", docLink: "https://docs.aws.amazon.com/recovery-cluster/latest/api/what-is-recovery-control.html" },
-            { id: 13, question: "What does Region switch in ARC orchestrate?", options: ["Only DNS failover between Regions", "Large-scale recovery tasks across AWS accounts, including resource switching and traffic redirection", "Automated patching of EC2 instances during maintenance", "Cross-Region backup restoration only"], correct: 1, explanation: "Region switch orchestrates large-scale, complex recovery tasks across accounts. Plans include workflows with steps and execution blocks. It supports active/passive and active/active configurations.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/region-switch.html" },
-            { id: 14, question: "How can a Region switch plan be triggered?", options: ["Only manually by an operator", "Manually or automatically via Amazon CloudWatch alarm triggers", "Only by EventBridge on a schedule", "Only by AWS Support during a declared outage"], correct: 1, explanation: "Region switch plans can be executed manually or automatically triggered by CloudWatch alarms when an impairment is detected.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/region-switch.html" },
-            { id: 15, question: "What does ARC readiness check monitor?", options: ["Only Route 53 health check status", "AWS resource quotas, capacity, and network routing policies to ensure readiness for failover", "EC2 instance billing and cost allocation", "IAM permission changes across accounts"], correct: 1, explanation: "Readiness check continually monitors resource quotas, capacity, and routing policies. It helps ensure replicas are scaled and configured to handle failover traffic.", docLink: "https://docs.aws.amazon.com/recovery-readiness/latest/api/what-is-recovery-readiness.html" },
-            { id: 16, question: "How often does ARC run readiness checks on your resources?", options: ["Once per day", "Once per hour", "Once every minute", "On-demand only when you request an assessment"], correct: 2, explanation: "After you create resource sets and readiness checks, ARC runs readiness checks continually, approximately once every minute.", docLink: "https://docs.aws.amazon.com/recovery-readiness/latest/api/what-is-recovery-readiness.html" },
-            { id: 17, question: "Should readiness checks be used as the primary trigger for failover during a disaster?", options: ["Yes; readiness checks are designed for failover triggering", "No; readiness checks are for ongoing verification, not as a primary failover trigger during an event", "Only when combined with routing control", "Only for active/active configurations"], correct: 1, explanation: "Readiness checks are for verifying configurations on an ongoing basis. They should not be relied upon as the primary trigger for failover during a disaster event.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/recovery-readiness.html" },
-            { id: 18, question: "What ARC components do you create to model your application for readiness checks?", options: ["Only routing controls and control panels", "Recovery groups with cells (replicas), resource sets, and readiness checks", "Only CloudWatch alarms and SNS topics", "Only Route 53 health checks"], correct: 1, explanation: "You create a recovery group representing your application, cells for each replica (e.g., per Region), resource sets, and readiness checks. Then associate resources with cells.", docLink: "https://docs.aws.amazon.com/recovery-readiness/latest/api/what-is-recovery-readiness.html" },
-            { id: 19, question: "How does Region switch achieve resilience during recovery execution?", options: ["It runs only in the primary Region", "It has a data plane in each AWS Region so you can execute plans without depending on the Region being deactivated", "It requires the impaired Region to be fully operational", "It uses a single global endpoint"], correct: 1, explanation: "Region switch has a data plane in each AWS Region, allowing you to execute your recovery plan without depending on the Region you are deactivating.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/region-switch.html" },
-            { id: 20, question: "What built-in check prevents multiple traffic shifts for the same resource in ARC?", options: ["IAM policy evaluation", "Only one customer-initiated zonal shift, practice run, or autoshift can be active for a resource at a time", "CloudWatch alarm thresholds", "Route 53 health check failover rules"], correct: 1, explanation: "Built-in safety checks prevent more than one traffic shift for a resource at a time. If you start a zonal shift when autoshift is active, your zonal shift takes precedence.", docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/introduction-components.html" }
+            { 
+                id: 1, 
+                question: "What are the two main recovery capabilities that Amazon Application Recovery Controller (ARC) provides?", 
+                options: [
+                    "Single-AZ failover using Application Load Balancer health checks and single-Region recovery via Route 53 weighted routing",
+                    "Multi-AZ recovery through zonal shift and zonal autoshift, plus multi-Region recovery via routing control, Region switch, and readiness checks",
+                    "Automated database backup and restore across Availability Zones combined with cross-Region replication using AWS Backup",
+                    "EC2 instance failover within a single AZ and automatic scaling across multiple Regions using Auto Scaling groups"
+                ], 
+                correct: 1, 
+                explanation: "ARC provides multi-AZ recovery (zonal shift, zonal autoshift) and multi-Region recovery (routing control, Region switch, readiness check) to prepare for and complete faster recovery.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/what-is-route53-recovery.html" 
+            },
+            { 
+                id: 2, 
+                question: "How does ARC zonal shift differ from zonal autoshift?", 
+                options: [
+                    "Zonal shift operates automatically based on CloudWatch metrics while zonal autoshift requires manual operator intervention to activate",
+                    "Zonal shift is a manual temporary traffic redirection set by operators, while zonal autoshift lets AWS automatically shift traffic based on internal telemetry detecting AZ impairments",
+                    "Zonal shift redirects traffic across AWS Regions while zonal autoshift only works within a single Availability Zone boundary",
+                    "Zonal shift requires Route 53 DNS updates while zonal autoshift exclusively relies on CloudWatch alarm-based traffic management"
+                ], 
+                correct: 1, 
+                explanation: "Zonal shift is manual—you start it and set an expiration. Zonal autoshift authorizes AWS to automatically shift traffic when AWS internal telemetry detects an AZ impairment.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/what-is-route53-recovery.html" 
+            },
+            { 
+                id: 3, 
+                question: "Which resources does ARC support for zonal shift and zonal autoshift?", 
+                options: [
+                    "Amazon EC2 instances with Elastic IPs, EBS volumes with multi-attach enabled, and placement groups across Availability Zones",
+                    "EC2 Auto Scaling groups, Amazon EKS managed node groups, Application Load Balancers, and Network Load Balancers",
+                    "Amazon RDS Multi-AZ deployments, Aurora Global Databases, ElastiCache for Redis cluster mode, and DocumentDB clusters",
+                    "Amazon S3 buckets with cross-Region replication, DynamoDB global tables, CloudFront distributions, and Lambda functions"
+                ], 
+                correct: 1, 
+                explanation: "ARC supports EC2 Auto Scaling groups, Amazon EKS, Application Load Balancers (ALB), and Network Load Balancers (NLB) for zonal shift and zonal autoshift. Resources must be opt-in.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-shift.resource-types.html" 
+            },
+            { 
+                id: 4, 
+                question: "What is the maximum expiration time you can set when starting a zonal shift?", 
+                options: [
+                    "One hour from initiation with no option to extend the shift beyond the original expiration time",
+                    "Up to 24 hours with the ability to extend for an additional 24 hours during active impairments",
+                    "Up to three days (72 hours) with the flexibility to extend the shift if the issue persists",
+                    "One week with automatic renewal every 24 hours based on continued AZ health check failures"
+                ], 
+                correct: 2, 
+                explanation: "Zonal shifts are temporary. You can set an initial expiration from one minute up to three days (72 hours). You can extend the shift if needed.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-shift.html" 
+            },
+            { 
+                id: 5, 
+                question: "What AWS recommendation applies before enabling zonal autoshift or practice runs?", 
+                options: [
+                    "Disable auto scaling policies temporarily to prevent capacity conflicts when ARC initiates traffic shifts",
+                    "Pre-scale your application resource capacity in all AZs because zonal autoshift does not wait for on-demand scaling",
+                    "Configure single-AZ deployments exclusively for testing autoshift behavior before multi-AZ production deployment",
+                    "Execute manual zonal shifts first to establish baseline performance before enabling automated autoshift functionality"
+                ], 
+                correct: 1, 
+                explanation: "Pre-scale capacity in all AZs. Zonal autoshift does not wait for auto scaling. Relying on auto scaling can result in longer recovery times.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-autoshift.html" 
+            },
+            { 
+                id: 6, 
+                question: "How often do zonal autoshift practice runs occur, and how long does each practice run last?", 
+                options: [
+                    "Daily practice runs occur at random times lasting approximately one hour per affected resource",
+                    "Weekly practice runs execute for about 30 minutes per resource to validate traffic shifting",
+                    "Monthly practice runs operate for two hours to comprehensively test recovery procedures",
+                    "On-demand practice runs initiated by operators run for 15 minutes to minimize production impact"
+                ], 
+                correct: 1, 
+                explanation: "Practice runs occur weekly. Each practice run shifts traffic away from one AZ for about 30 minutes for a single resource, then returns traffic.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-autoshift.html" 
+            },
+            { 
+                id: 7, 
+                question: "When does a zonal shift have no effect on an Application or Network Load Balancer?", 
+                options: [
+                    "When the load balancer has cross-zone load balancing disabled preventing traffic distribution",
+                    "When the load balancer is operating in a fail-open state and cannot mark AZs unhealthy",
+                    "When the load balancer has fewer than two target groups configured in the deployment",
+                    "When the load balancer resides in a different AWS account than the zonal shift configuration"
+                ], 
+                correct: 1, 
+                explanation: "When an NLB or ALB is in a fail-open state, a zonal shift has no effect. Zonal shift cannot force an AZ to be unhealthy when the load balancer is failing open.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/arc-zonal-shift.resource-types.html" 
+            },
+            { 
+                id: 8, 
+                question: "What are routing controls in ARC?", 
+                options: [
+                    "Lambda functions executing automated recovery scripts triggered by health check failures across Regions",
+                    "Simple on/off switches enabling DNS traffic failover between AWS Regions via Route 53 health checks",
+                    "CloudWatch alarms triggering SNS notifications to operations teams for manual failover decisions",
+                    "Step Functions state machines orchestrating multi-step recovery workflows across application tiers"
+                ], 
+                correct: 1, 
+                explanation: "Routing controls are on/off switches that enable you to reroute traffic. You turn one On and another Off to fail over DNS traffic from one Region to another via Route 53 health checks.", 
+                docLink: "https://docs.aws.amazon.com/recovery-cluster/latest/api/what-is-recovery-control.html" 
+            },
+            { 
+                id: 9, 
+                question: "Which Region must you specify when creating readiness checks or routing controls in ARC?", 
+                options: [
+                    "The primary AWS Region where your application workload is currently deployed and actively serving traffic",
+                    "The target Region you are planning to failover to during disaster recovery scenarios",
+                    "US West (Oregon) which is required for ARC recovery control and readiness configuration resources",
+                    "Any AWS Region because ARC is a fully region-agnostic global service with no regional requirements"
+                ], 
+                correct: 2, 
+                explanation: "ARC is a global service but you must specify US West (Oregon) when working with readiness and recovery control configuration resources. Use regional endpoints for routing control state updates.", 
+                docLink: "https://docs.aws.amazon.com/recovery-cluster/latest/api/what-is-recovery-control.html" 
+            },
+            { 
+                id: 10, 
+                question: "What is the architecture of an ARC cluster?", 
+                options: [
+                    "A single highly available endpoint located in the customer's primary AWS Region",
+                    "A data plane consisting of regional endpoints distributed across five different AWS Regions",
+                    "One dedicated endpoint provisioned separately per customer AWS account with isolated access",
+                    "Regional endpoints deployed exclusively in us-east-1 and eu-west-1 for global coverage"
+                ], 
+                correct: 1, 
+                explanation: "Each cluster in ARC is a data plane of endpoints in five AWS Regions, providing high availability for routing control operations.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html" 
+            },
+            { 
+                id: 11, 
+                question: "How should you ideally update routing control states for failover?", 
+                options: [
+                    "Use the AWS Management Console interface to maintain complete visibility into state changes",
+                    "Use API actions or AWS CLI because they are more resilient than console during outages",
+                    "Use CloudFormation drift detection to identify and correct routing control inconsistencies",
+                    "Use AWS Config remediation runbooks that automatically restore desired routing control states"
+                ], 
+                correct: 1, 
+                explanation: "AWS recommends using API or CLI to update routing control states. API actions are not dependent on the console, so they are more resilient during an outage.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/getting-started.html" 
+            },
+            { 
+                id: 12, 
+                question: "What do ARC safety rules help prevent?", 
+                options: [
+                    "Unauthorized cross-account access to routing controls by users lacking appropriate IAM permissions",
+                    "Accidentally disabling multiple routing controls simultaneously which would halt all traffic flow",
+                    "Cross-Region data replication failures between primary and standby application deployments",
+                    "Route 53 health check timeout failures when performing traffic routing between Regions"
+                ], 
+                correct: 1, 
+                explanation: "Safety rules impose guardrails you define. For example, a safety rule can ensure only one of your application replicas (active or standby) is enabled at a time.", 
+                docLink: "https://docs.aws.amazon.com/recovery-cluster/latest/api/what-is-recovery-control.html" 
+            },
+            { 
+                id: 13, 
+                question: "What does Region switch in ARC orchestrate?", 
+                options: [
+                    "Exclusively DNS failover routing changes between primary and secondary AWS Regions",
+                    "Large-scale recovery tasks across AWS accounts including resource switching and traffic redirection",
+                    "Automated patch management and instance updates during scheduled maintenance windows",
+                    "Cross-Region backup restoration operations exclusively without traffic management capabilities"
+                ], 
+                correct: 1, 
+                explanation: "Region switch orchestrates large-scale, complex recovery tasks across accounts. Plans include workflows with steps and execution blocks. It supports active/passive and active/active configurations.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/region-switch.html" 
+            },
+            { 
+                id: 14, 
+                question: "How can a Region switch plan be triggered?", 
+                options: [
+                    "Only through manual operator execution from the AWS console or CLI",
+                    "Manually by operators or automatically via Amazon CloudWatch alarm triggers",
+                    "Exclusively through EventBridge scheduled rules running on predefined maintenance schedules",
+                    "Only by AWS Support engineers during officially declared regional service outages"
+                ], 
+                correct: 1, 
+                explanation: "Region switch plans can be executed manually or automatically triggered by CloudWatch alarms when an impairment is detected.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/region-switch.html" 
+            },
+            { 
+                id: 15, 
+                question: "What does ARC readiness check monitor?", 
+                options: [
+                    "Only the operational status of Route 53 health checks across different AWS Regions",
+                    "AWS resource quotas, capacity levels, and network routing policies ensuring failover readiness",
+                    "EC2 instance billing costs and resource allocation tags for cost optimization",
+                    "IAM policy modifications and permission boundary changes across all AWS accounts"
+                ], 
+                correct: 1, 
+                explanation: "Readiness check continually monitors resource quotas, capacity, and routing policies. It helps ensure replicas are scaled and configured to handle failover traffic.", 
+                docLink: "https://docs.aws.amazon.com/recovery-readiness/latest/api/what-is-recovery-readiness.html" 
+            },
+            { 
+                id: 16, 
+                question: "How often does ARC run readiness checks on your resources?", 
+                options: [
+                    "Once per day during off-peak hours to minimize impact on running applications",
+                    "Once per hour to balance monitoring frequency with API rate limit consumption",
+                    "Approximately once every minute providing near real-time continuous monitoring",
+                    "Only on-demand when operators manually request a readiness assessment"
+                ], 
+                correct: 2, 
+                explanation: "After you create resource sets and readiness checks, ARC runs readiness checks continually, approximately once every minute.", 
+                docLink: "https://docs.aws.amazon.com/recovery-readiness/latest/api/what-is-recovery-readiness.html" 
+            },
+            { 
+                id: 17, 
+                question: "Should readiness checks be used as the primary trigger for failover during a disaster?", 
+                options: [
+                    "Yes, readiness checks are specifically designed as the primary failover triggering mechanism",
+                    "No, readiness checks verify ongoing configuration but should not trigger disaster failover events",
+                    "Only when combined with routing control state changes for synchronized failover",
+                    "Only for active/active configurations where both regions serve production traffic"
+                ], 
+                correct: 1, 
+                explanation: "Readiness checks are for verifying configurations on an ongoing basis. They should not be relied upon as the primary trigger for failover during a disaster event.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/recovery-readiness.html" 
+            },
+            { 
+                id: 18, 
+                question: "What ARC components do you create to model your application for readiness checks?", 
+                options: [
+                    "Only routing controls and control panels without additional resource modeling requirements",
+                    "Recovery groups containing cells representing replicas, resource sets, and readiness checks",
+                    "Exclusively CloudWatch alarms and SNS topic subscriptions for monitoring infrastructure",
+                    "Only Route 53 health checks configured with appropriate thresholds and alarm actions"
+                ], 
+                correct: 1, 
+                explanation: "You create a recovery group representing your application, cells for each replica (e.g., per Region), resource sets, and readiness checks. Then associate resources with cells.", 
+                docLink: "https://docs.aws.amazon.com/recovery-readiness/latest/api/what-is-recovery-readiness.html" 
+            },
+            { 
+                id: 19, 
+                question: "How does Region switch achieve resilience during recovery execution?", 
+                options: [
+                    "It runs exclusively in the primary Region with high availability through Multi-AZ deployment",
+                    "It maintains a data plane in each AWS Region enabling plan execution without depending on impaired Regions",
+                    "It requires the impaired Region to remain fully operational during the recovery execution",
+                    "It uses a single global anycast endpoint that automatically routes to healthy AWS infrastructure"
+                ], 
+                correct: 1, 
+                explanation: "Region switch has a data plane in each AWS Region, allowing you to execute your recovery plan without depending on the Region you are deactivating.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/region-switch.html" 
+            },
+            { 
+                id: 20, 
+                question: "What built-in check prevents multiple traffic shifts for the same resource in ARC?", 
+                options: [
+                    "IAM policy evaluation prevents conflicting operations through explicit deny statements",
+                    "Only one customer-initiated zonal shift, practice run, or autoshift can be active per resource at a time",
+                    "CloudWatch alarm threshold validation ensures only one traffic management action proceeds",
+                    "Route 53 health check failover rules prevent simultaneous DNS routing changes"
+                ], 
+                correct: 1, 
+                explanation: "Built-in safety checks prevent more than one traffic shift for a resource at a time. If you start a zonal shift when autoshift is active, your zonal shift takes precedence.", 
+                docLink: "https://docs.aws.amazon.com/r53recovery/latest/dg/introduction-components.html" 
+            }
         ];
 
         let currentMode = 'learn', currentQuestion = 0, userAnswers = [], answersRevealed = [], shuffledQuestions = [], timerInterval = null, timeRemaining = 0, inReviewMode = false, reviewedQuestions = [];
