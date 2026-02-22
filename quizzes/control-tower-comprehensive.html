@@ -43,6 +43,37 @@
         .option.correct .option-marker { border-color: var(--success); background: var(--success); color: white; }
         .option.incorrect .option-marker { border-color: var(--error); background: var(--error); color: white; }
         .option-text { flex: 1; padding-top: 2px; }
+        .question-text code, .option-text code, .explanation-text code {
+            font-family: "Consolas", "Courier New", monospace;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.1rem 0.35rem;
+        }
+        .md-code {
+            margin: 0.5rem 0 0 0;
+            padding: 0.75rem;
+            background: #0f1628;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .md-code code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            white-space: pre;
+            display: block;
+            color: #c7d2fe;
+        }
+        .question-text ul, .question-text ol,
+        .option-text ul, .option-text ol,
+        .explanation-text ul, .explanation-text ol {
+            margin: 0.5rem 0 0.5rem 1.25rem;
+        }
+        .question-text strong, .option-text strong, .explanation-text strong {
+            color: #f8fafc;
+        }
         .explanation { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-tertiary); border-radius: 10px; border-left: 4px solid var(--info); display: none; }
         .explanation.show { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -193,7 +224,7 @@
         function startQuiz(mode) { currentMode = mode; currentQuestion = 0; userAnswers = new Array(questions.length).fill(null); answersRevealed = new Array(questions.length).fill(false); shuffledQuestions = shuffleArray(questions).map(shuffleQuestionOptions); inReviewMode = false; reviewedQuestions = []; document.getElementById('modeSelector').classList.add('hidden'); document.getElementById('quizContent').classList.remove('hidden'); document.getElementById('resultsCard').classList.remove('show'); document.getElementById('totalQ').textContent = shuffledQuestions.length; document.getElementById('backToReviewBtn').style.display = 'none'; if (mode === 'exam') { timeRemaining = shuffledQuestions.length * 150; startTimer(); document.getElementById('shuffleBtn').classList.add('hidden'); } else { document.getElementById('timer').textContent = 'Learn Mode'; document.getElementById('shuffleBtn').classList.remove('hidden'); } renderQuestion(); }
         function startTimer() { updateTimerDisplay(); timerInterval = setInterval(() => { timeRemaining--; updateTimerDisplay(); if (timeRemaining <= 0) { clearInterval(timerInterval); showResults(); } }, 1000); }
         function updateTimerDisplay() { const m = Math.floor(timeRemaining / 60), s = timeRemaining % 60, el = document.getElementById('timer'); el.textContent = `${m}:${s.toString().padStart(2, '0')}`; el.classList.remove('warning', 'danger'); if (timeRemaining <= 60) el.classList.add('danger'); else if (timeRemaining <= 300) el.classList.add('warning'); }
-        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><span class="option-text">${o}</span></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><p class="explanation-text">${q.explanation}</p><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Control Tower</span></div><p class="question-text">${q.question}</p><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
+        function renderQuestion() { const q = shuffledQuestions[currentQuestion], letters = ['A','B','C','D'], ans = userAnswers[currentQuestion], revealed = answersRevealed[currentQuestion]; let opts = q.options.map((o, i) => { let c = 'option'; if (currentMode === 'learn' && revealed) { c += ' disabled'; if (i === q.correct) c += ' correct'; else if (i === ans && ans !== q.correct) c += ' incorrect'; } else if (ans === i) c += ' selected'; return `<div class="${c}" onclick="selectOption(${i})"><span class="option-marker">${letters[i]}</span><div class="option-text">${o}</div></div>`; }).join(''); let exp = currentMode === 'learn' ? `<div class="explanation ${revealed ? 'show' : ''}"><div class="explanation-title">📖 Explanation</div><div class="answer-header">Correct Answer: ${letters[q.correct]}</div><div class="explanation-text">${q.explanation}</div><a href="${q.docLink}" target="_blank" class="doc-link">📄 View AWS Documentation →</a></div>` : ''; document.getElementById('questionsContainer').innerHTML = `<div class="question-card"><div class="question-header"><span class="question-number">Question ${currentQuestion + 1}</span><span class="question-domain">Control Tower</span></div><div class="question-text">${q.question}</div><div class="options">${opts}</div>${currentMode === 'learn' && !revealed ? '<button class="btn btn-primary" style="margin-top:1rem;width:100%;" onclick="revealAnswer()">Show Answer</button>' : ''}${exp}</div>`; document.getElementById('currentQ').textContent = currentQuestion + 1; document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / shuffledQuestions.length) * 100}%`; document.getElementById('prevBtn').disabled = currentQuestion === 0; document.getElementById('nextBtn').textContent = currentQuestion === shuffledQuestions.length - 1 ? (currentMode === 'exam' ? 'Submit Quiz' : 'See Results') : 'Next →'; }
         function selectOption(i) { if (currentMode === 'learn' && answersRevealed[currentQuestion]) return; userAnswers[currentQuestion] = i; renderQuestion(); }
         function revealAnswer() { if (userAnswers[currentQuestion] === null) userAnswers[currentQuestion] = -1; answersRevealed[currentQuestion] = true; renderQuestion(); }
         function navigate(d) { if (d === 1 && currentQuestion === shuffledQuestions.length - 1) { showResults(); return; } currentQuestion = Math.max(0, Math.min(currentQuestion + d, shuffledQuestions.length - 1)); renderQuestion(); }
