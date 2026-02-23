@@ -631,12 +631,16 @@
                 reviewedQuestions.push(qIndex);
                 document.getElementById('reviewedCount').textContent = reviewedQuestions.length;
             }
+            currentMode = 'learn';
             currentQuestion = qIndex;
+            answersRevealed[qIndex] = true;
             inReviewMode = true;
             document.getElementById('reviewSection').classList.remove('show');
             document.getElementById('quizContent').classList.remove('hidden');
+            document.getElementById('timer').textContent = 'Learn Mode';
+            document.getElementById('shuffleBtn').style.display = 'none';
             document.getElementById('backToReviewBtn').style.display = 'inline-block';
-            answersRevealed[currentQuestion] = true;
+            if (timerInterval) clearInterval(timerInterval);
             renderQuestion();
         }
         function backToReview() {
