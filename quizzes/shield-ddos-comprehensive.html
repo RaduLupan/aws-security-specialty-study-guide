@@ -186,7 +186,7 @@
                 </div>
             </div>
             <div class="btn-group" id="resultsButtons">
-                <button class="btn btn-primary" id="reviewBtn" onclick="showReview()" style="display: none;">📊 Review Answers</button>
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
                 <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
             </div>
         </div>
@@ -590,8 +590,6 @@
             document.getElementById('resultDetails').textContent = `You answered ${correct} out of ${total} questions correctly. ${passed ? 'Great job!' : 'You need 80% to pass.'}`;
             document.getElementById('correctCount').textContent = correct;
             document.getElementById('incorrectCount').textContent = total - correct;
-            if (currentMode === 'exam') document.getElementById('reviewBtn').style.display = 'inline-block';
-            else document.getElementById('reviewBtn').style.display = 'none';
         }
 
         function restartQuiz() {
