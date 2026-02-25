@@ -614,7 +614,7 @@
                 </div>
             </div>
             <div class="btn-group" id="resultsButtons">
-                <button class="btn btn-primary" id="reviewBtn" onclick="showReview()" style="display: none;">📊 Review Answers</button>
+                <button class="btn btn-primary" onclick="showReview()">📊 Review Answers</button>
                 <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Restart Quiz</button>
             </div>
         </div>
@@ -1206,7 +1206,6 @@
             
             document.getElementById('correctCount').textContent = correct;
             document.getElementById('incorrectCount').textContent = total - correct;
-            document.getElementById('reviewBtn').style.display = currentMode === 'exam' ? 'inline-block' : 'none';
         }
 
         function restartQuiz() {
