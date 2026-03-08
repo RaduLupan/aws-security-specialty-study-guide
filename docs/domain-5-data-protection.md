@@ -1,6 +1,6 @@
 # Domain 5: Data Protection (18%)
 
-> 🚧 **Status:** In Progress
+![Domain 5 Data Protection Infographic](../assets/domain-5-data-protection.png)
 
 ## Overview
 
