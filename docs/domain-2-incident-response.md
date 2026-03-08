@@ -1,6 +1,7 @@
 # Domain 2: Incident Response (14%)
 
-> 🚧 **Status:** In Progress  
+![Domain 2 Incident Response Infographic](../assets/domain-2-incident-response.png)
+
 > **SCS-C03 Update:** This is now a separate domain (was part of "Threat Detection & Incident Response" in SCS-C02)
 
 ## Overview

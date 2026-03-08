@@ -1,6 +1,6 @@
 # Domain 3: Infrastructure Security (18%)
 
-> 🚧 **Status:** In Progress
+![Domain 3 Infrastructure Security Infographic](../assets/domain-3-infrastructure-security.png)
 
 ## Overview
 

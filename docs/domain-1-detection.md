@@ -1,6 +1,7 @@
 # Domain 1: Detection (16%)
 
-> 🚧 **Status:** In Progress  
+![Domain 1 Detection Infographic](../assets/domain-1-detection.png)
+
 > **SCS-C03 Update:** This domain was restructured from "Threat Detection & Incident Response" in SCS-C02. Incident Response is now a separate Domain 2.
 
 ## Overview
