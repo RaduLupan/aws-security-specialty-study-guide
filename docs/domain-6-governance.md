@@ -1,6 +1,6 @@
 # Domain 6: Management & Security Governance (14%)
 
-![Domain 6 Governance Infographic](../assets/domain-4-iam.png)
+![Domain 6 Governance Infographic](../assets/domain-6-governance.png)
 
 ## Overview
 
