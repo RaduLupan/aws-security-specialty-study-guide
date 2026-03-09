@@ -1,6 +1,6 @@
 # Domain 6: Management & Security Governance (14%)
 
-> 🚧 **Status:** In Progress
+![Domain 6 Governance Infographic](../assets/domain-4-iam.png)
 
 ## Overview
 

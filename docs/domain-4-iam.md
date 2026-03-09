@@ -1,6 +1,7 @@
 # Domain 4: Identity & Access Management (20%)
 
-> 🚧 **Status:** In Progress  
+![Domain 4 Identity and Access Management Infographic](../assets/domain-4-iam.png)
+
 > **SCS-C03 Update:** This is now the highest weighted domain at 20% (was 16% in SCS-C02)
 
 ## Overview
