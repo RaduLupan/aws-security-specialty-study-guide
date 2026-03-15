@@ -333,28 +333,98 @@ See [full comparison](https://docs.aws.amazon.com/aws-certification/latest/examg
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 aws-security-specialty-study-guide/
-├── README.md                 # This file
-├── LICENSE                   # MIT License
-├── CONTRIBUTING.md           # Contribution guidelines
-├── index.html                # GitHub Pages landing page
-├── archive/                  # Previous years' study guides
-│   ├── 2020-scs-c01-study-guide.md
-│   └── 2023-scs-c01-study-guide.md
-├── docs/                     # Domain-specific study materials (SCS-C03)
-│   ├── domain-1-detection.md
-│   ├── domain-2-incident-response.md
-│   ├── domain-3-infrastructure-security.md
-│   ├── domain-4-iam.md
-│   ├── domain-5-data-protection.md
-│   └── domain-6-governance.md
-├── quizzes/                  # Interactive HTML quizzes
-│   ├── README.md
-│   └── *.html
-└── assets/                   # Images and diagrams
++-- README.md                        # This file
++-- LICENSE                          # MIT License
++-- CONTRIBUTING.md                  # Contribution guidelines
++-- CNAME                            # GitHub Pages custom domain
++-- index.html                       # GitHub Pages landing page
++-- archive/                         # Previous years' study guides
+|   +-- README.md
+|   +-- 2020-scs-c01-study-guide.md
+|   +-- 2023-scs-c01-study-guide.md
++-- assets/                          # Domain infographic images
+|   +-- domain-1-detection.png
+|   +-- domain-2-incident-response.png
+|   +-- domain-3-infrastructure-security.png
+|   +-- domain-4-iam.png
+|   +-- domain-5-data-protection.png
+|   +-- domain-6-governance.png
++-- docs/                            # Domain-specific study guides (SCS-C03)
+|   +-- README.md
+|   +-- domain-1-detection.md
+|   +-- domain-2-incident-response.md
+|   +-- domain-3-infrastructure-security.md
+|   +-- domain-4-iam.md
+|   +-- domain-5-data-protection.md
+|   +-- domain-6-governance.md
++-- exams/                           # Full-length practice exams (5 x 65 questions)
+|   +-- practice-exam-1.html
+|   +-- practice-exam-2.html
+|   +-- practice-exam-3.html
+|   +-- practice-exam-4.html
+|   +-- practice-exam-5.html
+|   +-- practice-exam-question-index.md
++-- quizzes/                         # Interactive HTML quizzes (55 quizzes, 1227 questions)
+    +-- README.md
+    +-- accessanalyzer-policysim-abac-comprehensive.html
+    +-- acm-s3-encryption-comprehensive.html
+    +-- application-recovery-controller-comprehensive.html
+    +-- athena-comprehensive.html
+    +-- audit-manager-artifact-comprehensive.html
+    +-- automated-remediation.html
+    +-- awsbackup-vaultlock-dlm-comprehensive.html
+    +-- cfn-guard-cfn-lint-comprehensive.html
+    +-- cloudtrail-comprehensive.html
+    +-- cloudwatch-security-comprehensive.html
+    +-- cognito-sts-comprehensive.html
+    +-- config-compliance-comprehensive.html
+    +-- control-tower-comprehensive.html
+    +-- cwlogs-sns-dataprotection-comprehensive.html
+    +-- detective-comprehensive.html
+    +-- fault-injection-resilience-hub-comprehensive.html
+    +-- firewall-manager-service-catalog-comprehensive.html
+    +-- forensics-orchestrator-opscenter-comprehensive.html
+    +-- genai-owasp-top10-comprehensive.html
+    +-- guardduty-comprehensive.html
+    +-- guardduty-extended-threat-detection.html
+    +-- iam-fundamentals-comprehensive.html
+    +-- iam-policies-comprehensive.html
+    +-- identity-center-federation-comprehensive.html
+    +-- imagebuilder-ssm-comprehensive.html
+    +-- incident-response-fundamentals.html
+    +-- inspector-comprehensive.html
+    +-- kms-comprehensive.html
+    +-- kms-imported-keys-xks-comprehensive.html
+    +-- macie-comprehensive.html
+    +-- managed-grafana-comprehensive.html
+    +-- network-firewall-comprehensive.html
+    +-- networkanalyzer-cloudfront-comprehensive.html
+    +-- nitro-emr-eks-encryption-comprehensive.html
+    +-- opensearch-comprehensive.html
+    +-- organizations-scps-comprehensive.html
+    +-- privateca-comprehensive.html
+    +-- privatelink-comprehensive.html
+    +-- qdeveloper-codeguru-comprehensive.html
+    +-- ram-wellarchitected-comprehensive.html
+    +-- rcp-declarative-policies-comprehensive.html
+    +-- rolesanywhere-directoryservice-comprehensive.html
+    +-- route53-resolver-logs-comprehensive.html
+    +-- s3objectlock-glaciervaultlock-comprehensive.html
+    +-- scs-c03-new-topics.html
+    +-- secrets-manager-cloudhsm-comprehensive.html
+    +-- security-hub-comprehensive.html
+    +-- security-lake-comprehensive.html
+    +-- shield-advanced-comprehensive.html
+    +-- shield-ddos-comprehensive.html
+    +-- verified-permissions-comprehensive.html
+    +-- verifiedaccess-directconnect-vpn-comprehensive.html
+    +-- vpc-flow-logs-transit-gw-comprehensive.html
+    +-- vpc-security-comprehensive.html
+    +-- waf-comprehensive.html
 ```
 
 ---
