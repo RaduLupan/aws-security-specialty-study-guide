@@ -35,7 +35,7 @@ This repository contains curated study materials, interactive quizzes, and resou
 |------|--------|--------------|
 | 2020 | ✅ Initial Certification | SCS-C01 |
 | 2023 | ✅ First Recertification | SCS-C01 |
-| 2026 | 🎯 Second Recertification | SCS-C03 |
+| 2026 | ✅ Second Recertification | SCS-C03 |
 
 > 💡 Fun fact: Skipped SCS-C02 entirely! C02 was only active from ~2024 to December 2025.
 
@@ -71,12 +71,12 @@ The SCS-C03 exam covers six domains with updated weights:
 
 | Domain | Study Guide | Status |
 |--------|-------------|--------|
-| Domain 1 | [Detection](./docs/domain-1-detection.md) | 🚧 In Progress |
-| Domain 2 | [Incident Response](./docs/domain-2-incident-response.md) | 🚧 In Progress |
-| Domain 3 | [Infrastructure Security](./docs/domain-3-infrastructure-security.md) | 🚧 In Progress |
-| Domain 4 | [Identity & Access Management](./docs/domain-4-iam.md) | 🚧 In Progress |
-| Domain 5 | [Data Protection](./docs/domain-5-data-protection.md) | 🚧 In Progress |
-| Domain 6 | [Security Foundations & Governance](./docs/domain-6-governance.md) | 🚧 In Progress |
+| Domain 1 | [Detection](./docs/domain-1-detection.md) | ✅ Complete |
+| Domain 2 | [Incident Response](./docs/domain-2-incident-response.md) | ✅ Complete |
+| Domain 3 | [Infrastructure Security](./docs/domain-3-infrastructure-security.md) | ✅ Complete |
+| Domain 4 | [Identity & Access Management](./docs/domain-4-iam.md) | ✅ Complete |
+| Domain 5 | [Data Protection](./docs/domain-5-data-protection.md) | ✅ Complete |
+| Domain 6 | [Security Foundations & Governance](./docs/domain-6-governance.md) | ✅ Complete |
 
 ### AWS Whitepapers (Must Read)
 
@@ -104,6 +104,8 @@ Interactive HTML-based quizzes with two modes:
 ### Available Quizzes
 
 > **🎉 Total: 520 questions across 25 quizzes - ALL 6 DOMAINS COMPLETE!**
+
+> **📝 Plus 5 full-length practice exams (325 questions) modeled after the real SCS-C03 exam!**
 
 #### ✅ Domain 1: Detection (150 questions)
 
@@ -172,6 +174,20 @@ Covers new topics added to the 2026 SCS-C03 exam version:
 | **AWS Control Tower** | 20 | [View](./quizzes/control-tower-comprehensive.html) |
 | **AWS Config & Compliance** | 20 | [View](./quizzes/config-compliance-comprehensive.html) |
 | **Audit Manager & Artifact** | 18 | [View](./quizzes/audit-manager-artifact-comprehensive.html) |
+
+### Full-Length Practice Exams
+
+> **📝 5 complete practice exams -- 325 questions total, all 6 domains covered**
+
+Simulates the real SCS-C03 exam format: 65 questions, timed (170 minutes), all-at-once grading with detailed answer review.
+
+| Exam | Questions | Link |
+|------|-----------|------|
+| **Practice Exam 1** | 65 | [View](./exams/practice-exam-1.html) |
+| **Practice Exam 2** | 65 | [View](./exams/practice-exam-2.html) |
+| **Practice Exam 3** | 65 | [View](./exams/practice-exam-3.html) |
+| **Practice Exam 4** | 65 | [View](./exams/practice-exam-4.html) |
+| **Practice Exam 5** | 65 | [View](./exams/practice-exam-5.html) |
 
 ### Running Quizzes Locally
 
