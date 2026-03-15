@@ -13,18 +13,21 @@ Interactive HTML-based quizzes for AWS Security Specialty exam preparation.
 | **📖 Explanations** | Detailed answers with AWS documentation links |
 
 ## Available Quizzes
+### Domain 1: Detection (11 quizzes | 230 questions)
 
-### Domain 1: Detection (130 questions)
-
-| Quiz | Topic | Questions | 
+| Quiz | Topic | Questions |
 |------|-------|-----------|
-| [security-hub-comprehensive.html](./security-hub-comprehensive.html) | **AWS Security Hub (All Topics)** | 25 |
-| [guardduty-comprehensive.html](./guardduty-comprehensive.html) | **Amazon GuardDuty (All Topics)** | 25 |
-| [cloudtrail-comprehensive.html](./cloudtrail-comprehensive.html) | **AWS CloudTrail (All Topics)** | 25 |
-| [cloudwatch-security-comprehensive.html](./cloudwatch-security-comprehensive.html) | **Amazon CloudWatch Security** | 20 |
+| [guardduty-comprehensive.html](./guardduty-comprehensive.html) | **Amazon GuardDuty** | 25 |
+| [guardduty-extended-threat-detection.html](./guardduty-extended-threat-detection.html) | **GuardDuty Extended Threat Detection** | 15 |
+| [security-hub-comprehensive.html](./security-hub-comprehensive.html) | **AWS Security Hub** | 25 |
+| [cloudtrail-comprehensive.html](./cloudtrail-comprehensive.html) | **AWS CloudTrail** | 25 |
+| [cloudwatch-security-comprehensive.html](./cloudwatch-security-comprehensive.html) | **CloudWatch Security** | 20 |
 | [security-lake-comprehensive.html](./security-lake-comprehensive.html) | **Amazon Security Lake** | 20 |
-| [guardduty-extended-threat-detection.html](./guardduty-extended-threat-detection.html) | GuardDuty Extended Threat Detection | 15 |
-
+| [athena-comprehensive.html](./athena-comprehensive.html) | **Amazon Athena** | 20 |
+| [opensearch-comprehensive.html](./opensearch-comprehensive.html) | **Amazon OpenSearch Service** | 20 |
+| [managed-grafana-comprehensive.html](./managed-grafana-comprehensive.html) | **Amazon Managed Grafana** | 20 |
+| [vpc-flow-logs-transit-gw-comprehensive.html](./vpc-flow-logs-transit-gw-comprehensive.html) | **VPC Flow Logs and Transit Gateway Flow Logs** | 20 |
+| [route53-resolver-logs-comprehensive.html](./route53-resolver-logs-comprehensive.html) | **Route 53 Resolver Query Logging** | 20 |
 ### Domain 2: Incident Response (152 questions)
 
 | Quiz | Topic | Questions | 

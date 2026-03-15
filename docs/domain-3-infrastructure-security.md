@@ -420,6 +420,26 @@ This domain covers network edge security, compute workload security, and network
 - Know **Direct Connect MACsec** for Layer 2 encryption and **VPN over DX** for end-to-end encryption (Skill 3.3.2)
 - Understand **Network Access Analyzer** for identifying unintended network access (Skill 3.3.5)
 
+
+---
+
+## Practice Quizzes
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **Amazon VPC Security** | 25 | [View](../quizzes/vpc-security-comprehensive.html) |
+| **AWS WAF** | 20 | [View](../quizzes/waf-comprehensive.html) |
+| **AWS Shield and DDoS Protection** | 18 | [View](../quizzes/shield-ddos-comprehensive.html) |
+| **AWS Network Firewall** | 20 | [View](../quizzes/network-firewall-comprehensive.html) |
+| **Amazon Inspector** | 20 | [View](../quizzes/inspector-comprehensive.html) |
+| **EC2 Image Builder and Systems Manager** | 20 | [View](../quizzes/imagebuilder-ssm-comprehensive.html) |
+| **AWS Verified Access, Direct Connect and VPN** | 25 | [View](../quizzes/verifiedaccess-directconnect-vpn-comprehensive.html) |
+| **Network Access Analyzer and CloudFront Security** | 25 | [View](../quizzes/networkanalyzer-cloudfront-comprehensive.html) |
+| **Amazon Q Developer and CodeGuru Security** | 25 | [View](../quizzes/qdeveloper-codeguru-comprehensive.html) |
+| **GenAI OWASP Top 10 Security** | 25 | [View](../quizzes/genai-owasp-top10-comprehensive.html) |
+
+> 10 quizzes | 223 questions total for Domain 3
+
 ---
 
 *Last updated: January 2026 (SCS-C03)*

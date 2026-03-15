@@ -385,6 +385,24 @@ This domain covers identity management, access control, and federation in AWS.
 - Know **ABAC vs RBAC** patterns and when to use each (Skill 4.2.2)
 - Understand **IAM paths** for organizing IAM resources (Skill 4.2.1)
 
+
+---
+
+## Practice Quizzes
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **IAM Fundamentals: Users, Groups, Policy Evaluation and Credentials** | 25 | [View](../quizzes/iam-fundamentals-comprehensive.html) |
+| **IAM Policies and Permissions** | 25 | [View](../quizzes/iam-policies-comprehensive.html) |
+| **AWS Organizations and SCPs** | 20 | [View](../quizzes/organizations-scps-comprehensive.html) |
+| **IAM Identity Center and Federation** | 20 | [View](../quizzes/identity-center-federation-comprehensive.html) |
+| **Amazon Cognito and AWS STS** | 18 | [View](../quizzes/cognito-sts-comprehensive.html) |
+| **AWS Verified Permissions (Cedar)** | 25 | [View](../quizzes/verified-permissions-comprehensive.html) |
+| **IAM Roles Anywhere and Directory Service** | 25 | [View](../quizzes/rolesanywhere-directoryservice-comprehensive.html) |
+| **IAM Access Analyzer, Policy Simulator and ABAC/RBAC** | 25 | [View](../quizzes/accessanalyzer-policysim-abac-comprehensive.html) |
+
+> 8 quizzes | 183 questions total for Domain 4
+
 ---
 
 *Last updated: January 2026 (SCS-C03)*

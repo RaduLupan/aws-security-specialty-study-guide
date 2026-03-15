@@ -391,6 +391,23 @@ Root
 - Understand **Well-Architected Tool** Security Pillar for architecture reviews (Skill 6.3.3)
 - Know **root user credential management** and centralized root access (Skill 6.1.5)
 
+
+---
+
+## Practice Quizzes
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **AWS Control Tower** | 20 | [View](../quizzes/control-tower-comprehensive.html) |
+| **AWS Config and Compliance** | 20 | [View](../quizzes/config-compliance-comprehensive.html) |
+| **Audit Manager and Artifact** | 23 | [View](../quizzes/audit-manager-artifact-comprehensive.html) |
+| **Resource Control Policies and Declarative Policies** | 25 | [View](../quizzes/rcp-declarative-policies-comprehensive.html) |
+| **CloudFormation Guard and cfn-lint** | 25 | [View](../quizzes/cfn-guard-cfn-lint-comprehensive.html) |
+| **Firewall Manager and Service Catalog** | 25 | [View](../quizzes/firewall-manager-service-catalog-comprehensive.html) |
+| **Resource Access Manager and Well-Architected Tool** | 25 | [View](../quizzes/ram-wellarchitected-comprehensive.html) |
+
+> 7 quizzes | 163 questions total for Domain 6
+
 ---
 
 *Last updated: February 2026 (SCS-C03)*

@@ -31,12 +31,12 @@ Detailed study materials organized by exam domain for the **SCS-C03 exam** (effe
 
 | Domain | Weight | Study Guide | Status |
 |--------|--------|-------------|--------|
-| 1. Detection | 16% | [domain-1-detection.md](./domain-1-detection.md) | 🚧 In Progress |
-| 2. Incident Response | 14% | [domain-2-incident-response.md](./domain-2-incident-response.md) | 🚧 In Progress |
-| 3. Infrastructure Security | 18% | [domain-3-infrastructure-security.md](./domain-3-infrastructure-security.md) | 🚧 In Progress |
-| 4. Identity & Access Management | 20% | [domain-4-iam.md](./domain-4-iam.md) | 🚧 In Progress |
-| 5. Data Protection | 18% | [domain-5-data-protection.md](./domain-5-data-protection.md) | 🚧 In Progress |
-| 6. Security Foundations & Governance | 14% | [domain-6-governance.md](./domain-6-governance.md) | 🚧 In Progress |
+| 1. Detection | 16% | [domain-1-detection.md](./domain-1-detection.md) | ✅ Complete |
+| 2. Incident Response | 14% | [domain-2-incident-response.md](./domain-2-incident-response.md) | ✅ Complete |
+| 3. Infrastructure Security | 18% | [domain-3-infrastructure-security.md](./domain-3-infrastructure-security.md) | ✅ Complete |
+| 4. Identity & Access Management | 20% | [domain-4-iam.md](./domain-4-iam.md) | ✅ Complete |
+| 5. Data Protection | 18% | [domain-5-data-protection.md](./domain-5-data-protection.md) | ✅ Complete |
+| 6. Security Foundations & Governance | 14% | [domain-6-governance.md](./domain-6-governance.md) | ✅ Complete |
 
 ## Study Order Recommendation (SCS-C03)
 

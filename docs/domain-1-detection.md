@@ -381,11 +381,23 @@ This domain covers monitoring, alerting, logging, and threat detection capabilit
 
 ---
 
-## 🎮 Practice Quizzes
+## Practice Quizzes
 
-- [Amazon GuardDuty Comprehensive Quiz](../quizzes/guardduty-comprehensive.html) (25 questions)
-- [GuardDuty Extended Threat Detection Quiz](../quizzes/guardduty-extended-threat-detection.html) (15 questions)
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **Amazon GuardDuty** | 25 | [View](../quizzes/guardduty-comprehensive.html) |
+| **GuardDuty Extended Threat Detection** | 15 | [View](../quizzes/guardduty-extended-threat-detection.html) |
+| **AWS Security Hub** | 25 | [View](../quizzes/security-hub-comprehensive.html) |
+| **AWS CloudTrail** | 25 | [View](../quizzes/cloudtrail-comprehensive.html) |
+| **CloudWatch Security** | 20 | [View](../quizzes/cloudwatch-security-comprehensive.html) |
+| **Amazon Security Lake** | 20 | [View](../quizzes/security-lake-comprehensive.html) |
+| **Amazon Athena** | 20 | [View](../quizzes/athena-comprehensive.html) |
+| **Amazon OpenSearch Service** | 20 | [View](../quizzes/opensearch-comprehensive.html) |
+| **Amazon Managed Grafana** | 20 | [View](../quizzes/managed-grafana-comprehensive.html) |
+| **VPC Flow Logs and Transit Gateway Flow Logs** | 20 | [View](../quizzes/vpc-flow-logs-transit-gw-comprehensive.html) |
+| **Route 53 Resolver Query Logging** | 20 | [View](../quizzes/route53-resolver-logs-comprehensive.html) |
 
+> 11 quizzes | 230 questions total for Domain 1
 ---
 
 ## ✅ Exam Tips

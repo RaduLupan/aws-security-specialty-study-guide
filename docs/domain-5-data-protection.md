@@ -468,6 +468,27 @@ This domain covers data protection in transit, at rest, and management of confid
 - Understand **ELB security policies** for enforcing TLS versions (Skill 5.1.1)
 - Know **Client VPN** authentication options: AD, SAML, mutual TLS (Skill 5.1.2)
 
+
+---
+
+## Practice Quizzes
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **AWS KMS** | 25 | [View](../quizzes/kms-comprehensive.html) |
+| **Secrets Manager and CloudHSM** | 20 | [View](../quizzes/secrets-manager-cloudhsm-comprehensive.html) |
+| **ACM and S3 Encryption** | 18 | [View](../quizzes/acm-s3-encryption-comprehensive.html) |
+| **Amazon Macie** | 18 | [View](../quizzes/macie-comprehensive.html) |
+| **AWS PrivateLink and VPC Endpoints** | 25 | [View](../quizzes/privatelink-comprehensive.html) |
+| **S3 Object Lock and Glacier Vault Lock** | 25 | [View](../quizzes/s3objectlock-glaciervaultlock-comprehensive.html) |
+| **AWS Backup and Data Lifecycle Manager** | 25 | [View](../quizzes/awsbackup-vaultlock-dlm-comprehensive.html) |
+| **KMS Imported Keys and External Key Store** | 25 | [View](../quizzes/kms-imported-keys-xks-comprehensive.html) |
+| **CloudWatch Logs and SNS Data Protection** | 25 | [View](../quizzes/cwlogs-sns-dataprotection-comprehensive.html) |
+| **AWS Private Certificate Authority** | 25 | [View](../quizzes/privateca-comprehensive.html) |
+| **Nitro / EMR / EKS Encryption** | 25 | [View](../quizzes/nitro-emr-eks-encryption-comprehensive.html) |
+
+> 11 quizzes | 256 questions total for Domain 5
+
 ---
 
 *Last updated: February 2026 (SCS-C03)*

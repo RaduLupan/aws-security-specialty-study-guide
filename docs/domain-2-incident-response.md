@@ -398,6 +398,23 @@ GuardDuty Finding → EventBridge → Lambda → Remediation
 - Know **OpsCenter** for centralized incident tracking and runbook integration (Skill 2.1.1)
 - Understand **Shield Advanced** DRT access and proactive engagement for DDoS response (Skill 2.1.2)
 
+
+---
+
+## Practice Quizzes
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **Incident Response Fundamentals** | 25 | [View](../quizzes/incident-response-fundamentals.html) |
+| **Automated Remediation** | 20 | [View](../quizzes/automated-remediation.html) |
+| **Amazon Detective** | 20 | [View](../quizzes/detective-comprehensive.html) |
+| **Fault Injection and Resilience Hub** | 25 | [View](../quizzes/fault-injection-resilience-hub-comprehensive.html) |
+| **Application Recovery Controller** | 20 | [View](../quizzes/application-recovery-controller-comprehensive.html) |
+| **Forensics Orchestrator and OpsCenter** | 22 | [View](../quizzes/forensics-orchestrator-opscenter-comprehensive.html) |
+| **Shield Advanced** | 20 | [View](../quizzes/shield-advanced-comprehensive.html) |
+
+> 7 quizzes | 152 questions total for Domain 2
+
 ---
 
 *Last updated: January 2026 (SCS-C03)*
