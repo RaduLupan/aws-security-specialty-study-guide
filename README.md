@@ -103,23 +103,95 @@ Interactive HTML-based quizzes with two modes:
 
 ### Available Quizzes
 
-> **🎉 Total: 520 questions across 25 quizzes - ALL 6 DOMAINS COMPLETE!**
+> **Total: 1,227 questions across 55 quizzes - ALL 6 DOMAINS COMPLETE!**
 
-> **📝 Plus 5 full-length practice exams (325 questions) modeled after the real SCS-C03 exam!**
+> **Plus 5 full-length practice exams (325 questions) modeled after the real SCS-C03 exam!**
 
-#### ✅ Domain 1: Detection (150 questions)
+#### Domain 1: Detection -- 11 quizzes | 230 questions
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
-| **AWS Security Hub** | 25 | [View](./quizzes/security-hub-comprehensive.html) |
 | **Amazon GuardDuty** | 25 | [View](./quizzes/guardduty-comprehensive.html) |
-| **Amazon Detective** | 20 | [View](./quizzes/detective-comprehensive.html) |
+| **GuardDuty Extended Threat Detection** | 15 | [View](./quizzes/guardduty-extended-threat-detection.html) |
+| **AWS Security Hub** | 25 | [View](./quizzes/security-hub-comprehensive.html) |
 | **AWS CloudTrail** | 25 | [View](./quizzes/cloudtrail-comprehensive.html) |
 | **CloudWatch Security** | 20 | [View](./quizzes/cloudwatch-security-comprehensive.html) |
 | **Amazon Security Lake** | 20 | [View](./quizzes/security-lake-comprehensive.html) |
-| GuardDuty Extended Threat Detection | 15 | [View](./quizzes/guardduty-extended-threat-detection.html) |
+| **Amazon Athena** | 20 | [View](./quizzes/athena-comprehensive.html) |
+| **Amazon OpenSearch Service** | 20 | [View](./quizzes/opensearch-comprehensive.html) |
+| **Amazon Managed Grafana** | 20 | [View](./quizzes/managed-grafana-comprehensive.html) |
+| **VPC Flow Logs and Transit Gateway Flow Logs** | 20 | [View](./quizzes/vpc-flow-logs-transit-gw-comprehensive.html) |
+| **Route 53 Resolver Query Logging** | 20 | [View](./quizzes/route53-resolver-logs-comprehensive.html) |
 
-#### 🆕 SCS-C03 Exam Update Topics (20 questions)
+#### Domain 2: Incident Response -- 7 quizzes | 152 questions
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **Incident Response Fundamentals** | 25 | [View](./quizzes/incident-response-fundamentals.html) |
+| **Automated Remediation** | 20 | [View](./quizzes/automated-remediation.html) |
+| **Amazon Detective** | 20 | [View](./quizzes/detective-comprehensive.html) |
+| **Fault Injection and Resilience Hub** | 25 | [View](./quizzes/fault-injection-resilience-hub-comprehensive.html) |
+| **Application Recovery Controller** | 20 | [View](./quizzes/application-recovery-controller-comprehensive.html) |
+| **Forensics Orchestrator and OpsCenter** | 22 | [View](./quizzes/forensics-orchestrator-opscenter-comprehensive.html) |
+| **Shield Advanced** | 20 | [View](./quizzes/shield-advanced-comprehensive.html) |
+
+#### Domain 3: Infrastructure Security -- 10 quizzes | 223 questions
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **Amazon VPC Security** | 25 | [View](./quizzes/vpc-security-comprehensive.html) |
+| **AWS WAF** | 20 | [View](./quizzes/waf-comprehensive.html) |
+| **AWS Shield and DDoS Protection** | 18 | [View](./quizzes/shield-ddos-comprehensive.html) |
+| **AWS Network Firewall** | 20 | [View](./quizzes/network-firewall-comprehensive.html) |
+| **Amazon Inspector** | 20 | [View](./quizzes/inspector-comprehensive.html) |
+| **EC2 Image Builder and Systems Manager** | 20 | [View](./quizzes/imagebuilder-ssm-comprehensive.html) |
+| **AWS Verified Access, Direct Connect and VPN** | 25 | [View](./quizzes/verifiedaccess-directconnect-vpn-comprehensive.html) |
+| **Network Access Analyzer and CloudFront Security** | 25 | [View](./quizzes/networkanalyzer-cloudfront-comprehensive.html) |
+| **Amazon Q Developer and CodeGuru Security** | 25 | [View](./quizzes/qdeveloper-codeguru-comprehensive.html) |
+| **GenAI OWASP Top 10 Security** | 25 | [View](./quizzes/genai-owasp-top10-comprehensive.html) |
+
+#### Domain 4: Identity and Access Management -- 8 quizzes | 183 questions
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **IAM Fundamentals: Users, Groups, Policy Evaluation and Credentials** | 25 | [View](./quizzes/iam-fundamentals-comprehensive.html) |
+| **IAM Policies and Permissions** | 25 | [View](./quizzes/iam-policies-comprehensive.html) |
+| **AWS Organizations and SCPs** | 20 | [View](./quizzes/organizations-scps-comprehensive.html) |
+| **IAM Identity Center and Federation** | 20 | [View](./quizzes/identity-center-federation-comprehensive.html) |
+| **Amazon Cognito and AWS STS** | 18 | [View](./quizzes/cognito-sts-comprehensive.html) |
+| **AWS Verified Permissions (Cedar)** | 25 | [View](./quizzes/verified-permissions-comprehensive.html) |
+| **IAM Roles Anywhere and Directory Service** | 25 | [View](./quizzes/rolesanywhere-directoryservice-comprehensive.html) |
+| **IAM Access Analyzer, Policy Simulator and ABAC/RBAC** | 25 | [View](./quizzes/accessanalyzer-policysim-abac-comprehensive.html) |
+
+#### Domain 5: Data Protection -- 11 quizzes | 256 questions
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **AWS KMS** | 25 | [View](./quizzes/kms-comprehensive.html) |
+| **Secrets Manager and CloudHSM** | 20 | [View](./quizzes/secrets-manager-cloudhsm-comprehensive.html) |
+| **ACM and S3 Encryption** | 18 | [View](./quizzes/acm-s3-encryption-comprehensive.html) |
+| **Amazon Macie** | 18 | [View](./quizzes/macie-comprehensive.html) |
+| **AWS PrivateLink and VPC Endpoints** | 25 | [View](./quizzes/privatelink-comprehensive.html) |
+| **S3 Object Lock and Glacier Vault Lock** | 25 | [View](./quizzes/s3objectlock-glaciervaultlock-comprehensive.html) |
+| **AWS Backup and Data Lifecycle Manager** | 25 | [View](./quizzes/awsbackup-vaultlock-dlm-comprehensive.html) |
+| **KMS Imported Keys and External Key Store** | 25 | [View](./quizzes/kms-imported-keys-xks-comprehensive.html) |
+| **CloudWatch Logs and SNS Data Protection** | 25 | [View](./quizzes/cwlogs-sns-dataprotection-comprehensive.html) |
+| **AWS Private Certificate Authority** | 25 | [View](./quizzes/privateca-comprehensive.html) |
+| **Nitro / EMR / EKS Encryption** | 25 | [View](./quizzes/nitro-emr-eks-encryption-comprehensive.html) |
+
+#### Domain 6: Security Foundations and Governance -- 7 quizzes | 163 questions
+
+| Topic | Questions | Quiz |
+|-------|-----------|------|
+| **AWS Control Tower** | 20 | [View](./quizzes/control-tower-comprehensive.html) |
+| **AWS Config and Compliance** | 20 | [View](./quizzes/config-compliance-comprehensive.html) |
+| **Audit Manager and Artifact** | 23 | [View](./quizzes/audit-manager-artifact-comprehensive.html) |
+| **Resource Control Policies and Declarative Policies** | 25 | [View](./quizzes/rcp-declarative-policies-comprehensive.html) |
+| **CloudFormation Guard and cfn-lint** | 25 | [View](./quizzes/cfn-guard-cfn-lint-comprehensive.html) |
+| **Firewall Manager and Service Catalog** | 25 | [View](./quizzes/firewall-manager-service-catalog-comprehensive.html) |
+| **Resource Access Manager and Well-Architected Tool** | 25 | [View](./quizzes/ram-wellarchitected-comprehensive.html) |
+
+#### Cross-Domain -- 1 quiz | 20 questions
 
 | Topic | Questions | Quiz |
 |-------|-----------|------|
@@ -132,48 +204,6 @@ Covers new topics added to the 2026 SCS-C03 exam version:
 - CloudWatch Logs and SNS message data protection
 - KMS imported key material vs AWS-generated keys
 - AWS Private Certificate Authority multi-region support
-
-#### ✅ Domain 2: Incident Response (45 questions)
-
-| Topic | Questions | Quiz |
-|-------|-----------|------|
-| **Incident Response Fundamentals** | 25 | [View](./quizzes/incident-response-fundamentals.html) |
-| **Automated Remediation** | 20 | [View](./quizzes/automated-remediation.html) |
-
-#### ✅ Domain 3: Infrastructure Security (83 questions)
-
-| Topic | Questions | Quiz |
-|-------|-----------|------|
-| **Amazon VPC Security** | 25 | [View](./quizzes/vpc-security-comprehensive.html) |
-| **AWS WAF** | 20 | [View](./quizzes/waf-comprehensive.html) |
-| **AWS Shield & DDoS Protection** | 18 | [View](./quizzes/shield-ddos-comprehensive.html) |
-| **AWS Network Firewall** | 20 | [View](./quizzes/network-firewall-comprehensive.html) |
-
-#### ✅ Domain 4: Identity & Access Management (83 questions)
-
-| Topic | Questions | Quiz |
-|-------|-----------|------|
-| **IAM Policies & Permissions** | 25 | [View](./quizzes/iam-policies-comprehensive.html) |
-| **AWS Organizations & SCPs** | 20 | [View](./quizzes/organizations-scps-comprehensive.html) |
-| **IAM Identity Center & Federation** | 20 | [View](./quizzes/identity-center-federation-comprehensive.html) |
-| **Amazon Cognito & AWS STS** | 18 | [View](./quizzes/cognito-sts-comprehensive.html) |
-
-#### ✅ Domain 5: Data Protection (81 questions)
-
-| Topic | Questions | Quiz |
-|-------|-----------|------|
-| **AWS KMS** | 25 | [View](./quizzes/kms-comprehensive.html) |
-| **Secrets Manager & CloudHSM** | 20 | [View](./quizzes/secrets-manager-cloudhsm-comprehensive.html) |
-| **ACM & S3 Encryption** | 18 | [View](./quizzes/acm-s3-encryption-comprehensive.html) |
-| **Amazon Macie** | 18 | [View](./quizzes/macie-comprehensive.html) |
-
-#### ✅ Domain 6: Security Governance (58 questions)
-
-| Topic | Questions | Quiz |
-|-------|-----------|------|
-| **AWS Control Tower** | 20 | [View](./quizzes/control-tower-comprehensive.html) |
-| **AWS Config & Compliance** | 20 | [View](./quizzes/config-compliance-comprehensive.html) |
-| **Audit Manager & Artifact** | 18 | [View](./quizzes/audit-manager-artifact-comprehensive.html) |
 
 ### Full-Length Practice Exams
 
