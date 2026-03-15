@@ -105,7 +105,7 @@ Interactive HTML-based quizzes with two modes:
 
 > **Total: 1,227 questions across 55 quizzes - ALL 6 DOMAINS COMPLETE!**
 
-> **Plus 5 full-length practice exams (325 questions) modeled after the real SCS-C03 exam!**
+> **Plus 5 full-length practice exams (325 questions)!**
 
 #### Domain 1: Detection -- 11 quizzes | 230 questions
 
